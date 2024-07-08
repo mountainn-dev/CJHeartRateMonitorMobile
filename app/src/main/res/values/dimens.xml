@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <dimen name="margin_padding_small">12dp</dimen>
+    <dimen name="margin_padding_default">24dp</dimen>
+    <dimen name="margin_padding_large">36dp</dimen>
+    <dimen name="line_default">1dp</dimen>
+    <dimen name="text_default">14sp</dimen>
+
+    <!-- Login -->
+</resources>
