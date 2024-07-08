@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/margin_padding_default"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/white"
+    tools:context=".LoginActivity">
+
+    <EditText
+        android:id="@+id/editId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:padding="@dimen/margin_padding_small"
+        android:background="@drawable/bg_white_rectangle_black_bordered"
+        android:hint="@string/id"
+        android:textColorHint="@color/black"
+        android:textSize="@dimen/text_default"/>
+
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="@dimen/margin_padding_small"
+        android:background="@drawable/bg_white_rectangle_black_bordered"
+        android:hint="@string/password"
+        android:textColorHint="@color/black"
+        android:textSize="@dimen/text_default"/>
+
+    <TextView
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_default"
+        android:gravity="center"
+        android:padding="@dimen/margin_padding_small"
+        android:background="@color/grey"
+        android:text="@string/login"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/btnBiometricLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_default"
+        android:gravity="center"
+        android:padding="@dimen/margin_padding_small"
+        android:background="@color/grey"
+        android:text="@string/biometric_login"
+        android:clickable="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_padding_default"
+        android:padding="@dimen/margin_padding_small"
+        android:gravity="center"
+        android:text="@string/divider_login_sign_up"/>
+
+    <TextView
+        android:id="@+id/btnSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/margin_padding_small"
+        android:background="@color/grey"
+        android:text="@string/sign_up"
+        android:clickable="true"/>
+
+</LinearLayout>
