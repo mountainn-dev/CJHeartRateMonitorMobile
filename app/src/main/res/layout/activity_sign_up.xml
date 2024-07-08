@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/margin_padding_default"
+    android:background="@color/white"
+    tools:context=".SignUpActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/editId"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:background="@drawable/bg_white_rectangle_black_bordered"
+                android:paddingHorizontal="@dimen/margin_padding_small"
+                android:text="@string/id"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/text_default" />
+
+            <TextView
+                android:id="@+id/btnDbCheckId"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_padding_extremely_small"
+                android:layout_weight="0.3"
+                android:background="@color/grey"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/double_check" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editPassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/password"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <EditText
+            android:id="@+id/editCheckPassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/check_password"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/name"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <EditText
+            android:id="@+id/editPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/phone_number"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <EditText
+            android:id="@+id/editGender"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/gender"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <EditText
+            android:id="@+id/editBirth"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/birth"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <EditText
+            android:id="@+id/editHeight"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/height"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <EditText
+            android:id="@+id/editWeight"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:paddingHorizontal="@dimen/margin_padding_small"
+            android:text="@string/weight"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/text_default" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:layout_marginTop="@dimen/margin_padding_default"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btnSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_sign_up_item"
+        android:background="@color/grey"
+        android:clickable="true"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_padding_default"
+        android:text="@string/sign_up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

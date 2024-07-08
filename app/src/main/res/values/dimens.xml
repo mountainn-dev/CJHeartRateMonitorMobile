@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common -->
+    <dimen name="margin_padding_extremely_small">8dp</dimen>
     <dimen name="margin_padding_small">12dp</dimen>
     <dimen name="margin_padding_default">24dp</dimen>
     <dimen name="margin_padding_large">36dp</dimen>
@@ -8,4 +9,8 @@
     <dimen name="text_default">14sp</dimen>
 
     <!-- Login -->
+    <dimen name="height_login_item">40dp</dimen>
+
+    <!-- Sign Up -->
+    <dimen name="height_sign_up_item">40dp</dimen>
 </resources>
