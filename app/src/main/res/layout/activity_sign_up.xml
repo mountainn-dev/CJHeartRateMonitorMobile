@@ -140,8 +140,55 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_default"
+            android:weightSum="1"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/llPrivacyTerm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:clickable="true">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_background_check_view"/>
+
+                    <ImageView
+                        android:id="@+id/imgCheckPrivacyTerm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_check"
+                        android:visibility="gone"/>
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:text="@string/privacy_term" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btnShowPrivacyTermDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/show_term_detail"
+                android:clickable="true"/>
 
         </LinearLayout>
 
