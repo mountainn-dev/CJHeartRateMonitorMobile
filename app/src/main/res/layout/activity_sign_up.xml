@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/margin_padding_default"
     android:background="@color/white"
+    android:paddingHorizontal="@dimen/margin_padding_default"
     tools:context=".SignUpActivity">
 
     <LinearLayout
@@ -14,8 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="24dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,9 +30,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
+                android:autofillHints="username"
                 android:background="@drawable/bg_white_rectangle_black_bordered"
+                android:hint="@string/id"
                 android:paddingHorizontal="@dimen/margin_padding_small"
-                android:text="@string/id"
                 android:textColorHint="@color/black"
                 android:textSize="@dimen/text_default" />
 
@@ -53,9 +55,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
+            android:autofillHints="password"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/password"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/password"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
@@ -64,9 +67,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
+            android:autofillHints="password"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/check_password"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/check_password"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
@@ -76,8 +80,8 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/name"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/name"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
@@ -87,8 +91,8 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/phone_number"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/phone_number"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
@@ -98,8 +102,8 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="48dp"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/gender"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/gender"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
@@ -109,8 +113,8 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/birth"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/birth"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
@@ -120,8 +124,8 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/height"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/height"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
@@ -131,24 +135,25 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
+            android:hint="@string/weight"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:text="@string/weight"
             android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
-            android:layout_marginTop="@dimen/margin_padding_default"
-            android:weightSum="1"
+            android:layout_marginTop="@dimen/margin_padding_small"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <LinearLayout
-                android:id="@+id/llPrivacyTerm"
+                android:id="@+id/llServiceTerm"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:clickable="true">
@@ -161,7 +166,63 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/img_background_check_view"/>
+                        android:src="@drawable/img_background_check_view" />
+
+                    <ImageView
+                        android:id="@+id/imgCheckServiceTerm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_check"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/service_term"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btnShowServiceTermDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/show_term_detail" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sign_up_item"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:id="@+id/llPrivacyTerm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_background_check_view" />
 
                     <ImageView
                         android:id="@+id/imgCheckPrivacyTerm"
@@ -169,16 +230,17 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/img_check"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </FrameLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_marginStart="@dimen/margin_padding_small"
-                    android:text="@string/privacy_term" />
+                    android:gravity="start|center_vertical"
+                    android:text="@string/privacy_term"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -186,9 +248,9 @@
                 android:id="@+id/btnShowPrivacyTermDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:clickable="true"
                 android:gravity="center"
-                android:text="@string/show_term_detail"
-                android:clickable="true"/>
+                android:text="@string/show_term_detail" />
 
         </LinearLayout>
 
@@ -198,13 +260,27 @@
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_sign_up_item"
+        android:layout_marginBottom="@dimen/margin_padding_default"
         android:background="@color/grey"
         android:clickable="true"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/margin_padding_default"
         android:text="@string/sign_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="22dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="325dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

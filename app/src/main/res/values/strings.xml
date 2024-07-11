@@ -18,6 +18,7 @@
     <string name="birth">생년월일</string>
     <string name="height">신장</string>
     <string name="weight">체중</string>
-    <string name="privacy_term">개인정보 동의</string>
+    <string name="service_term">(필수) Heart Rate Monitor 서비스 이용 약관 동의</string>
+    <string name="privacy_term">(선택) 개인정보 수집 동의</string>
     <string name="show_term_detail">[보기]</string>
 </resources>
