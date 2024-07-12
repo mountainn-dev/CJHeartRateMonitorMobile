@@ -9,10 +9,10 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@color/white"
-    tools:context=".LoginActivity">
+    tools:context=".screen.LoginActivity">
 
     <EditText
-        android:id="@+id/editId"
+        android:id="@+id/edtId"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_login_item"
         android:layout_marginTop="120dp"
@@ -26,7 +26,7 @@
         android:textSize="@dimen/text_default"/>
 
     <EditText
-        android:id="@+id/editPassword"
+        android:id="@+id/edtPassword"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_login_item"
         android:layout_marginTop="@dimen/margin_padding_extremely_small"

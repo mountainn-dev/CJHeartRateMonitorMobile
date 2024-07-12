@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:paddingHorizontal="@dimen/margin_padding_default"
-    tools:context=".SignUpActivity">
+    tools:context=".screen.SignUpActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editId"
+                    android:id="@+id/edtId"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
@@ -65,7 +65,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/editPassword"
+                android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_sign_up_item"
                 android:layout_marginTop="@dimen/margin_padding_small"
@@ -87,7 +87,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/editCheckPassword"
+                android:id="@+id/edtCheckPassword"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_sign_up_item"
                 android:layout_marginTop="@dimen/margin_padding_small"
@@ -99,7 +99,7 @@
                 android:textSize="@dimen/text_default" />
 
             <EditText
-                android:id="@+id/editName"
+                android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_sign_up_item"
                 android:layout_marginTop="@dimen/margin_padding_small"
@@ -121,7 +121,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/editPhoneNumber"
+                android:id="@+id/edtPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_sign_up_item"
                 android:layout_marginTop="@dimen/margin_padding_small"
@@ -163,14 +163,14 @@
                     android:weightSum="1">
 
                     <RadioButton
-                        android:id="@+id/btnGenderMale"
+                        android:id="@+id/radioMale"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:text="@string/gender_male" />
 
                     <RadioButton
-                        android:id="@+id/btnGenderFemale"
+                        android:id="@+id/radioFemale"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
@@ -181,7 +181,7 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/editBirth"
+                android:id="@+id/edtBirth"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_sign_up_item"
                 android:layout_marginTop="@dimen/margin_padding_small"
@@ -202,7 +202,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/editHeight"
+                android:id="@+id/edtHeight"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_sign_up_item"
                 android:layout_marginTop="@dimen/margin_padding_small"
@@ -223,7 +223,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/editWeight"
+                android:id="@+id/edtWeight"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_sign_up_item"
                 android:layout_marginTop="@dimen/margin_padding_small"

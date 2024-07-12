@@ -8,5 +8,6 @@ object ExceptionMessage {
     const val WRONG_NAME_FORMAT_EXCEPTION = "이름은 공백을 포함하지 않은 문자 형태의 값만 입력 가능합니다."
     const val WRONG_ID_FORMAT_EXCEPTION = "아이디는 최소 4 ~ 12 글자의 영문, 숫자 조합만 입력 가능합니다."
     const val WRONG_PASS_WORD_FORMAT_EXCEPTION = "비밀번호는 최소 8글자 이상의 영문, 숫자, 특수문자 조합만 입력 가능합니다."
+    const val WRONG_CHECK_PASS_WORD_EXCEPTION = "비밀번호가 일치하지 않습니다."
     const val WRONG_PHONE_NUMBER_FORMAT_EXCEPTION = "전화번호 형식이 올바르지 않습니다."
 }
