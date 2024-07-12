@@ -35,14 +35,14 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         get() = heightValidationMessage
     private val heightValidationMessage = MutableLiveData<String>()
 
-    private lateinit var id: String
-    private lateinit var pw: String
-    private lateinit var name: String
-    private lateinit var phoneNumber: String
-    private lateinit var birth: String
-    private lateinit var height: String
-    private lateinit var weight: String
+    private var id = BLANK
+    private var pw = BLANK
+    private var name = BLANK
+    private var phoneNumber = BLANK
     private var gender = Gender.MALE
+    private var birth = BLANK
+    private var height = BLANK
+    private var weight = BLANK
     private var serviceTerm = false
     private var privacyTerm = false
 
@@ -51,7 +51,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
         if (result is Valid) {
             this.id = id
-            idValidationMessage.postValue(VALIDATION_COMPLETED)
+            idValidationMessage.postValue(BLANK)
         }
         else idValidationMessage.postValue((result as Invalid).message())
     }
@@ -61,7 +61,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
         if (result is Valid) {
             this.pw = pw
-            pwValidationMessage.postValue(VALIDATION_COMPLETED)
+            pwValidationMessage.postValue(BLANK)
         }
         else pwValidationMessage.postValue((result as Invalid).message())
     }
@@ -70,7 +70,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.doubleCheckPassWord(this.pw, pw)
 
         if (result is Valid) {
-            checkPwValidationMessage.postValue(VALIDATION_COMPLETED)
+            checkPwValidationMessage.postValue(BLANK)
         }
         else checkPwValidationMessage.postValue((result as Invalid).message())
     }
@@ -80,7 +80,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
         if (result is Valid) {
             this.name = name
-            nameValidationMessage.postValue(VALIDATION_COMPLETED)
+            nameValidationMessage.postValue(BLANK)
         }
         else nameValidationMessage.postValue((result as Invalid).message())
     }
@@ -90,7 +90,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
         if (result is Valid) {
             this.phoneNumber = phoneNumber
-            phoneNumberValidationMessage.postValue(VALIDATION_COMPLETED)
+            phoneNumberValidationMessage.postValue(BLANK)
         }
         else phoneNumberValidationMessage.postValue((result as Invalid).message())
     }
@@ -104,7 +104,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
         if (result is Valid) {
             this.birth = birth
-            birthValidationMessage.postValue(VALIDATION_COMPLETED)
+            birthValidationMessage.postValue(BLANK)
         }
         else birthValidationMessage.postValue((result as Invalid).message())
     }
@@ -114,7 +114,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
         if (result is Valid) {
             this.height = height
-            heightValidationMessage.postValue(VALIDATION_COMPLETED)
+            heightValidationMessage.postValue(BLANK)
         }
         else heightValidationMessage.postValue((result as Invalid).message())
     }
@@ -124,12 +124,12 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
         if (result is Valid) {
             this.weight = weight
-            weightValidationMessage.postValue(VALIDATION_COMPLETED)
+            weightValidationMessage.postValue(BLANK)
         }
         else weightValidationMessage.postValue((result as Invalid).message())
     }
 
     companion object {
-        private const val VALIDATION_COMPLETED = ""
+        private const val BLANK = ""
     }
 }

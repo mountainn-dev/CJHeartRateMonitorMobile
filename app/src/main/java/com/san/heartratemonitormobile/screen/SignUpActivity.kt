@@ -46,6 +46,10 @@ class SignUpActivity : AppCompatActivity() {
             activity as LifecycleOwner,
             checkPwMessageObserver()
         )
+        viewModel.nameMessage.observe(
+            activity as LifecycleOwner,
+            nameMessageObserver()
+        )
         viewModel.phoneNumberMessage.observe(
             activity as LifecycleOwner,
             phoneNumberMessageObserver()
@@ -93,6 +97,14 @@ class SignUpActivity : AppCompatActivity() {
         else {
             binding.txtPhoneNumberError.text = it
             binding.txtPhoneNumberError.visibility = View.VISIBLE
+        }
+    }
+
+    private fun nameMessageObserver() = Observer<String> {
+        if (it == VALIDATION_COMPLETED) binding.txtNameError.visibility = View.GONE
+        else {
+            binding.txtNameError.text = it
+            binding.txtNameError.visibility = View.VISIBLE
         }
     }
 

@@ -6,7 +6,7 @@
     <dimen name="margin_padding_default">24dp</dimen>
     <dimen name="margin_padding_large">36dp</dimen>
     <dimen name="line_default">1dp</dimen>
-    <dimen name="text_default">14sp</dimen>
+    <dimen name="text_default">12sp</dimen>
 
     <!-- Login -->
     <dimen name="height_login_item">40dp</dimen>

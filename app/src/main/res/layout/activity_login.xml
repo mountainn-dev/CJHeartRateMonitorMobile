@@ -20,7 +20,7 @@
         android:background="@drawable/bg_white_rectangle_black_bordered"
         android:hint="@string/id"
         android:autofillHints="username"
-        android:inputType="text|number"
+        android:inputType="text"
         android:maxLength="12"
         android:maxLines="1"
         android:textSize="@dimen/text_default"/>
@@ -34,7 +34,7 @@
         android:background="@drawable/bg_white_rectangle_black_bordered"
         android:hint="@string/pass_word"
         android:autofillHints="password"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         android:maxLength="30"
         android:maxLines="1"
         android:textSize="@dimen/text_default"/>
