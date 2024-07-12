@@ -3,21 +3,25 @@
 
     <!-- Login -->
     <string name="id">아이디</string>
-    <string name="password">비밀번호</string>
+    <string name="pass_word">비밀번호</string>
     <string name="login">로그인</string>
     <string name="biometric_login">생체 로그인</string>
     <string name="sign_up">회원가입</string>
     <string name="divider_login_sign_up">또는</string>
     
     <!-- Sign Up -->
+    <string name="id_hint">아이디( 4~12 글자의 영문, 숫자 조합 )</string>
+    <string name="pass_word_hint">비밀번호( 최소 8글자 이상의 영문, 숫자, 특수문자 조합 )</string>
+    <string name="check_password_hint">비밀번호 확인</string>
+    <string name="name_hint">이름</string>
+    <string name="phone_number_hint">전화번호\( \'-\' 포함 )</string>
+    <string name="birth_hint">생년월일\( ex. 000101 )</string>
+    <string name="height_hint">신장( cm )</string>
+    <string name="weight_hint">체중( kg )</string>
     <string name="double_check">중복 확인</string>
-    <string name="check_password">비밀번호 확인</string>
-    <string name="name">이름</string>
-    <string name="phone_number">전화번호</string>
     <string name="gender">성별</string>
-    <string name="birth">생년월일</string>
-    <string name="height">신장</string>
-    <string name="weight">체중</string>
+    <string name="gender_male">남자</string>
+    <string name="gender_female">여자</string>
     <string name="service_term">(필수) Heart Rate Monitor 서비스 이용 약관 동의</string>
     <string name="privacy_term">(선택) 개인정보 수집 동의</string>
     <string name="show_term_detail">[보기]</string>

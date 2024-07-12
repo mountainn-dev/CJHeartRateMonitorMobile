@@ -22,27 +22,26 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="40dp"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/editId"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7"
+                android:layout_weight="0.75"
+                android:hint="@string/id_hint"
                 android:autofillHints="username"
-                android:background="@drawable/bg_white_rectangle_black_bordered"
-                android:hint="@string/id"
+                android:inputType="text|number"
                 android:paddingHorizontal="@dimen/margin_padding_small"
-                android:textColorHint="@color/black"
-                android:textSize="@dimen/text_default" />
+                android:textSize="@dimen/text_default"
+                android:background="@drawable/bg_white_rectangle_black_bordered"/>
 
             <TextView
                 android:id="@+id/btnDbCheckId"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.25"
                 android:layout_marginStart="@dimen/margin_padding_extremely_small"
-                android:layout_weight="0.3"
                 android:background="@color/grey"
                 android:clickable="true"
                 android:gravity="center"
@@ -55,11 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
-            android:autofillHints="password"
             android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/password"
+            android:hint="@string/pass_word_hint"
+            android:autofillHints="password"
+            android:inputType="numberPassword"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
         <EditText
@@ -67,11 +66,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
-            android:autofillHints="password"
             android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/check_password"
+            android:hint="@string/check_password_hint"
+            android:autofillHints="password"
+            android:inputType="numberPassword"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
         <EditText
@@ -80,9 +79,10 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/name"
+            android:hint="@string/name_hint"
+            android:autofillHints="name"
+            android:inputType="text"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
         <EditText
@@ -91,21 +91,49 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/phone_number"
+            android:hint="@string/phone_number_hint"
+            android:autofillHints="phone"
+            android:inputType="phone"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
-        <EditText
-            android:id="@+id/editGender"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="48dp"
-            android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/gender"
-            android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
-            android:textSize="@dimen/text_default" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_padding_small"
+                android:text="@string/gender"
+                android:gravity="center"/>
+
+            <RadioGroup
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btnGenderMale"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/gender_male"/>
+
+                <RadioButton
+                    android:id="@+id/btnGenderFemale"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/gender_female" />
+
+            </RadioGroup>
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/editBirth"
@@ -113,9 +141,9 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/birth"
+            android:hint="@string/birth_hint"
+            android:inputType="number"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
         <EditText
@@ -124,9 +152,9 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/height"
+            android:hint="@string/height_hint"
+            android:inputType="number"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
         <EditText
@@ -135,9 +163,9 @@
             android:layout_height="@dimen/height_sign_up_item"
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:hint="@string/weight"
+            android:hint="@string/weight_hint"
+            android:inputType="number"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/text_default" />
 
         <LinearLayout
