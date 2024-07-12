@@ -22,4 +22,7 @@ interface SignUpViewModel {
     fun setBirth(birth: String)
     fun setHeight(height: String)
     fun setWeight(weight: String)
+    fun toggleServiceTerm()
+    fun togglePrivacyTerm()
+    fun signUp()
 }

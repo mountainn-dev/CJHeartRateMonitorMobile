@@ -1,8 +1,10 @@
 package com.san.heartratemonitormobile.domain.viewmodelimpl
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.san.heartratemonitormobile.data.vo.Weight
 import com.san.heartratemonitormobile.domain.enums.Gender
 import com.san.heartratemonitormobile.domain.utils.InputValidator
 import com.san.heartratemonitormobile.domain.utils.Invalid
@@ -37,6 +39,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
 
     private var id = BLANK
     private var pw = BLANK
+    private var checkPw = BLANK
     private var name = BLANK
     private var phoneNumber = BLANK
     private var gender = Gender.MALE
@@ -52,8 +55,10 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         if (result is Valid) {
             this.id = id
             idValidationMessage.postValue(BLANK)
+        } else {
+            this.id = BLANK
+            idValidationMessage.postValue((result as Invalid).message())
         }
-        else idValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun setPassWord(pw: String) {
@@ -62,17 +67,22 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         if (result is Valid) {
             this.pw = pw
             pwValidationMessage.postValue(BLANK)
+        } else {
+            this.pw = BLANK
+            pwValidationMessage.postValue((result as Invalid).message())
         }
-        else pwValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun checkPassWord(pw: String) {
         val result = InputValidator.doubleCheckPassWord(this.pw, pw)
 
         if (result is Valid) {
+            this.checkPw = pw
             checkPwValidationMessage.postValue(BLANK)
+        } else {
+            this.checkPw = BLANK
+            checkPwValidationMessage.postValue((result as Invalid).message())
         }
-        else checkPwValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun setName(name: String) {
@@ -81,8 +91,10 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         if (result is Valid) {
             this.name = name
             nameValidationMessage.postValue(BLANK)
+        } else {
+            this.name = BLANK
+            nameValidationMessage.postValue((result as Invalid).message())
         }
-        else nameValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun setPhoneNumber(phoneNumber: String) {
@@ -91,8 +103,10 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         if (result is Valid) {
             this.phoneNumber = phoneNumber
             phoneNumberValidationMessage.postValue(BLANK)
+        } else {
+            this.phoneNumber = BLANK
+            phoneNumberValidationMessage.postValue((result as Invalid).message())
         }
-        else phoneNumberValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun setGender(gender: Gender) {
@@ -105,8 +119,10 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         if (result is Valid) {
             this.birth = birth
             birthValidationMessage.postValue(BLANK)
+        } else {
+            this.birth = BLANK
+            birthValidationMessage.postValue((result as Invalid).message())
         }
-        else birthValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun setHeight(height: String) {
@@ -115,8 +131,10 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         if (result is Valid) {
             this.height = height
             heightValidationMessage.postValue(BLANK)
+        } else {
+            this.height = BLANK
+            heightValidationMessage.postValue((result as Invalid).message())
         }
-        else heightValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun setWeight(weight: String) {
@@ -125,9 +143,29 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         if (result is Valid) {
             this.weight = weight
             weightValidationMessage.postValue(BLANK)
+        } else {
+            this.weight = BLANK
+            weightValidationMessage.postValue((result as Invalid).message())
         }
-        else weightValidationMessage.postValue((result as Invalid).message())
     }
+
+    override fun toggleServiceTerm() {
+        this.serviceTerm = !this.serviceTerm
+    }
+
+    override fun togglePrivacyTerm() {
+        this.privacyTerm = !this.privacyTerm
+    }
+
+    override fun signUp() {
+        if (signUpCondition()) {
+            // TODO: SignUp
+        }
+    }
+
+    private fun signUpCondition() =
+        // TODO: 아이디 중복 검사 조건 추가
+        id != BLANK && pw != BLANK && name != BLANK && phoneNumber != BLANK && birth != BLANK && height != BLANK && weight != BLANK && serviceTerm
 
     companion object {
         private const val BLANK = ""

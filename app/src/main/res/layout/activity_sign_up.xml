@@ -31,7 +31,8 @@
                 android:hint="@string/id_hint"
                 android:inputType="text"
                 android:paddingHorizontal="@dimen/margin_padding_small"
-                android:textSize="@dimen/text_default" />
+                android:textSize="@dimen/text_default"
+                android:nextFocusRight="@id/edtPassword"/>
 
             <TextView
                 android:id="@+id/btnDbCheckId"
@@ -169,7 +170,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
-                    android:text="@string/gender_male" />
+                    android:text="@string/gender_male"
+                    android:checked="true"/>
 
                 <RadioButton
                     android:id="@+id/radioFemale"

@@ -69,7 +69,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun idMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtIdError.visibility = View.GONE
+        if (it == VALID) binding.txtIdError.visibility = View.GONE
         else {
             binding.txtIdError.text = it
             binding.txtIdError.visibility = View.VISIBLE
@@ -77,7 +77,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun pwMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtPassWordError.visibility = View.GONE
+        if (it == VALID) binding.txtPassWordError.visibility = View.GONE
         else {
             binding.txtPassWordError.text = it
             binding.txtPassWordError.visibility = View.VISIBLE
@@ -85,7 +85,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun checkPwMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtCheckPassWordError.visibility = View.GONE
+        if (it == VALID) binding.txtCheckPassWordError.visibility = View.GONE
         else {
             binding.txtCheckPassWordError.text = it
             binding.txtCheckPassWordError.visibility = View.VISIBLE
@@ -93,7 +93,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun phoneNumberMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtPhoneNumberError.visibility = View.GONE
+        if (it == VALID) binding.txtPhoneNumberError.visibility = View.GONE
         else {
             binding.txtPhoneNumberError.text = it
             binding.txtPhoneNumberError.visibility = View.VISIBLE
@@ -101,7 +101,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun nameMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtNameError.visibility = View.GONE
+        if (it == VALID) binding.txtNameError.visibility = View.GONE
         else {
             binding.txtNameError.text = it
             binding.txtNameError.visibility = View.VISIBLE
@@ -109,7 +109,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun birthMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtBirthError.visibility = View.GONE
+        if (it == VALID) binding.txtBirthError.visibility = View.GONE
         else {
             binding.txtBirthError.text = it
             binding.txtBirthError.visibility = View.VISIBLE
@@ -117,7 +117,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun heightMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtHeightError.visibility = View.GONE
+        if (it == VALID) binding.txtHeightError.visibility = View.GONE
         else {
             binding.txtHeightError.text = it
             binding.txtHeightError.visibility = View.VISIBLE
@@ -125,7 +125,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun weightMessageObserver() = Observer<String> {
-        if (it == VALIDATION_COMPLETED) binding.txtWeightError.visibility = View.GONE
+        if (it == VALID) binding.txtWeightError.visibility = View.GONE
         else {
             binding.txtWeightError.text = it
             binding.txtWeightError.visibility = View.VISIBLE
@@ -148,6 +148,7 @@ class SignUpActivity : AppCompatActivity() {
         setRadioGenderListener()
         setBtnCheckTermListener()
         setBtnShowTermDetailListener()
+        setBtnSignUpListener()
     }
 
     private fun setEdtIdListener() {
@@ -254,12 +255,12 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun setBtnCheckTermListener() {
         binding.llServiceTerm.setOnClickListener {
-            // TODO: 뷰모델 serviceTerm 데이터 수정
+            viewModel.toggleServiceTerm()
             binding.imgCheckServiceTerm.visibility =
                 if (binding.imgCheckServiceTerm.isVisible) View.GONE else View.VISIBLE
         }
         binding.llPrivacyTerm.setOnClickListener {
-            // TODO: 뷰모델 privacyTerm 데이터 수정
+            viewModel.togglePrivacyTerm()
             binding.imgCheckPrivacyTerm.visibility =
                 if (binding.imgCheckPrivacyTerm.isVisible) View.GONE else View.VISIBLE
         }
@@ -270,7 +271,13 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnShowPrivacyTermDetail.setOnClickListener {}
     }
 
+    private fun setBtnSignUpListener() {
+        binding.btnSignUp.setOnClickListener {
+            viewModel.signUp()
+        }
+    }
+
     companion object {
-        private const val VALIDATION_COMPLETED = ""
+        private const val VALID = ""
     }
 }
