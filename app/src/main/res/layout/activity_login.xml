@@ -20,6 +20,9 @@
         android:background="@drawable/bg_white_rectangle_black_bordered"
         android:hint="@string/id"
         android:textColorHint="@color/black"
+        android:autofillHints="username"
+        android:maxLength="12"
+        android:maxLines="1"
         android:textSize="@dimen/text_default"/>
 
     <EditText
@@ -31,6 +34,9 @@
         android:background="@drawable/bg_white_rectangle_black_bordered"
         android:hint="@string/password"
         android:textColorHint="@color/black"
+        android:autofillHints="password"
+        android:maxLength="30"
+        android:maxLines="1"
         android:textSize="@dimen/text_default"/>
 
     <TextView
