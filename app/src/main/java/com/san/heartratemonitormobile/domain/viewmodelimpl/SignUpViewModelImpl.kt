@@ -16,6 +16,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
     override val pwMessage: LiveData<String>
         get() = pwValidationMessage
     private val pwValidationMessage = MutableLiveData<String>()
+    override val checkPwMessage: LiveData<String>
+        get() = checkPwValidationMessage
+    private val checkPwValidationMessage = MutableLiveData<String>()
     override val nameMessage: LiveData<String>
         get() = nameValidationMessage
     private val nameValidationMessage = MutableLiveData<String>()
@@ -67,8 +70,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.doubleCheckPassWord(this.pw, pw)
 
         if (result is Valid) {
-
+            checkPwValidationMessage.postValue(VALIDATION_COMPLETED)
         }
+        else checkPwValidationMessage.postValue((result as Invalid).message())
     }
 
     override fun setName(name: String) {

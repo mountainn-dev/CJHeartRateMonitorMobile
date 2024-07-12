@@ -6,6 +6,7 @@ import com.san.heartratemonitormobile.domain.enums.Gender
 interface SignUpViewModel {
     val idMessage: LiveData<String>
     val pwMessage: LiveData<String>
+    val checkPwMessage: LiveData<String>
     val nameMessage: LiveData<String>
     val phoneNumberMessage: LiveData<String>
     val birthMessage: LiveData<String>
