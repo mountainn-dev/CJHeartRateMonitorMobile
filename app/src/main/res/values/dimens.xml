@@ -13,4 +13,5 @@
 
     <!-- Sign Up -->
     <dimen name="height_sign_up_item">40dp</dimen>
+    <dimen name="text_sign_up_error">12sp</dimen>
 </resources>
