@@ -67,7 +67,8 @@
             android:hint="@string/pass_word_hint"
             android:inputType="textPassword"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textSize="@dimen/text_default" />
+            android:textSize="@dimen/text_default"
+            android:nextFocusRight="@id/edtCheckPassword"/>
 
         <TextView
             android:id="@+id/txtPassWordError"
@@ -89,7 +90,8 @@
             android:hint="@string/check_password_hint"
             android:inputType="textPassword"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textSize="@dimen/text_default" />
+            android:textSize="@dimen/text_default"
+            android:nextFocusRight="@id/edtName"/>
 
         <TextView
             android:id="@+id/txtCheckPassWordError"
@@ -111,7 +113,8 @@
             android:hint="@string/name_hint"
             android:inputType="text"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textSize="@dimen/text_default" />
+            android:textSize="@dimen/text_default"
+            android:nextFocusRight="@id/edtPhoneNumber"/>
 
         <TextView
             android:id="@+id/txtNameError"
@@ -133,7 +136,8 @@
             android:hint="@string/phone_number_hint"
             android:inputType="phone"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textSize="@dimen/text_default" />
+            android:textSize="@dimen/text_default"
+            android:nextFocusRight="@id/edtBirth"/>
 
         <TextView
             android:id="@+id/txtPhoneNumberError"
@@ -214,7 +218,8 @@
             android:hint="@string/height_hint"
             android:inputType="number"
             android:paddingHorizontal="@dimen/margin_padding_small"
-            android:textSize="@dimen/text_default" />
+            android:textSize="@dimen/text_default"
+            android:nextFocusRight="@id/edtWeight"/>
 
         <TextView
             android:id="@+id/txtHeightError"
