@@ -3,11 +3,11 @@ package com.san.heartratemonitormobile.domain.viewmodel
 import androidx.lifecycle.LiveData
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.model.UserModel
+import com.san.heartratemonitormobile.domain.state.UiState
 
 interface UrgentViewModel {
-    val reportsReady: LiveData<Boolean>
+    val state: LiveData<UiState>
     var reports: List<ReportModel>
-    val workingUsersReady: LiveData<Boolean>
     var workingUsers: List<UserModel>
 
     fun load()

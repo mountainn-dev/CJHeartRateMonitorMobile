@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentUrgentBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
+import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.viewmodel.UrgentViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.UrgentViewModelFactory
@@ -44,68 +45,75 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
     }
 
     private fun initObserver(activity: Activity) {
-        viewModel.reportsReady.observe(
+        viewModel.state.observe(
             activity as LifecycleOwner,
-            reportsReadyObserver(activity)
-        )
-        viewModel.workingUsersReady.observe(
-            activity as LifecycleOwner,
-            workingUsersReadyObserver(activity)
+            stateObserver(activity)
         )
     }
 
-    private fun reportsReadyObserver(
+    private fun stateObserver(
         activity: Activity
-    ) = Observer<Boolean> {
-        if (it) {
-            whenReportsReady(activity)
-        } else {
-            whenReportNotReady()
+    ) = Observer<UiState> {
+        when (it) {
+            UiState.Success -> {
+                loadReports(activity)
+                loadWorkingUsers(activity)
+                toggleView(binding.llUrgent)
+            }
+            UiState.Loading -> {
+                toggleView(binding.pgbSearchRoute)
+            }
+            UiState.Timeout -> {
+                toggleView(binding.llTimeout)
+            }
+            UiState.ServiceError -> {
+                toggleView(binding.llServiceError)
+            }
         }
     }
 
-    private fun whenReportsReady(activity: Activity) {
+    private fun loadReports(activity: Activity) {
         binding.rvReport.adapter = ReportAdapter(viewModel.reports)
         binding.rvReport.layoutManager = LinearLayoutManager(activity)
-        binding.rvReport.visibility = View.VISIBLE
         binding.txtReportCount.text = String.format(REPORT_COUNT_MESSAGE, viewModel.reports.size)
     }
 
-    private fun whenReportNotReady() {
-        binding.rvReport.visibility = View.GONE
-        binding.txtReportCount.text = String.format(REPORT_COUNT_MESSAGE, Const.ZERO)
-    }
-
-    private fun workingUsersReadyObserver(
-        activity: Activity
-    ) = Observer<Boolean> {
-        if (it) {
-            whenWorkingUsersReady(activity)
-        } else {
-            whenWorkingUsersNotReady()
-        }
-    }
-
-    private fun whenWorkingUsersReady(activity: Activity) {
+    private fun loadWorkingUsers(activity: Activity) {
         binding.rvWorking.adapter = UserAdapter(viewModel.workingUsers, activity)
         binding.rvWorking.layoutManager = LinearLayoutManager(activity)
-        binding.rvWorking.visibility = View.VISIBLE
         binding.txtWorkingCount.text = viewModel.workingUsers.size.toString()
     }
 
-    private fun whenWorkingUsersNotReady() {
-        binding.rvWorking.visibility = View.GONE
-        binding.txtWorkingCount.text = Const.ZERO.toString()
-    }
-    
     private fun initListener() {
         setBtnRefreshListener()
+        setBtnRequestListener()
     }
 
     private fun setBtnRefreshListener() {
         binding.btnRefresh.setOnClickListener {
             viewModel.load()
         }
+    }
+
+    private fun setBtnRequestListener() {
+        binding.btnTimeoutRequest.setOnClickListener {
+            viewModel.load()
+        }
+        binding.btnServiceErrorRequest.setOnClickListener {
+            viewModel.load()
+        }
+    }
+
+    private fun toggleView(view: View) {
+        binding.llUrgent.visibility = if (view == binding.llUrgent) View.VISIBLE else View.GONE
+        binding.pgbSearchRoute.visibility = if (view == binding.pgbSearchRoute) View.VISIBLE else View.GONE
+        binding.llTimeout.visibility = if (view == binding.llTimeout) View.VISIBLE else View.GONE
+        binding.llServiceError.visibility = if (view == binding.llServiceError) View.VISIBLE else View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.load()
     }
 
     companion object {
