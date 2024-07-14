@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.screen
+package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
 import android.os.Bundle
@@ -14,8 +14,8 @@ import com.san.heartratemonitormobile.domain.enums.Gender
 import com.san.heartratemonitormobile.domain.viewmodel.SignUpViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.SignUpViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.SignUpViewModelImpl
-import com.san.heartratemonitormobile.listener.EditTextChangedListener
-import com.san.heartratemonitormobile.listener.TextChangedListener
+import com.san.heartratemonitormobile.view.listener.EditTextChangedListener
+import com.san.heartratemonitormobile.view.listener.TextChangedListener
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding

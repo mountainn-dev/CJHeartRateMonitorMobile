@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@color/white"
-    tools:context=".screen.LoginActivity">
+    tools:context=".view.screen.LoginActivity">
 
     <EditText
         android:id="@+id/edtId"

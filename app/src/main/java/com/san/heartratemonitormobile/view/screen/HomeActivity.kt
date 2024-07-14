@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.screen
+package com.san.heartratemonitormobile.view.screen
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

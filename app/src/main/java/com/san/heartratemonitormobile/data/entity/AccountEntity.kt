@@ -13,8 +13,13 @@ data class AccountEntity(
     )
 
     private fun admin(isAdmin: Int) = when (isAdmin) {
-        0 -> false
-        1 -> true
+        WORKER -> false
+        ADMIN -> true
         else -> throw NoSuchElementException(ExceptionMessage.WRONG_ADMIN_VALUE_EXCEPTION)
+    }
+
+    companion object {
+        private const val WORKER = 0
+        private const val ADMIN = 1
     }
 }

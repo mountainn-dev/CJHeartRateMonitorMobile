@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.listener
+package com.san.heartratemonitormobile.view.listener
 
 import android.text.Editable
 import android.text.TextWatcher
