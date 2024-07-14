@@ -32,4 +32,8 @@
     <string name="tab_name_working">현재</string>
     <string name="tab_name_record">신고 이력</string>
     <string name="tab_name_user">전체 회원</string>
+
+    <!-- Working -->
+    <string name="urgent">신고</string>
+    <string name="working">근무중</string>
 </resources>

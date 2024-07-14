@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.san.heartratemonitormobile.databinding.FragmentRecordBinding
 
-class RecordFragment : Fragment() {
+class ReportFragment : Fragment() {
     private lateinit var binding: FragmentRecordBinding
 
     override fun onCreateView(
