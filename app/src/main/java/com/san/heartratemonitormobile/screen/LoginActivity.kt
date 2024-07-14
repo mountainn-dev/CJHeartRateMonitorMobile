@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.san.heartratemonitormobile.data.repositoryimpl.LoginRepositoryImpl
 import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityLoginBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
@@ -24,8 +25,9 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repo = ServiceRepositoryImpl()
+        val repo = LoginRepositoryImpl()
         viewModel = ViewModelProvider(this, LoginViewModelFactory(repo)).get(LoginViewModelImpl::class.java)
+
         initObserver(this)
         initListener(this)
     }

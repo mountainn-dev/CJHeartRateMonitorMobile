@@ -22,7 +22,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun initBottomNav(account: AccountModel) {
         if (account.admin) {
-            add(WorkingFragment())
+            add(WorkingFragment(account))
             binding.btmNav.inflateMenu(R.menu.menu_admin_bottom_navigation)
         } else {
             add(RecordFragment())
@@ -31,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.btmNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.navWorking -> replaceTo(WorkingFragment())
+                R.id.navWorking -> replaceTo(WorkingFragment(account))
                 R.id.navRecord -> replaceTo(RecordFragment())
                 R.id.navUser -> replaceTo(UserFragment())
             }

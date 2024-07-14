@@ -2,14 +2,15 @@ package com.san.heartratemonitormobile.domain.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.san.heartratemonitormobile.data.repository.LoginRepository
+import com.san.heartratemonitormobile.data.repository.ServiceRepository
 import com.san.heartratemonitormobile.domain.viewmodelimpl.SignUpViewModelImpl
+import com.san.heartratemonitormobile.domain.viewmodelimpl.WorkingViewModelImpl
 
-class SignUpViewModelFactory(private val repository: LoginRepository) : ViewModelProvider.Factory {
+class WorkingViewModelFactory(private val repository: ServiceRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SignUpViewModelImpl::class.java)) {
+        if (modelClass.isAssignableFrom(WorkingViewModelImpl::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SignUpViewModelImpl(repository) as T
+            return WorkingViewModelImpl(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.repository.LoginRepository
 import com.san.heartratemonitormobile.data.repository.ServiceRepository
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.viewmodel.LoginViewModel
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginViewModelImpl(
-    private val repository: ServiceRepository
+    private val repository: LoginRepository
 ) : LoginViewModel, ViewModel() {
 
     override val account: LiveData<AccountModel>
