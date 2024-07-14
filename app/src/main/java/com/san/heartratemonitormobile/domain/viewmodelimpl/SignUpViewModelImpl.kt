@@ -1,15 +1,24 @@
 package com.san.heartratemonitormobile.domain.viewmodelimpl
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.vo.Birth
+import com.san.heartratemonitormobile.data.vo.Height
+import com.san.heartratemonitormobile.data.vo.Id
+import com.san.heartratemonitormobile.data.vo.Name
+import com.san.heartratemonitormobile.data.vo.PassWord
+import com.san.heartratemonitormobile.data.vo.PhoneNumber
 import com.san.heartratemonitormobile.data.vo.Weight
 import com.san.heartratemonitormobile.domain.enums.Gender
 import com.san.heartratemonitormobile.domain.utils.InputValidator
 import com.san.heartratemonitormobile.domain.utils.Invalid
 import com.san.heartratemonitormobile.domain.utils.Valid
 import com.san.heartratemonitormobile.domain.viewmodel.SignUpViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
     override val idMessage: LiveData<String>
@@ -37,15 +46,16 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         get() = heightValidationMessage
     private val heightValidationMessage = MutableLiveData<String>()
 
-    private var id = BLANK
-    private var pw = BLANK
-    private var checkPw = BLANK
-    private var name = BLANK
-    private var phoneNumber = BLANK
+    private var id: Id? = null
+    private var pw: PassWord? = null
+    private var userPW = BLANK
+    private var checkPW: String? = null
+    private var name: Name? = null
+    private var phoneNumber: PhoneNumber? = null
     private var gender = Gender.MALE
-    private var birth = BLANK
-    private var height = BLANK
-    private var weight = BLANK
+    private var birth: Birth? = null
+    private var height: Height? = null
+    private var weight: Weight? = null
     private var serviceTerm = false
     private var privacyTerm = false
 
@@ -53,34 +63,32 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkId(id)
 
         if (result is Valid) {
-            this.id = id
+            this.id = result.data
             idValidationMessage.postValue(BLANK)
         } else {
-            this.id = BLANK
             idValidationMessage.postValue((result as Invalid).message())
         }
     }
 
     override fun setPassWord(pw: String) {
+        userPW = pw
         val result = InputValidator.checkPassWord(pw)
 
         if (result is Valid) {
-            this.pw = pw
+            this.pw = result.data
             pwValidationMessage.postValue(BLANK)
         } else {
-            this.pw = BLANK
             pwValidationMessage.postValue((result as Invalid).message())
         }
     }
 
     override fun checkPassWord(pw: String) {
-        val result = InputValidator.doubleCheckPassWord(this.pw, pw)
+        val result = InputValidator.doubleCheckPassWord(userPW, pw)
 
         if (result is Valid) {
-            this.checkPw = pw
+            this.checkPW = result.data
             checkPwValidationMessage.postValue(BLANK)
         } else {
-            this.checkPw = BLANK
             checkPwValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -89,10 +97,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkName(name)
 
         if (result is Valid) {
-            this.name = name
+            this.name = result.data
             nameValidationMessage.postValue(BLANK)
         } else {
-            this.name = BLANK
             nameValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -101,10 +108,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkPhoneNumber(phoneNumber)
 
         if (result is Valid) {
-            this.phoneNumber = phoneNumber
+            this.phoneNumber = result.data
             phoneNumberValidationMessage.postValue(BLANK)
         } else {
-            this.phoneNumber = BLANK
             phoneNumberValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -117,10 +123,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkBirth(birth)
 
         if (result is Valid) {
-            this.birth = birth
+            this.birth = result.data
             birthValidationMessage.postValue(BLANK)
         } else {
-            this.birth = BLANK
             birthValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -129,10 +134,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkHeight(height)
 
         if (result is Valid) {
-            this.height = height
+            this.height = result.data
             heightValidationMessage.postValue(BLANK)
         } else {
-            this.height = BLANK
             heightValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -141,10 +145,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkWeight(weight)
 
         if (result is Valid) {
-            this.weight = weight
+            this.weight = result.data
             weightValidationMessage.postValue(BLANK)
         } else {
-            this.weight = BLANK
             weightValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -158,14 +161,23 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
     }
 
     override fun signUp() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                userSignUp()
+            }
+        }
+    }
+
+    suspend fun userSignUp() {
         if (signUpCondition()) {
-            // TODO: SignUp
+            // TODO: SignUpModel
+            // TODO: signUpSuccess 라이브 데이터를 만들어서 성공한 경우에만 signup activity finish() 하도록 설정 필요
         }
     }
 
     private fun signUpCondition() =
-        // TODO: 아이디 중복 검사 조건 추가
-        id != BLANK && pw != BLANK && name != BLANK && phoneNumber != BLANK && birth != BLANK && height != BLANK && weight != BLANK && serviceTerm
+        id != null && pw != null && checkPW != null && name != null && phoneNumber != null
+                && birth != null && height != null && weight != null && serviceTerm
 
     companion object {
         private const val BLANK = ""
