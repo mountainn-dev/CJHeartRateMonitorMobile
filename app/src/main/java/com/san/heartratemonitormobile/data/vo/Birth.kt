@@ -16,7 +16,7 @@ data class Birth(
     private fun isNotEmpty() = value.isNotEmpty()
 
     private fun isDateFormat(): Boolean {
-        val pattern = Regex("^\\d{6}$")
+        val pattern = Regex("^\\d{4}-\\d{2}-\\d{2}\$")
 
         return pattern.matches(value)
     }

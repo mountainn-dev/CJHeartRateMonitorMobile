@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.screen
+package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
 import android.os.Bundle
@@ -8,13 +8,14 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.san.heartratemonitormobile.data.repositoryimpl.LoginRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivitySignUpBinding
 import com.san.heartratemonitormobile.domain.enums.Gender
 import com.san.heartratemonitormobile.domain.viewmodel.SignUpViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.SignUpViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.SignUpViewModelImpl
-import com.san.heartratemonitormobile.listener.EditTextChangedListener
-import com.san.heartratemonitormobile.listener.TextChangedListener
+import com.san.heartratemonitormobile.view.listener.EditTextChangedListener
+import com.san.heartratemonitormobile.view.listener.TextChangedListener
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -25,9 +26,8 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(
-            this, SignUpViewModelFactory()
-        ).get(SignUpViewModelImpl::class.java)
+        val repo = LoginRepositoryImpl()
+        viewModel = ViewModelProvider(this, SignUpViewModelFactory(repo)).get(SignUpViewModelImpl::class.java)
 
         initObserver(this)
         initListener()

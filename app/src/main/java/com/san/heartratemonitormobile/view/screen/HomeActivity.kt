@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.screen
+package com.san.heartratemonitormobile.view.screen
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -22,17 +22,17 @@ class HomeActivity : AppCompatActivity() {
 
     private fun initBottomNav(account: AccountModel) {
         if (account.admin) {
-            add(WorkingFragment())
+            add(UrgentFragment(account))
             binding.btmNav.inflateMenu(R.menu.menu_admin_bottom_navigation)
         } else {
-            add(RecordFragment())
+            add(ReportFragment())
             binding.btmNav.inflateMenu(R.menu.menu_worker_bottom_navigation)
         }
 
         binding.btmNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.navWorking -> replaceTo(WorkingFragment())
-                R.id.navRecord -> replaceTo(RecordFragment())
+                R.id.navWorking -> replaceTo(UrgentFragment(account))
+                R.id.navRecord -> replaceTo(ReportFragment())
                 R.id.navUser -> replaceTo(UserFragment())
             }
 

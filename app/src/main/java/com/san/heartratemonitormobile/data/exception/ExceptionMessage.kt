@@ -13,5 +13,8 @@ object ExceptionMessage {
     const val WRONG_PHONE_NUMBER_FORMAT_EXCEPTION = "전화번호 형식이 올바르지 않습니다."
 
     // API Parse
-    const val WRONG_ADMIN_VALUE_EXCEPTION = "관리자 여부 데이터가 올바르지 않습니다."
+    const val WRONG_ADMIN_VALUE_EXCEPTION = "관리자 여부 값이 올바르지 않습니다."
+    const val WRONG_GENDER_VALUE_EXCEPTION = "성별 값이 올바르지 않습니다."
+    const val WRONG_REPORT_DATE_TIME_FORAMT_EXCEPTION = "신고 시간 형식이 올바르지 않습니다."
+    const val WRONG_ACTION_VALUE_EXCEPTION = "관리자 조치 값이 올바르지 않습니다."
 }

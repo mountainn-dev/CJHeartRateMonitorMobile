@@ -1,8 +1,10 @@
 package com.san.heartratemonitormobile.data.repository
 
-import com.san.heartratemonitormobile.domain.model.AccountModel
+import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.domain.model.UserModel
 
 interface ServiceRepository {
-    suspend fun loginForWorker(): AccountModel   // TODO: 로그인 api 개발 이후 login() 으로 통일 및 id, pw param 추가 필요
-    suspend fun loginForAdmin(): AccountModel
+    // TODO: API 연동 시 Response 적용 및 api param, header 관련 설정 필요
+    suspend fun getReports(): List<ReportModel>
+    suspend fun getUsers(): List<UserModel>
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.repository.LoginRepository
 import com.san.heartratemonitormobile.data.vo.Birth
 import com.san.heartratemonitormobile.data.vo.Height
 import com.san.heartratemonitormobile.data.vo.Id
@@ -20,7 +21,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
+class SignUpViewModelImpl(
+    private val repository: LoginRepository
+) : SignUpViewModel, ViewModel() {
     override val idMessage: LiveData<String>
         get() = idValidationMessage
     private val idValidationMessage = MutableLiveData<String>()
