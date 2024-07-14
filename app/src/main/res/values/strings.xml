@@ -8,7 +8,7 @@
     <string name="biometric_login">생체 로그인</string>
     <string name="sign_up">회원가입</string>
     <string name="divider_login_sign_up">또는</string>
-    
+
     <!-- Sign Up -->
     <string name="id_hint">아이디( 4~12 글자의 영문, 숫자 조합 )</string>
     <string name="pass_word_hint">비밀번호( 최소 8글자 이상의 영문, 숫자, 특수문자 조합 )</string>
@@ -25,4 +25,11 @@
     <string name="service_term">(필수) Heart Rate Monitor 서비스 이용 약관 동의</string>
     <string name="privacy_term">(선택) 개인정보 수집 동의</string>
     <string name="show_term_detail">[보기]</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Home -->
+    <string name="tab_name_working">현재</string>
+    <string name="tab_name_record">신고 이력</string>
+    <string name="tab_name_user">전체 회원</string>
 </resources>

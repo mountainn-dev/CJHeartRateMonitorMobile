@@ -1,6 +1,8 @@
 package com.san.heartratemonitormobile.domain.model
 
-data class LoginResultModel(
+import java.io.Serializable
+
+data class AccountModel(
     val idToken: String,
     val admin: Boolean
-)
+) : Serializable

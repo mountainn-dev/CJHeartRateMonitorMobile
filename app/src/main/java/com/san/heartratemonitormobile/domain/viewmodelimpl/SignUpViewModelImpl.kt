@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.domain.viewmodelimpl
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.vo.Birth
 import com.san.heartratemonitormobile.data.vo.Height
 import com.san.heartratemonitormobile.data.vo.Id
@@ -15,6 +16,9 @@ import com.san.heartratemonitormobile.domain.utils.InputValidator
 import com.san.heartratemonitormobile.domain.utils.Invalid
 import com.san.heartratemonitormobile.domain.utils.Valid
 import com.san.heartratemonitormobile.domain.viewmodel.SignUpViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
     override val idMessage: LiveData<String>
@@ -42,16 +46,16 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         get() = heightValidationMessage
     private val heightValidationMessage = MutableLiveData<String>()
 
-    private var userId: Id? = null
-    private var userPW: PassWord? = null
-    private var pw = BLANK
-    private var userCheckPW: String? = null
-    private var userName: Name? = null
-    private var userPhoneNumber: PhoneNumber? = null
-    private var userGender = Gender.MALE
-    private var userBirth: Birth? = null
-    private var userHeight: Height? = null
-    private var userWeight: Weight? = null
+    private var id: Id? = null
+    private var pw: PassWord? = null
+    private var userPW = BLANK
+    private var checkPW: String? = null
+    private var name: Name? = null
+    private var phoneNumber: PhoneNumber? = null
+    private var gender = Gender.MALE
+    private var birth: Birth? = null
+    private var height: Height? = null
+    private var weight: Weight? = null
     private var serviceTerm = false
     private var privacyTerm = false
 
@@ -59,7 +63,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkId(id)
 
         if (result is Valid) {
-            this.userId = result.data
+            this.id = result.data
             idValidationMessage.postValue(BLANK)
         } else {
             idValidationMessage.postValue((result as Invalid).message())
@@ -67,11 +71,11 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
     }
 
     override fun setPassWord(pw: String) {
-        this.pw = pw
+        userPW = pw
         val result = InputValidator.checkPassWord(pw)
 
         if (result is Valid) {
-            this.userPW = result.data
+            this.pw = result.data
             pwValidationMessage.postValue(BLANK)
         } else {
             pwValidationMessage.postValue((result as Invalid).message())
@@ -79,10 +83,10 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
     }
 
     override fun checkPassWord(pw: String) {
-        val result = InputValidator.doubleCheckPassWord(this.pw, pw)
+        val result = InputValidator.doubleCheckPassWord(userPW, pw)
 
         if (result is Valid) {
-            this.userCheckPW = result.data
+            this.checkPW = result.data
             checkPwValidationMessage.postValue(BLANK)
         } else {
             checkPwValidationMessage.postValue((result as Invalid).message())
@@ -93,7 +97,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkName(name)
 
         if (result is Valid) {
-            this.userName = result.data
+            this.name = result.data
             nameValidationMessage.postValue(BLANK)
         } else {
             nameValidationMessage.postValue((result as Invalid).message())
@@ -104,7 +108,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkPhoneNumber(phoneNumber)
 
         if (result is Valid) {
-            this.userPhoneNumber = result.data
+            this.phoneNumber = result.data
             phoneNumberValidationMessage.postValue(BLANK)
         } else {
             phoneNumberValidationMessage.postValue((result as Invalid).message())
@@ -112,14 +116,14 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
     }
 
     override fun setGender(gender: Gender) {
-        this.userGender = gender
+        this.gender = gender
     }
 
     override fun setBirth(birth: String) {
         val result = InputValidator.checkBirth(birth)
 
         if (result is Valid) {
-            this.userBirth = result.data
+            this.birth = result.data
             birthValidationMessage.postValue(BLANK)
         } else {
             birthValidationMessage.postValue((result as Invalid).message())
@@ -130,7 +134,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkHeight(height)
 
         if (result is Valid) {
-            this.userHeight = result.data
+            this.height = result.data
             heightValidationMessage.postValue(BLANK)
         } else {
             heightValidationMessage.postValue((result as Invalid).message())
@@ -141,7 +145,7 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkWeight(weight)
 
         if (result is Valid) {
-            this.userWeight = result.data
+            this.weight = result.data
             weightValidationMessage.postValue(BLANK)
         } else {
             weightValidationMessage.postValue((result as Invalid).message())
@@ -156,15 +160,24 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         this.privacyTerm = !this.privacyTerm
     }
 
-    override suspend fun signUp() {
+    override fun signUp() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                userSignUp()
+            }
+        }
+    }
+
+    suspend fun userSignUp() {
         if (signUpCondition()) {
             // TODO: SignUpModel
+            // TODO: signUpSuccess 라이브 데이터를 만들어서 성공한 경우에만 signup activity finish() 하도록 설정 필요
         }
     }
 
     private fun signUpCondition() =
-        userId != null && userPW != null && userCheckPW != null && userName != null && userPhoneNumber != null
-                && userBirth != null && userHeight != null && userWeight != null && serviceTerm
+        id != null && pw != null && checkPW != null && name != null && phoneNumber != null
+                && birth != null && height != null && weight != null && serviceTerm
 
     companion object {
         private const val BLANK = ""

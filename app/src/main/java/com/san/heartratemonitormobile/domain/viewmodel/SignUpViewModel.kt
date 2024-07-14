@@ -24,5 +24,5 @@ interface SignUpViewModel {
     fun setWeight(weight: String)
     fun toggleServiceTerm()
     fun togglePrivacyTerm()
-    suspend fun signUp()
+    fun signUp()
 }
