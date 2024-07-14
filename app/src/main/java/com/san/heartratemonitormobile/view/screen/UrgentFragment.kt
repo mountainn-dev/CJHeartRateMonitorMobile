@@ -38,6 +38,7 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
         binding = FragmentUrgentBinding.inflate(layoutInflater)
 
         initObserver(requireActivity())
+        initListener()
 
         return binding.root
     }
@@ -95,6 +96,16 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
     private fun whenWorkingUsersNotReady() {
         binding.rvWorking.visibility = View.GONE
         binding.txtWorkingCount.text = Const.ZERO.toString()
+    }
+    
+    private fun initListener() {
+        setBtnRefreshListener()
+    }
+
+    private fun setBtnRefreshListener() {
+        binding.btnRefresh.setOnClickListener {
+            viewModel.load()
+        }
     }
 
     companion object {

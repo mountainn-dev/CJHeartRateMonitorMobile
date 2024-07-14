@@ -26,7 +26,9 @@ class UserAdapter(
         private fun loadContent(position: Int) {
             binding.txtName.text = items[position].name.get()
             binding.txtGender.text = items[position].gender.genderName
-            binding.txtAge.text = (LocalDate.now().year - items[position].birth.get().year + 1).toString()
+            binding.txtAge.text = String.format(
+                Companion.AGE_MESSAGE,
+                (LocalDate.now().year - items[position].birth.get().year + 1))
             binding.txtLastHeartRate.text = items[position].lastHeartRate.toString()
             binding.txtTodayReportCount.text =
                 String.format(TODAY_REPORT_COUNT_MESSAGE, items[position].reportCountToday)
@@ -63,5 +65,6 @@ class UserAdapter(
 
     companion object {
         private const val TODAY_REPORT_COUNT_MESSAGE = "오늘 신고 %d건"
+        private const val AGE_MESSAGE = "%d세"
     }
 }
