@@ -1,14 +1,14 @@
 package com.san.heartratemonitormobile.domain.utils
 
-abstract class InputValidationResult {
+abstract class InputValidationResult<T> {
     companion object {
-        fun valid(data: String): InputValidationResult = Valid(data)
-        fun invalid(error: Exception): InputValidationResult = Invalid(error)
+        fun <T> valid(data: T): InputValidationResult<T> = Valid(data)
+        fun <T> invalid(error: Exception): InputValidationResult<T> = Invalid(error)
     }
 }
 
-class Valid(val data: String) : InputValidationResult()
+class Valid <T> (val data: T) : InputValidationResult<T>()
 
-class Invalid(private val error: Exception) : InputValidationResult() {
+class Invalid <T> (private val error: Exception) : InputValidationResult<T>() {
     fun message() = error.message
 }

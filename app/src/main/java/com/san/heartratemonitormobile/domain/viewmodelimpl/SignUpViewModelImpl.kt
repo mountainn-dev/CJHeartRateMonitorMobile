@@ -1,9 +1,14 @@
 package com.san.heartratemonitormobile.domain.viewmodelimpl
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.san.heartratemonitormobile.data.vo.Birth
+import com.san.heartratemonitormobile.data.vo.Height
+import com.san.heartratemonitormobile.data.vo.Id
+import com.san.heartratemonitormobile.data.vo.Name
+import com.san.heartratemonitormobile.data.vo.PassWord
+import com.san.heartratemonitormobile.data.vo.PhoneNumber
 import com.san.heartratemonitormobile.data.vo.Weight
 import com.san.heartratemonitormobile.domain.enums.Gender
 import com.san.heartratemonitormobile.domain.utils.InputValidator
@@ -37,15 +42,16 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         get() = heightValidationMessage
     private val heightValidationMessage = MutableLiveData<String>()
 
-    private var id = BLANK
+    private var userId: Id? = null
+    private var userPW: PassWord? = null
     private var pw = BLANK
-    private var checkPw = BLANK
-    private var name = BLANK
-    private var phoneNumber = BLANK
-    private var gender = Gender.MALE
-    private var birth = BLANK
-    private var height = BLANK
-    private var weight = BLANK
+    private var userCheckPW: String? = null
+    private var userName: Name? = null
+    private var userPhoneNumber: PhoneNumber? = null
+    private var userGender = Gender.MALE
+    private var userBirth: Birth? = null
+    private var userHeight: Height? = null
+    private var userWeight: Weight? = null
     private var serviceTerm = false
     private var privacyTerm = false
 
@@ -53,22 +59,21 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkId(id)
 
         if (result is Valid) {
-            this.id = id
+            this.userId = result.data
             idValidationMessage.postValue(BLANK)
         } else {
-            this.id = BLANK
             idValidationMessage.postValue((result as Invalid).message())
         }
     }
 
     override fun setPassWord(pw: String) {
+        this.pw = pw
         val result = InputValidator.checkPassWord(pw)
 
         if (result is Valid) {
-            this.pw = pw
+            this.userPW = result.data
             pwValidationMessage.postValue(BLANK)
         } else {
-            this.pw = BLANK
             pwValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -77,10 +82,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.doubleCheckPassWord(this.pw, pw)
 
         if (result is Valid) {
-            this.checkPw = pw
+            this.userCheckPW = result.data
             checkPwValidationMessage.postValue(BLANK)
         } else {
-            this.checkPw = BLANK
             checkPwValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -89,10 +93,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkName(name)
 
         if (result is Valid) {
-            this.name = name
+            this.userName = result.data
             nameValidationMessage.postValue(BLANK)
         } else {
-            this.name = BLANK
             nameValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -101,26 +104,24 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkPhoneNumber(phoneNumber)
 
         if (result is Valid) {
-            this.phoneNumber = phoneNumber
+            this.userPhoneNumber = result.data
             phoneNumberValidationMessage.postValue(BLANK)
         } else {
-            this.phoneNumber = BLANK
             phoneNumberValidationMessage.postValue((result as Invalid).message())
         }
     }
 
     override fun setGender(gender: Gender) {
-        this.gender = gender
+        this.userGender = gender
     }
 
     override fun setBirth(birth: String) {
         val result = InputValidator.checkBirth(birth)
 
         if (result is Valid) {
-            this.birth = birth
+            this.userBirth = result.data
             birthValidationMessage.postValue(BLANK)
         } else {
-            this.birth = BLANK
             birthValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -129,10 +130,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkHeight(height)
 
         if (result is Valid) {
-            this.height = height
+            this.userHeight = result.data
             heightValidationMessage.postValue(BLANK)
         } else {
-            this.height = BLANK
             heightValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -141,10 +141,9 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         val result = InputValidator.checkWeight(weight)
 
         if (result is Valid) {
-            this.weight = weight
+            this.userWeight = result.data
             weightValidationMessage.postValue(BLANK)
         } else {
-            this.weight = BLANK
             weightValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -157,15 +156,15 @@ class SignUpViewModelImpl : SignUpViewModel, ViewModel() {
         this.privacyTerm = !this.privacyTerm
     }
 
-    override fun signUp() {
+    override suspend fun signUp() {
         if (signUpCondition()) {
-            // TODO: SignUp
+            // TODO: SignUpModel
         }
     }
 
     private fun signUpCondition() =
-        // TODO: 아이디 중복 검사 조건 추가
-        id != BLANK && pw != BLANK && name != BLANK && phoneNumber != BLANK && birth != BLANK && height != BLANK && weight != BLANK && serviceTerm
+        userId != null && userPW != null && userCheckPW != null && userName != null && userPhoneNumber != null
+                && userBirth != null && userHeight != null && userWeight != null && serviceTerm
 
     companion object {
         private const val BLANK = ""

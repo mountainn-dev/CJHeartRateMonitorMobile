@@ -10,71 +10,64 @@ import com.san.heartratemonitormobile.data.vo.PhoneNumber
 import com.san.heartratemonitormobile.data.vo.Weight
 
 object InputValidator {
-    fun checkId(data: String): InputValidationResult {
-        try {
-            Id(data)
-            return InputValidationResult.valid(data)
+    fun checkId(data: String): InputValidationResult<Id> {
+        return try {
+            InputValidationResult.valid(Id(data))
         } catch (e: IllegalArgumentException) {
-            return InputValidationResult.invalid(e)
+            InputValidationResult.invalid(e)
         }
     }
 
-    fun checkPassWord(data: String): InputValidationResult {
-        try {
-            PassWord(data)
-            return InputValidationResult.valid(data)
+    fun checkPassWord(data: String): InputValidationResult<PassWord> {
+        return try {
+            InputValidationResult.valid(PassWord(data))
         } catch (e: IllegalArgumentException) {
-            return InputValidationResult.invalid(e)
+            InputValidationResult.invalid(e)
         }
     }
 
-    fun doubleCheckPassWord(data1: String, data2: String): InputValidationResult {
+    fun doubleCheckPassWord(data1: String, data2: String): InputValidationResult<String> {
         return if (data1 == data2) InputValidationResult.valid(data1)
         else return InputValidationResult.invalid(IllegalArgumentException(ExceptionMessage.WRONG_CHECK_PASS_WORD_EXCEPTION))
     }
 
-    fun checkName(data: String): InputValidationResult {
-        try {
-            Name(data)
-            return InputValidationResult.valid(data)
+    fun checkName(data: String): InputValidationResult<Name> {
+        return try {
+            InputValidationResult.valid(Name(data))
         } catch (e: IllegalArgumentException) {
-            return InputValidationResult.invalid(e)
+            InputValidationResult.invalid(e)
         }
     }
 
-    fun checkPhoneNumber(data: String): InputValidationResult {
-        try {
-            PhoneNumber(data)
-            return InputValidationResult.valid(data)
+    fun checkPhoneNumber(data: String): InputValidationResult<PhoneNumber> {
+        return try {
+            InputValidationResult.valid(PhoneNumber(data))
         } catch (e: IllegalArgumentException) {
-            return InputValidationResult.invalid(e)
+            InputValidationResult.invalid(e)
         }
     }
 
-    fun checkBirth(data: String): InputValidationResult {
-        try {
-            Birth(data)
-            return InputValidationResult.valid(data)
+    fun checkBirth(data: String): InputValidationResult<Birth> {
+        return try {
+            InputValidationResult.valid(Birth(data))
         } catch (e: IllegalArgumentException) {
-            return InputValidationResult.invalid(e)
+            InputValidationResult.invalid(e)
         }
     }
 
-    fun checkHeight(data: String): InputValidationResult {
-        try {
-            Height(data)
-            return InputValidationResult.valid(data)
+    fun checkHeight(data: String): InputValidationResult<Height> {
+        return try {
+            InputValidationResult.valid(Height(data))
         } catch (e: IllegalArgumentException) {
-            return InputValidationResult.invalid(e)
+            InputValidationResult.invalid(e)
         }
     }
 
-    fun checkWeight(data: String): InputValidationResult {
-        try {
-            Weight(data)
-            return InputValidationResult.valid(data)
+    fun checkWeight(data: String): InputValidationResult<Weight> {
+        return try {
+            InputValidationResult.valid(Weight(data))
         } catch (e: IllegalArgumentException) {
-            return InputValidationResult.invalid(e)
+            InputValidationResult.invalid(e)
         }
     }
 }
