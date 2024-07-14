@@ -18,6 +18,7 @@ import com.san.heartratemonitormobile.domain.viewmodel.UrgentViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.UrgentViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.UrgentViewModelImpl
 import com.san.heartratemonitormobile.view.adapter.ReportAdapter
+import com.san.heartratemonitormobile.view.adapter.UserAdapter
 
 class UrgentFragment(private val account: AccountModel) : Fragment() {
     private lateinit var binding: FragmentUrgentBinding
@@ -44,19 +45,25 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
     private fun initObserver(activity: Activity) {
         viewModel.reportsReady.observe(
             activity as LifecycleOwner,
-            reportsReadyObserver()
+            reportsReadyObserver(activity)
+        )
+        viewModel.workingUsersReady.observe(
+            activity as LifecycleOwner,
+            workingUsersReadyObserver(activity)
         )
     }
 
-    private fun reportsReadyObserver() = Observer<Boolean> {
+    private fun reportsReadyObserver(
+        activity: Activity
+    ) = Observer<Boolean> {
         if (it) {
-            whenReportsReady()
+            whenReportsReady(activity)
         } else {
             whenReportNotReady()
         }
     }
 
-    private fun whenReportsReady() {
+    private fun whenReportsReady(activity: Activity) {
         binding.rvReport.adapter = ReportAdapter(viewModel.reports)
         binding.rvReport.layoutManager = LinearLayoutManager(activity)
         binding.rvReport.visibility = View.VISIBLE
@@ -66,6 +73,28 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
     private fun whenReportNotReady() {
         binding.rvReport.visibility = View.GONE
         binding.txtReportCount.text = String.format(REPORT_COUNT_MESSAGE, Const.ZERO)
+    }
+
+    private fun workingUsersReadyObserver(
+        activity: Activity
+    ) = Observer<Boolean> {
+        if (it) {
+            whenWorkingUsersReady(activity)
+        } else {
+            whenWorkingUsersNotReady()
+        }
+    }
+
+    private fun whenWorkingUsersReady(activity: Activity) {
+        binding.rvWorking.adapter = UserAdapter(viewModel.workingUsers, activity)
+        binding.rvWorking.layoutManager = LinearLayoutManager(activity)
+        binding.rvWorking.visibility = View.VISIBLE
+        binding.txtWorkingCount.text = viewModel.workingUsers.size.toString()
+    }
+
+    private fun whenWorkingUsersNotReady() {
+        binding.rvWorking.visibility = View.GONE
+        binding.txtWorkingCount.text = Const.ZERO.toString()
     }
 
     companion object {

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.repository.ServiceRepository
 import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.viewmodel.UrgentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +20,11 @@ class UrgentViewModelImpl(
     private val reportContentReady = MutableLiveData<Boolean>()
     override lateinit var reports: List<ReportModel>
 
+    override val workingUsersReady: LiveData<Boolean>
+        get() = workingUserContentReady
+    private val workingUserContentReady = MutableLiveData<Boolean>()
+    override lateinit var workingUsers: List<UserModel>
+
     init {
         load()
     }
@@ -27,6 +33,7 @@ class UrgentViewModelImpl(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 loadReportContent()
+                loadWorkingUserContent()
             }
         }
     }
@@ -36,5 +43,12 @@ class UrgentViewModelImpl(
 
         this.reports = result
         reportContentReady.postValue(true)
+    }
+
+    private suspend fun loadWorkingUserContent() {
+        val result = repository.getUsers()
+
+        this.workingUsers = result
+        workingUserContentReady.postValue(true)
     }
 }
