@@ -3,7 +3,6 @@ package com.san.heartratemonitormobile.view.screen
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,6 +108,12 @@ class ReportFragment(private val account: AccountModel) : Fragment() {
         binding.btnRefresh.setOnClickListener {
             viewModel.load()
         }
+        binding.btnTimeoutRequest.setOnClickListener {
+            viewModel.load()
+        }
+        binding.btnServiceErrorRequest.setOnClickListener {
+            viewModel.load()
+        }
     }
 
     private fun setBtnFilterDateListener() {
@@ -126,12 +131,12 @@ class ReportFragment(private val account: AccountModel) : Fragment() {
 
     private fun startDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setStartDate(LocalDate.of(year, month+1, day))
+            viewModel.setStartDateAndLoad(LocalDate.of(year, month+1, day))
         }
 
     private fun endDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setEndDate(LocalDate.of(year, month+1, day))
+            viewModel.setEndDateAndLoad(LocalDate.of(year, month+1, day))
         }
 
     private fun setBtnFilterIdListener() {

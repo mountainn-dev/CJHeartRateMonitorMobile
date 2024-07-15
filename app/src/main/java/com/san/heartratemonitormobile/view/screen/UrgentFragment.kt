@@ -86,16 +86,12 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
 
     private fun initListener() {
         setBtnRefreshListener()
-        setBtnRequestListener()
     }
 
     private fun setBtnRefreshListener() {
         binding.btnRefresh.setOnClickListener {
             viewModel.load()
         }
-    }
-
-    private fun setBtnRequestListener() {
         binding.btnTimeoutRequest.setOnClickListener {
             viewModel.load()
         }
