@@ -42,5 +42,8 @@
 
     <!-- Report -->
     <string name="search">검색</string>
-    <string name="filter_date">조회 기간</string>
+    <string name="filter_report_date">조회 기간</string>
+
+    <!-- User -->
+    <string name="filter_work_date">근무 기간</string>
 </resources>

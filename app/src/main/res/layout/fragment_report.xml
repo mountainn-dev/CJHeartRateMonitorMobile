@@ -36,13 +36,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/filter_date"
+            android:text="@string/filter_report_date"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -101,6 +100,7 @@
             android:padding="@dimen/margin_padding_small"
             android:layout_marginEnd="@dimen/margin_padding_small"
             android:hint="@string/id"
+            android:autofillHints="username"
             android:background="@drawable/bg_white_rectangle_black_bordered"
             android:textSize="@dimen/text_default"/>
 
