@@ -93,8 +93,15 @@ class ReportFragment : Fragment() {
     }
 
     private fun initListener() {
+        setBtnRefreshListener()
         setBtnFilterDateListener()
         setBtnFilterIdListener()
+    }
+
+    private fun setBtnRefreshListener() {
+        binding.btnRefresh.setOnClickListener {
+            viewModel.load()
+        }
     }
 
     private fun setBtnFilterDateListener() {
