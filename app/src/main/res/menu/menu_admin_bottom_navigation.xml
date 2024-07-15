@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navWorking"
-        android:title="@string/tab_name_urgent"/>
+        android:icon="@drawable/ic_working"
+        android:title="@string/tab_name_urgent" />
     <item
-        android:id="@+id/navRecord"
+        android:id="@+id/navReport"
+        android:icon="@drawable/ic_report"
         android:title="@string/tab_name_report"/>
     <item
         android:id="@+id/navUser"
+        android:icon="@drawable/ic_user"
         android:title="@string/tab_name_user"/>
 </menu>

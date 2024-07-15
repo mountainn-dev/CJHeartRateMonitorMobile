@@ -32,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
         binding.btmNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navWorking -> replaceTo(UrgentFragment(account))
-                R.id.navRecord -> replaceTo(ReportFragment(account))
+                R.id.navReport -> replaceTo(ReportFragment(account))
                 R.id.navUser -> replaceTo(UserFragment(account))
             }
 
