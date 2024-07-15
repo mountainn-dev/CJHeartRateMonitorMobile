@@ -5,18 +5,31 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/light_grey"
     tools:context=".view.screen.UserFragment">
 
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/margin_padding_default"
-        android:titleMargin="0dp"
-        android:title="@string/tab_name_user"
-        android:titleTextAppearance="@style/text_title"
+
         android:contentInsetStart="@dimen/margin_padding_default"
-        android:contentInsetEnd="@dimen/margin_padding_default">
+        android:contentInsetEnd="@dimen/margin_padding_default"
+        android:background="@color/blue">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:src="@drawable/img_logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/tab_name_user"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_title"/>
 
         <ImageView
             android:id="@+id/btnRefresh"
@@ -27,93 +40,107 @@
             android:clickable="true"/>
     </Toolbar>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/margin_padding_default"
-        android:background="@color/light_grey">
+        android:padding="@dimen/margin_padding_small"
+        android:orientation="vertical"
+        android:background="@color/deep_blue">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_work_date"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_padding_small"
+                android:src="@drawable/ic_calendar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter_work_date"
+                android:textColor="@color/light_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imgCalendar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/margin_padding_small"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/btnStartDatePick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:paddingVertical="@dimen/margin_padding_small"
+                    android:textColor="@color/white"
+                    tools:text="startDate" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_padding_smallest"
+                    android:gravity="center"
+                    android:text="~"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/btnEndDatePick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:paddingVertical="@dimen/margin_padding_small"
+                    android:textColor="@color/white"
+                    tools:text="endDate" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/llFilterId"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/btnStartDatePick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:paddingHorizontal="@dimen/margin_padding_smallest"
-                android:paddingVertical="@dimen/margin_padding_small"
-                tools:text="startDate" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~" />
-
-            <TextView
-                android:id="@+id/btnEndDatePick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:paddingHorizontal="@dimen/margin_padding_smallest"
-                android:paddingVertical="@dimen/margin_padding_small"
-                tools:text="endDate" />
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_drop_down" />
+                android:paddingHorizontal="@dimen/margin_padding_small"
+                android:src="@drawable/ic_search"/>
+
+            <EditText
+                android:id="@+id/edtId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingVertical="@dimen/margin_padding_small"
+                android:layout_marginEnd="@dimen/margin_padding_small"
+                android:hint="@string/all_id"
+                android:textColorHint="@color/light_white"
+                android:autofillHints="username"
+                android:background="@color/deep_blue"
+                android:textSize="@dimen/text_default"
+                android:textColor="@color/white"
+                android:inputType="text"
+                android:imeOptions="actionSearch"/>
 
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/llFilterId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_padding_small"
-        android:paddingHorizontal="@dimen/margin_padding_default"
-        android:gravity="center"
-        android:weightSum="1"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/edtId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:padding="@dimen/margin_padding_small"
-            android:layout_marginEnd="@dimen/margin_padding_small"
-            android:hint="@string/id"
-            android:autofillHints="username"
-            android:background="@drawable/bg_white_rectangle_black_bordered"
-            android:textSize="@dimen/text_default"/>
-
-        <TextView
-            android:id="@+id/btnFilterId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:text="@string/search"
-            android:padding="@dimen/margin_padding_small"
-            android:background="@color/grey"
-            android:clickable="true"/>
 
     </LinearLayout>
 
@@ -126,6 +153,8 @@
             android:id="@+id/rvUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_padding_small"
+            android:paddingHorizontal="@dimen/margin_padding_extremely_small"
             android:visibility="gone"/>
 
         <com.google.android.material.progressindicator.CircularProgressIndicator

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -136,8 +137,13 @@ class UserFragment(private val account: AccountModel) : Fragment() {
         }
 
     private fun setBtnFilterIdListener() {
-        binding.btnFilterId.setOnClickListener {
-            viewModel.filterById(binding.edtId.text.toString())
+        binding.edtId.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.filterById(binding.edtId.text.toString())
+                return@setOnEditorActionListener true
+            }
+
+            return@setOnEditorActionListener false
         }
     }
 
