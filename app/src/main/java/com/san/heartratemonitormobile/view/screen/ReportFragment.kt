@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.view.screen
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentReportBinding
+import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.viewmodel.ReportViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.ReportViewModelFactory
@@ -20,7 +22,7 @@ import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportViewModelImpl
 import com.san.heartratemonitormobile.view.adapter.ReportAdapter
 import java.time.LocalDate
 
-class ReportFragment : Fragment() {
+class ReportFragment(private val account: AccountModel) : Fragment() {
     private lateinit var binding: FragmentReportBinding
     private lateinit var viewModel: ReportViewModel
 
@@ -28,7 +30,7 @@ class ReportFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         val repo = ServiceRepositoryImpl()
-        viewModel = ViewModelProvider(requireActivity(), ReportViewModelFactory(repo)).get(
+        viewModel = ViewModelProvider(requireActivity(), ReportViewModelFactory(repo, account)).get(
             ReportViewModelImpl::class.java)
     }
 
@@ -38,10 +40,15 @@ class ReportFragment : Fragment() {
     ): View {
         binding = FragmentReportBinding.inflate(layoutInflater)
 
+        initAdminOrNot()
         initObserver(requireActivity())
         initListener()
 
         return binding.root
+    }
+
+    private fun initAdminOrNot() {
+        binding.llFilterId.visibility = if (account.admin) View.VISIBLE else View.GONE
     }
 
     private fun initObserver(activity: Activity) {
@@ -107,24 +114,24 @@ class ReportFragment : Fragment() {
     private fun setBtnFilterDateListener() {
         binding.btnStartDatePick.setOnClickListener {
             val date = LocalDate.parse(binding.btnStartDatePick.text)
-            val dialog = DatePickerDialog(requireActivity(), startDateSetListener(), date.year, date.monthValue, date.dayOfMonth)
+            val dialog = DatePickerDialog(requireActivity(), startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
             dialog.show()
         }
         binding.btnEndDatePick.setOnClickListener {
             val date = LocalDate.parse(binding.btnEndDatePick.text)
-            val dialog = DatePickerDialog(requireActivity(), endDateSetListener(), date.year, date.monthValue, date.dayOfMonth)
+            val dialog = DatePickerDialog(requireActivity(), endDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
             dialog.show()
         }
     }
 
     private fun startDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setStartDate(LocalDate.of(year, month, day))
+            viewModel.setStartDate(LocalDate.of(year, month+1, day))
         }
 
     private fun endDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setEndDate(LocalDate.of(year, month, day))
+            viewModel.setEndDate(LocalDate.of(year, month+1, day))
         }
 
     private fun setBtnFilterIdListener() {

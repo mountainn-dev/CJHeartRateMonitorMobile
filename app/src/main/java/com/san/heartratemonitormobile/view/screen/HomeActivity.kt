@@ -25,15 +25,15 @@ class HomeActivity : AppCompatActivity() {
             add(UrgentFragment(account))
             binding.btmNav.inflateMenu(R.menu.menu_admin_bottom_navigation)
         } else {
-            add(ReportFragment())
+            add(ReportFragment(account))
             binding.btmNav.inflateMenu(R.menu.menu_worker_bottom_navigation)
         }
 
         binding.btmNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navWorking -> replaceTo(UrgentFragment(account))
-                R.id.navRecord -> replaceTo(ReportFragment())
-                R.id.navUser -> replaceTo(UserFragment())
+                R.id.navRecord -> replaceTo(ReportFragment(account))
+                R.id.navUser -> replaceTo(UserFragment(account))
             }
 
             return@setOnItemSelectedListener true

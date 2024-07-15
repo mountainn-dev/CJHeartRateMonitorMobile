@@ -5,5 +5,5 @@
         android:title="@string/tab_name_report"/>
     <item
         android:id="@+id/navUser"
-        android:title="@string/tab_name_user"/>
+        android:title="@string/tab_name_my_page"/>
 </menu>

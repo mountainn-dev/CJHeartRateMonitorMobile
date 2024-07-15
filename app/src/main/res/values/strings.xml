@@ -32,6 +32,7 @@
     <string name="tab_name_urgent">현재</string>
     <string name="tab_name_report">신고 이력</string>
     <string name="tab_name_user">전체 회원</string>
+    <string name="tab_name_my_page">마이페이지</string>
     <string name="timeout_message">요청 시간이 초과되었습니다.</string>
     <string name="service_error_message">데이터 요청에 실패하였습니다.</string>
 
