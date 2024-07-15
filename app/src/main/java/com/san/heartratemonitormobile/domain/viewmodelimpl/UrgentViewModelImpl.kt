@@ -42,14 +42,14 @@ class UrgentViewModelImpl(
     private suspend fun loadReportContent() {
         val result = repository.getReports()
 
-        this.reports = result
+        reports = result
         reportState.postValue(UiState.Success)
     }
 
     private suspend fun loadWorkingUserContent() {
         val result = repository.getUsers()
 
-        this.workingUsers = result
+        workingUsers = result
         workingUserState.postValue(UiState.Success)
     }
 
