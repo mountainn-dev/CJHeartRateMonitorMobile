@@ -41,6 +41,7 @@
     <string name="working">근무중</string>
 
     <!-- Report -->
+    <string name="all_id">전체 아이디</string>
     <string name="search">검색</string>
     <string name="filter_report_date">조회 기간</string>
     <string name="last_heart_rate">최근 심박수</string>
