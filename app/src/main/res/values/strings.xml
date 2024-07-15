@@ -37,12 +37,15 @@
     <string name="service_error_message">데이터 요청에 실패하였습니다.</string>
 
     <!-- Urgent -->
-    <string name="report">신고</string>
+    <string name="no_action_report">미처리된 신고</string>
     <string name="working">근무중</string>
 
     <!-- Report -->
+    <string name="all_id">전체 아이디</string>
     <string name="search">검색</string>
     <string name="filter_report_date">조회 기간</string>
+    <string name="last_heart_rate">최근 심박수</string>
+    <string name="today_report">오늘 신고</string>
 
     <!-- User -->
     <string name="filter_work_date">근무 기간</string>

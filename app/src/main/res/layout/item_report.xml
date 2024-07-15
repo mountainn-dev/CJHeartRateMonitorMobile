@@ -4,51 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_padding_default"
+    android:paddingHorizontal="@dimen/margin_padding_default"
+    android:paddingTop="@dimen/margin_padding_small"
+    android:paddingBottom="@dimen/margin_padding_default"
     android:background="@drawable/bg_item">
 
-    <TextView
-        android:id="@+id/txtThreshold"
+    <LinearLayout
+        android:id="@+id/llReportDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_title"
-        android:textStyle="bold"
-        tools:text="threshold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/txtThresholdOver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_padding_extremely_small"
-        android:textSize="@dimen/text_title"
-        android:textStyle="bold"
-        tools:text="thresholdOver"
-        app:layout_constraintStart_toEndOf="@+id/txtThreshold"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/txtReportDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_padding_smallest"
+            tools:text="reportDate"
+            android:textColor="@color/text_sub"/>
 
-    <TextView
-        android:id="@+id/txtName"
+        <TextView
+            android:id="@+id/txtReportTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="reportTime"
+            android:textColor="@color/text_sub"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llThreshold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_smallest"
-        tools:text="name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtThreshold"/>
+        app:layout_constraintTop_toBottomOf="@+id/llReportDateTime"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_item_title"
+            android:textStyle="bold"
+            tools:text="threshold" />
+
+        <TextView
+            android:id="@+id/txtThresholdOver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_extremely_small"
+            android:textSize="@dimen/text_item_title"
+            android:textStyle="bold"
+            tools:text="thresholdOver" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_extremely_small"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_padding_smallest"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtName">
+        app:layout_constraintTop_toBottomOf="@+id/llThreshold">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="name"
+            android:textColor="@color/text_sub"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtThreshold"/>
 
         <TextView
             android:id="@+id/txtTodayReportCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_smallest"
+            android:textColor="@color/text_sub"
             tools:text="todayReport"/>
 
     </LinearLayout>
@@ -64,40 +100,22 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtReportDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_padding_smallest"
-                tools:text="reportDate"/>
-
-            <TextView
-                android:id="@+id/txtReportTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="reportTime"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="end"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtReportLatitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_padding_smallest"
-                tools:text="reportLatitude"/>
+                tools:text="reportLatitude"
+                android:textColor="@color/text_sub"/>
 
             <TextView
                 android:id="@+id/txtReportLongitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="reportLongitude"/>
+                tools:text="reportLongitude"
+                android:textColor="@color/text_sub"/>
 
         </LinearLayout>
 

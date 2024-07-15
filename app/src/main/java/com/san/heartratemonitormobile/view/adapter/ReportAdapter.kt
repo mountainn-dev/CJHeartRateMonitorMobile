@@ -47,6 +47,6 @@ class ReportAdapter(
 
     companion object {
         private const val THRESHOLD_OVER_MESSAGE = "+%d"
-        private const val TODAY_REPORT_COUNT_MESSAGE = "오늘 신고 %d건"
+        private const val TODAY_REPORT_COUNT_MESSAGE = "(오늘 신고 %d건)"
     }
 }

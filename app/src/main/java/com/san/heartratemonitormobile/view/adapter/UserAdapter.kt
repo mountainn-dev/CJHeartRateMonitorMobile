@@ -64,7 +64,7 @@ class UserAdapter(
     }
 
     companion object {
-        private const val TODAY_REPORT_COUNT_MESSAGE = "오늘 신고 %d건"
+        private const val TODAY_REPORT_COUNT_MESSAGE = "%d건"
         private const val AGE_MESSAGE = "%d세"
     }
 }
