@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/margin_padding_default"
         android:titleMargin="0dp"
-        android:title="@string/tab_name_working"
+        android:title="@string/tab_name_urgent"
         android:titleTextAppearance="@style/text_title"
         android:contentInsetStart="@dimen/margin_padding_default"
         android:contentInsetEnd="@dimen/margin_padding_default">
@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/margin_padding_smallest"
                 android:paddingHorizontal="@dimen/margin_padding_default"
                 android:paddingVertical="@dimen/margin_padding_small"
                 android:background="@color/light_grey">

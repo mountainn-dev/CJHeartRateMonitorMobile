@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navWorking"
-        android:title="@string/tab_name_working"/>
+        android:title="@string/tab_name_urgent"/>
     <item
         android:id="@+id/navRecord"
-        android:title="@string/tab_name_record"/>
+        android:title="@string/tab_name_report"/>
     <item
         android:id="@+id/navUser"
         android:title="@string/tab_name_user"/>
