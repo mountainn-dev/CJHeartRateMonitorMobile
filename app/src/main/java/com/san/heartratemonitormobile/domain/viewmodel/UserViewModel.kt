@@ -1,13 +1,13 @@
 package com.san.heartratemonitormobile.domain.viewmodel
 
 import androidx.lifecycle.LiveData
-import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import java.time.LocalDate
 
-interface ReportViewModel {
+interface UserViewModel {
     val state: LiveData<UiState>
-    val reports: List<ReportModel>
+    val users: List<UserModel>
     val startDate: LiveData<LocalDate>
     val endDate: LiveData<LocalDate>
 

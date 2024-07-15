@@ -5,62 +5,59 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.repository.ServiceRepository
-import com.san.heartratemonitormobile.domain.model.AccountModel
-import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
-import com.san.heartratemonitormobile.domain.viewmodel.ReportViewModel
+import com.san.heartratemonitormobile.domain.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class ReportViewModelImpl(
-    private val repository: ServiceRepository,
-    private val account: AccountModel
-) : ReportViewModel, ViewModel() {
+class UserViewModelImpl(
+    private val repository: ServiceRepository
+) : UserViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
 
-    override lateinit var reports: List<ReportModel>
-    private lateinit var temp: List<ReportModel>
+    override lateinit var users: List<UserModel>
+    private lateinit var temp: List<UserModel>
     override val startDate: LiveData<LocalDate>
-        get() = reportStartDate
-    private val reportStartDate = MutableLiveData(LocalDate.now())
+        get() = workStartDate
+    private val workStartDate = MutableLiveData(LocalDate.now())
     override val endDate: LiveData<LocalDate>
-        get() = reportEndDate
-    private val reportEndDate = MutableLiveData(LocalDate.now())
+        get() = workEndDate
+    private val workEndDate = MutableLiveData(LocalDate.now())
 
     override fun load() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                loadReportContent()
+                loadUserContent()
             }
         }
     }
 
-    private suspend fun loadReportContent() {
-        // TODO: api 개발 이후 getReports 에 start, end date param 추가 필요
-        // TODO: 레포 getAllReports, getMyReports 나누어지면 admin 따라서 분기
-        val result = repository.getReports()
+    private suspend fun loadUserContent() {
+        // TODO: api 개발 이후 근무중 인원이 아닌 전체 회원 호출하는 api 로 수정
+        val result = repository.getUsers()
 
-        reports = result
+        users = result
         temp = result
         viewModelState.postValue(UiState.Success)
     }
 
     override fun setStartDateAndLoad(date: LocalDate) {
-        reportStartDate.postValue(date)
+        workStartDate.postValue(date)
         load()
     }
 
     override fun setEndDateAndLoad(date: LocalDate) {
-        reportEndDate.postValue(date)
+        workEndDate.postValue(date)
         load()
     }
 
     override fun filterById(id: String) {
-        reports = temp.filter { it.id.get().contains(id) }
+        users = temp.filter { it.id.get().contains(id) }
 
         viewModelState.postValue(UiState.Success)
     }
