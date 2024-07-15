@@ -75,7 +75,7 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
     private fun loadReports(activity: Activity) {
         binding.rvReport.adapter = ReportAdapter(viewModel.reports)
         binding.rvReport.layoutManager = LinearLayoutManager(activity)
-        binding.txtReportCount.text = String.format(REPORT_COUNT_MESSAGE, viewModel.reports.size)
+        binding.txtReportCount.text = viewModel.reports.size.toString()
     }
 
     private fun loadWorkingUsers(activity: Activity) {
@@ -110,9 +110,5 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.load()
-    }
-
-    companion object {
-        private const val REPORT_COUNT_MESSAGE = "%d건"
     }
 }
