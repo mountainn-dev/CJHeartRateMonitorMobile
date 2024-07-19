@@ -1,11 +1,12 @@
 package com.san.heartratemonitormobile.data.vo
 
 import com.san.heartratemonitormobile.data.exception.ExceptionMessage
+import java.io.Serializable
 import java.time.LocalDate
 
 data class Birth(
     private val value: String
-) {
+) : Serializable {
     fun get() = LocalDate.parse(value)
 
     init {

@@ -23,7 +23,7 @@ class ReportViewModelImpl(
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
 
     override lateinit var reports: List<ReportModel>
-    private lateinit var temp: List<ReportModel>
+    private lateinit var save: List<ReportModel>   // Id 필터 적용을 위한 전체 신고 이력 세이브용 변수
     override val startDate: LiveData<LocalDate>
         get() = reportStartDate
     private val reportStartDate = MutableLiveData(LocalDate.now())
@@ -45,7 +45,7 @@ class ReportViewModelImpl(
         val result = repository.getReports()
 
         reports = result
-        temp = result
+        save = result
         viewModelState.postValue(UiState.Success)
     }
 
@@ -60,7 +60,7 @@ class ReportViewModelImpl(
     }
 
     override fun filterById(id: String) {
-        reports = temp.filter { it.id.get().contains(id) }
+        reports = save.filter { it.id.get().contains(id) }
 
         viewModelState.postValue(UiState.Success)
     }

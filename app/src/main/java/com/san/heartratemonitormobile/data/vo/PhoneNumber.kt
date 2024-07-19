@@ -1,10 +1,11 @@
 package com.san.heartratemonitormobile.data.vo
 
 import com.san.heartratemonitormobile.data.exception.ExceptionMessage
+import java.io.Serializable
 
 data class PhoneNumber(
     private val value: String
-) {
+) : Serializable {
     fun get() = value
 
     init {
