@@ -1,12 +1,18 @@
 package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.san.heartratemonitormobile.R
 import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityReportDetailBinding
@@ -36,6 +42,7 @@ class ReportDetailActivity : AppCompatActivity() {
 
         initObserver(this)
         initListener()
+        initHeartRateGraph()
     }
 
     private fun initObserver(activity: Activity) {
@@ -84,8 +91,8 @@ class ReportDetailActivity : AppCompatActivity() {
         binding.txtAge.text = String.format(
             AGE_MESSAGE,
             LocalDate.now().year - report.birth.get().year + 1)
-        binding.txtHeight.text = report.height.get().toString()
-        binding.txtWeight.text = report.weight.get().toString()
+        binding.txtHeight.text = "${report.height.get()}$HEIGHT_UNIT"
+        binding.txtWeight.text = "${report.weight.get()}$WEIGHT_UNIT"
         binding.txtId.text = report.id.get()
         binding.txtTodayReportCount.text = String.format(
             TODAY_REPORT_COUNT_MESSAGE, report.reportCountToday)
@@ -110,6 +117,26 @@ class ReportDetailActivity : AppCompatActivity() {
         binding.btnEmergency.setOnClickListener { viewModel.setAction(Action.EMERGENCY) }
         binding.btnRest.setOnClickListener { viewModel.setAction(Action.REST) }
         binding.btnWork.setOnClickListener { viewModel.setAction(Action.WORK) }
+    }
+
+    private fun initHeartRateGraph() {
+        binding.chartDayHeartRate.setBackgroundColor(Color.WHITE)
+        binding.chartDayHeartRate.description.isEnabled = false
+        binding.chartDayHeartRate.setDrawGridBackground(false)
+
+        binding.chartDayHeartRate.xAxis.isEnabled = false
+        binding.chartDayHeartRate.axisRight.isEnabled = false
+        binding.chartDayHeartRate.axisLeft.isEnabled = true
+        binding.chartDayHeartRate.axisLeft.mAxisMaximum = 150f
+        binding.chartDayHeartRate.axisLeft.mAxisMinimum = 0f
+
+        val values = arrayListOf(Entry(1f, 100f), Entry(2f, 120f))
+        val set = LineDataSet(values, "")
+        set.enableDashedLine(1f, 1f, 0f)
+        set.enableDashedHighlightLine(1f, 9f, 0f)
+        val dataset = arrayListOf<ILineDataSet>(set)
+        val data = LineData(dataset)
+        binding.chartDayHeartRate.data = data
     }
 
     private fun toggleView(view: View) {
@@ -147,6 +174,8 @@ class ReportDetailActivity : AppCompatActivity() {
     companion object {
         private const val THRESHOLD_OVER_MESSAGE = "+%d"
         private const val AGE_MESSAGE = "%d세"
+        private const val HEIGHT_UNIT = "cm"
+        private const val WEIGHT_UNIT = "kg"
         private const val TODAY_REPORT_COUNT_MESSAGE = "%d건"
     }
 }

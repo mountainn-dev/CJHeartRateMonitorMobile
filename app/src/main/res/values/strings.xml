@@ -51,6 +51,7 @@
         <string name="action_emergency">응급 처리</string>
         <string name="action_rest">즉시 휴식</string>
         <string name="action_work">작업 재개</string>
+        <string name="day_heart_rate">당일 심박수</string>
 
     <!-- User -->
     <string name="name_user">전체 회원</string>
