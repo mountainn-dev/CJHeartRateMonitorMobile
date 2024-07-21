@@ -9,9 +9,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.san.heartratemonitormobile.R
 import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
@@ -24,6 +27,7 @@ import com.san.heartratemonitormobile.domain.viewmodel.ReportDetailViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.ReportDetailViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportDetailViewModelImpl
 import java.time.LocalDate
+import java.time.LocalTime
 
 class ReportDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityReportDetailBinding
@@ -123,20 +127,41 @@ class ReportDetailActivity : AppCompatActivity() {
         binding.chartDayHeartRate.setBackgroundColor(Color.WHITE)
         binding.chartDayHeartRate.description.isEnabled = false
         binding.chartDayHeartRate.setDrawGridBackground(false)
-
-        binding.chartDayHeartRate.xAxis.isEnabled = false
+        binding.chartDayHeartRate.setTouchEnabled(false)
+        binding.chartDayHeartRate.legend.isEnabled = false
         binding.chartDayHeartRate.axisRight.isEnabled = false
         binding.chartDayHeartRate.axisLeft.isEnabled = true
-        binding.chartDayHeartRate.axisLeft.mAxisMaximum = 150f
-        binding.chartDayHeartRate.axisLeft.mAxisMinimum = 0f
+        binding.chartDayHeartRate.xAxis.isEnabled = true
 
-        val values = arrayListOf(Entry(1f, 100f), Entry(2f, 120f))
+        binding.chartDayHeartRate.xAxis.axisMinimum = 0f
+        binding.chartDayHeartRate.xAxis.axisMaximum = 1440f
+        binding.chartDayHeartRate.xAxis.setDrawGridLines(false)
+        binding.chartDayHeartRate.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        binding.chartDayHeartRate.xAxis.valueFormatter = xAxisValueFormatter()
+        binding.chartDayHeartRate.xAxis.textColor = ContextCompat.getColor(this, R.color.text_sub)
+
+        binding.chartDayHeartRate.axisLeft.axisMaximum = 150f
+        binding.chartDayHeartRate.axisLeft.axisMinimum = 0f
+        binding.chartDayHeartRate.axisLeft.setDrawGridLines(false)
+        binding.chartDayHeartRate.axisLeft.textColor = ContextCompat.getColor(this, R.color.text_sub)
+
+        val values = arrayListOf(Entry(1f, 100f), Entry(320f, 120f), Entry(840f, 80f), Entry(1440f, 100f))
         val set = LineDataSet(values, "")
-        set.enableDashedLine(1f, 1f, 0f)
-        set.enableDashedHighlightLine(1f, 9f, 0f)
+        set.color = ContextCompat.getColor(this, R.color.orange)
+        set.setDrawCircles(false)
+        set.valueTextSize = 0f
         val dataset = arrayListOf<ILineDataSet>(set)
         val data = LineData(dataset)
         binding.chartDayHeartRate.data = data
+    }
+
+    private fun xAxisValueFormatter() = object : ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+            val hour = (value / 60).toInt()
+            val minute = (value % 60).toInt()
+            val a = LocalTime.of(hour, minute, 0)
+            return a.toString()
+        }
     }
 
     private fun toggleView(view: View) {
