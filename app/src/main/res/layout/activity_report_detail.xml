@@ -333,7 +333,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="@dimen/margin_padding_small"
-                    android:paddingHorizontal="@dimen/margin_padding_default"
+
                     android:orientation="vertical"
                     android:background="@color/white">
 
@@ -342,7 +342,78 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp" />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_default">
+
+                        <LinearLayout
+                            android:id="@+id/llAvgHeartRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/llMaxHeartRate">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/average_heart_rate"
+                                android:textColor="@color/text_sub"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txtAvgHeartRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="average"
+                                android:textSize="@dimen/text_item_title"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llMaxHeartRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            app:layout_constraintStart_toEndOf="@+id/llAvgHeartRate"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/average_heart_rate"
+                                android:textColor="@color/text_sub"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txtMaxHeartRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="max"
+                                android:textSize="@dimen/text_item_title"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_padding_small"
+                    android:text="@string/action_record"
+                    android:textColor="@color/text_sub"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 

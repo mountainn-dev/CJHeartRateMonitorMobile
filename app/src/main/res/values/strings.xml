@@ -52,6 +52,9 @@
         <string name="action_rest">즉시 휴식</string>
         <string name="action_work">작업 재개</string>
         <string name="day_heart_rate">당일 심박수</string>
+        <string name="action_record">조치 이력</string>
+        <string name="average_heart_rate">평균 심박수</string>
+        <string name="max_heart_rate">최대 심박수</string>
 
     <!-- User -->
     <string name="name_user">전체 회원</string>

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
 import com.github.mikephil.charting.data.Entry
@@ -128,31 +129,40 @@ class ReportDetailActivity : AppCompatActivity() {
         binding.chartDayHeartRate.description.isEnabled = false
         binding.chartDayHeartRate.setDrawGridBackground(false)
         binding.chartDayHeartRate.setTouchEnabled(false)
-        binding.chartDayHeartRate.legend.isEnabled = false
         binding.chartDayHeartRate.axisRight.isEnabled = false
         binding.chartDayHeartRate.axisLeft.isEnabled = true
         binding.chartDayHeartRate.xAxis.isEnabled = true
+        binding.chartDayHeartRate.setExtraOffsets(12f, 12f, 12f, 16f)
 
-        binding.chartDayHeartRate.xAxis.axisMinimum = 0f
-        binding.chartDayHeartRate.xAxis.axisMaximum = 1440f
+        binding.chartDayHeartRate.legend.textColor = ContextCompat.getColor(this, R.color.text_sub)
+
         binding.chartDayHeartRate.xAxis.setDrawGridLines(false)
         binding.chartDayHeartRate.xAxis.position = XAxis.XAxisPosition.BOTTOM
         binding.chartDayHeartRate.xAxis.valueFormatter = xAxisValueFormatter()
+        binding.chartDayHeartRate.xAxis.axisMinimum = 0f
+        binding.chartDayHeartRate.xAxis.axisMaximum = 1440f
+        binding.chartDayHeartRate.xAxis.setLabelCount(4)
+        binding.chartDayHeartRate.xAxis.setAvoidFirstLastClipping(true)
         binding.chartDayHeartRate.xAxis.textColor = ContextCompat.getColor(this, R.color.text_sub)
 
+        binding.chartDayHeartRate.axisLeft.setDrawGridLines(false)
         binding.chartDayHeartRate.axisLeft.axisMaximum = 150f
         binding.chartDayHeartRate.axisLeft.axisMinimum = 0f
-        binding.chartDayHeartRate.axisLeft.setDrawGridLines(false)
+        binding.chartDayHeartRate.axisLeft.setLabelCount(8)
         binding.chartDayHeartRate.axisLeft.textColor = ContextCompat.getColor(this, R.color.text_sub)
 
-        val values = arrayListOf(Entry(1f, 100f), Entry(320f, 120f), Entry(840f, 80f), Entry(1440f, 100f))
-        val set = LineDataSet(values, "")
+        // TODO: data 처리를 uistate observer 에서 처리
+        val values = arrayListOf(Entry(1f, 100f), Entry(320f, 120f), Entry(840f, 80f), Entry(1000f, 100f), Entry(1100f, 100f))
+        val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
         set.color = ContextCompat.getColor(this, R.color.orange)
         set.setDrawCircles(false)
         set.valueTextSize = 0f
         val dataset = arrayListOf<ILineDataSet>(set)
         val data = LineData(dataset)
         binding.chartDayHeartRate.data = data
+
+        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, 100)
+        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, 120)
     }
 
     private fun xAxisValueFormatter() = object : ValueFormatter() {
@@ -202,5 +212,7 @@ class ReportDetailActivity : AppCompatActivity() {
         private const val HEIGHT_UNIT = "cm"
         private const val WEIGHT_UNIT = "kg"
         private const val TODAY_REPORT_COUNT_MESSAGE = "%d건"
+        private const val HEART_RATE_MESSAGE = "%d bpm"
+        private const val HEART_RATE_GRAPH_LEGEND = "심박수 구간 안내"
     }
 }
