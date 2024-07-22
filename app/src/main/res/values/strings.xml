@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">HeartRateMonitorMobile</string>
-    
+
     <!-- Login -->
     <string name="id">아이디</string>
     <string name="pass_word">비밀번호</string>
@@ -29,24 +29,34 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Home -->
-    <string name="tab_name_urgent">현재</string>
-    <string name="tab_name_report">신고 이력</string>
-    <string name="tab_name_user">전체 회원</string>
     <string name="tab_name_my_page">마이페이지</string>
     <string name="timeout_message">요청 시간이 초과되었습니다.</string>
     <string name="service_error_message">데이터 요청에 실패하였습니다.</string>
 
     <!-- Urgent -->
+    <string name="name_urgent">현재</string>
     <string name="no_action_report">미처리된 신고</string>
     <string name="working">근무중</string>
 
     <!-- Report -->
+    <string name="name_report">신고 이력</string>
     <string name="all_id">전체 아이디</string>
     <string name="search">검색</string>
     <string name="filter_report_date">조회 기간</string>
     <string name="last_heart_rate">최근 심박수</string>
     <string name="today_report">오늘 신고</string>
 
+        <!-- Report Detail -->
+        <string name="name_report_detail">신고 상세</string>
+        <string name="action_emergency">응급 처리</string>
+        <string name="action_rest">즉시 휴식</string>
+        <string name="action_work">작업 재개</string>
+        <string name="day_heart_rate">당일 심박수</string>
+        <string name="action_record">조치 이력</string>
+        <string name="average_heart_rate">평균 심박수</string>
+        <string name="max_heart_rate">최대 심박수</string>
+
     <!-- User -->
+    <string name="name_user">전체 회원</string>
     <string name="filter_work_date">근무 기간</string>
 </resources>

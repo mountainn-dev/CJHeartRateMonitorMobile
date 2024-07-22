@@ -2,6 +2,7 @@ package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentReportBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
+import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
+import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.viewmodel.ReportViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.ReportViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportViewModelImpl
 import com.san.heartratemonitormobile.view.adapter.ReportAdapter
+import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
 import java.time.LocalDate
 
 class ReportFragment(private val account: AccountModel) : Fragment() {
@@ -87,8 +91,23 @@ class ReportFragment(private val account: AccountModel) : Fragment() {
     }
 
     private fun loadReports(activity: Activity) {
-        binding.rvReport.adapter = ReportAdapter(viewModel.reports)
+        binding.rvReport.adapter = ReportAdapter(
+            viewModel.reports,
+            reportItemClickEventListener(viewModel.reports, activity)
+        )
         binding.rvReport.layoutManager = LinearLayoutManager(activity)
+    }
+
+    private fun reportItemClickEventListener(
+        items: List<ReportModel>,
+        activity: Activity
+    ) = object : ItemClickEventListener {
+        override fun onItemClickListener(position: Int) {
+            val intent = Intent(activity, ReportDetailActivity::class.java)
+            intent.putExtra(Const.TAG_REPORT, items[position])
+
+            activity.startActivity(intent)
+        }
     }
 
     private fun startDateObserver() = Observer<LocalDate> {

@@ -11,6 +11,8 @@ import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.viewmodel.UrgentViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -33,8 +35,10 @@ class UrgentViewModelImpl(
     override fun load() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                loadReportContent()
-                loadWorkingUserContent()
+                awaitAll(
+                    async { loadReportContent() },
+                    async { loadWorkingUserContent() }
+                )
             }
         }
     }

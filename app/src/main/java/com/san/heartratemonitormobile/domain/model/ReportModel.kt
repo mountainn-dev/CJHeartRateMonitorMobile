@@ -8,6 +8,7 @@ import com.san.heartratemonitormobile.data.vo.PhoneNumber
 import com.san.heartratemonitormobile.data.vo.Weight
 import com.san.heartratemonitormobile.domain.enums.Action
 import com.san.heartratemonitormobile.domain.enums.Gender
+import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -28,4 +29,4 @@ data class ReportModel(
     val action: Action,
     val locationLatitude: Float,
     val locationLongitude: Float
-)
+) : Serializable

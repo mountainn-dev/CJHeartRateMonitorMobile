@@ -4,4 +4,5 @@ object Const {
     const val ZERO = 0
 
     const val TAG_ACCOUNT = "account"
+    const val TAG_REPORT = "report"
 }

@@ -5,15 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.san.heartratemonitormobile.databinding.ItemReportBinding
 import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
 
 class ReportAdapter(
-    private val items: List<ReportModel>
+    private val items: List<ReportModel>,
+    private val itemClickEventListener: ItemClickEventListener
 ) : RecyclerView.Adapter<ReportAdapter.ReportViewHolder>() {
     inner class ReportViewHolder(
         private val binding: ItemReportBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             loadContent(position)
+            setItemClickEventListener(position)
         }
 
         private fun loadContent(position: Int) {
@@ -28,6 +31,12 @@ class ReportAdapter(
             binding.txtReportLatitude.text = items[position].locationLatitude.toString()
             binding.txtReportLongitude.text = items[position].locationLongitude.toString()
             binding.txtAction.text = items[position].action.actionName
+        }
+
+        private fun setItemClickEventListener(position: Int) {
+            binding.itemReport.setOnClickListener {
+                itemClickEventListener.onItemClickListener(position)
+            }
         }
     }
 
