@@ -8,9 +8,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.san.heartratemonitormobile.data.remote.retrofit.LoginService
 import com.san.heartratemonitormobile.data.repositoryimpl.LoginRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivitySignUpBinding
 import com.san.heartratemonitormobile.domain.enums.Gender
+import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.domain.viewmodel.SignUpViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.SignUpViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.SignUpViewModelImpl
@@ -26,7 +28,7 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repo = LoginRepositoryImpl()
+        val repo = LoginRepositoryImpl(Utils.getRetrofit().create(LoginService::class.java))
         viewModel = ViewModelProvider(this, SignUpViewModelFactory(repo)).get(SignUpViewModelImpl::class.java)
 
         initObserver(this)
