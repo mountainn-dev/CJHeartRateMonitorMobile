@@ -1,5 +1,6 @@
 package com.san.heartratemonitormobile.domain.utils
 
+import com.san.heartratemonitormobile.data.remote.interceptor.ErrorInterceptor
 import com.san.heartratemonitormobile.data.remote.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,13 +10,13 @@ import java.util.concurrent.TimeUnit
 
 object Utils {
     fun getRetrofit(token: String) = Retrofit.Builder()
-        .baseUrl("http://13.125.53.53:8080")
+        .baseUrl("http://43.203.200.27:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .client(getClientWithOrWithoutIdToken(token))
         .build()
 
     fun getRetrofit() = Retrofit.Builder()
-        .baseUrl("http://13.125.53.53:8080")
+        .baseUrl("http://43.203.200.27:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .client(getClientWithOrWithoutIdToken(null))
         .build()
@@ -23,6 +24,7 @@ object Utils {
     private fun getClientWithOrWithoutIdToken(token: String?): OkHttpClient {
         val builder = OkHttpClient().newBuilder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(ErrorInterceptor())
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(5, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
