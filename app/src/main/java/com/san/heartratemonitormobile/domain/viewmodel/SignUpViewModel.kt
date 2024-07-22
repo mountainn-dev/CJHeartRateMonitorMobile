@@ -13,6 +13,7 @@ interface SignUpViewModel {
     val birthMessage: LiveData<String>
     val weightMessage: LiveData<String>
     val heightMessage: LiveData<String>
+    val signUpMessage: LiveData<String>
 
     fun setId(id: String)
     fun checkIdDuplication()

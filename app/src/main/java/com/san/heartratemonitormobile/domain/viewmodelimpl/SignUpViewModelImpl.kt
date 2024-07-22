@@ -15,6 +15,7 @@ import com.san.heartratemonitormobile.data.vo.PassWord
 import com.san.heartratemonitormobile.data.vo.PhoneNumber
 import com.san.heartratemonitormobile.data.vo.Weight
 import com.san.heartratemonitormobile.domain.enums.Gender
+import com.san.heartratemonitormobile.domain.model.SignUpModel
 import com.san.heartratemonitormobile.domain.utils.InputValidator
 import com.san.heartratemonitormobile.domain.utils.Invalid
 import com.san.heartratemonitormobile.domain.utils.Valid
@@ -53,6 +54,9 @@ class SignUpViewModelImpl(
     override val heightMessage: LiveData<String>
         get() = heightValidationMessage
     private val heightValidationMessage = MutableLiveData<String>()
+    override val signUpMessage: LiveData<String>
+        get() = signUpStateMessage
+    private val signUpStateMessage = MutableLiveData<String>()
 
     private var id: Id? = null
     private var idDuplicated = true
@@ -70,12 +74,14 @@ class SignUpViewModelImpl(
 
     override fun setId(id: String) {
         if (!idDuplicated) idDuplicated = true   // 중복 검사 후 아이디 수정 상황 방지용
+
         val result = InputValidator.checkId(id)
 
         if (result is Valid) {
             this.id = result.data
             idValidationMessage.postValue(BLANK)
         } else {
+            if (this.id != null) this.id = null
             idValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -97,6 +103,7 @@ class SignUpViewModelImpl(
             this.idDuplicated = result.data
             idDuplicationMessage.postValue(AVAILABLE_ID_MESSAGE)
         } else {
+            idDuplicated = true
             idDuplicationMessage.postValue((result as Error).message())
         }
     }
@@ -109,6 +116,7 @@ class SignUpViewModelImpl(
             this.pw = result.data
             pwValidationMessage.postValue(BLANK)
         } else {
+            if (this.pw != null) this.pw = null
             pwValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -120,6 +128,7 @@ class SignUpViewModelImpl(
             this.checkPW = result.data
             checkPwValidationMessage.postValue(BLANK)
         } else {
+            if (this.checkPW != null) this.checkPW = null
             checkPwValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -131,6 +140,7 @@ class SignUpViewModelImpl(
             this.name = result.data
             nameValidationMessage.postValue(BLANK)
         } else {
+            if (this.name != null) this.name = null
             nameValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -142,6 +152,7 @@ class SignUpViewModelImpl(
             this.phoneNumber = result.data
             phoneNumberValidationMessage.postValue(BLANK)
         } else {
+            if (this.phoneNumber != null) this.phoneNumber = null
             phoneNumberValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -157,6 +168,7 @@ class SignUpViewModelImpl(
             this.birth = result.data
             birthValidationMessage.postValue(BLANK)
         } else {
+            if (this.birth != null) this.birth = null
             birthValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -168,6 +180,7 @@ class SignUpViewModelImpl(
             this.height = result.data
             heightValidationMessage.postValue(BLANK)
         } else {
+            if (this.height != null) this.height = null
             heightValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -179,6 +192,7 @@ class SignUpViewModelImpl(
             this.weight = result.data
             weightValidationMessage.postValue(BLANK)
         } else {
+            if (this.weight != null) this.weight = null
             weightValidationMessage.postValue((result as Invalid).message())
         }
     }
@@ -192,18 +206,28 @@ class SignUpViewModelImpl(
     }
 
     override fun signUp() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                userSignUp()
+        if (signUpCondition()) {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    userSignUp()
+                }
             }
+        } else notifySignUpCondition()
+    }
+
+    private suspend fun userSignUp() {
+        val signUpModel = SignUpModel(id!!, pw!!, name!!, phoneNumber!!, gender, birth!!, height!!, weight!!)
+        val result = repository.signUp(signUpModel)
+
+        if (result is Success) {
+            signUpStateMessage.postValue(BLANK)
+        } else {
+            signUpStateMessage.postValue(FAIL_TO_SIGN_UP_MESSAGE)
         }
     }
 
-    suspend fun userSignUp() {
-        if (signUpCondition()) {
-            // TODO: SignUpModel
-            // TODO: signUpSuccess 라이브 데이터를 만들어서 성공한 경우에만 signup activity finish() 하도록 설정 필요
-        }
+    private fun notifySignUpCondition() {
+        signUpStateMessage.postValue(SIGN_UP_CONDITION_MESSAGE)
     }
 
     private fun signUpCondition() =
@@ -213,5 +237,7 @@ class SignUpViewModelImpl(
     companion object {
         private const val BLANK = ""
         private const val AVAILABLE_ID_MESSAGE = "사용 가능한 ID 입니다."
+        private const val FAIL_TO_SIGN_UP_MESSAGE = "회원 가입에 실패하였습니다."
+        private const val SIGN_UP_CONDITION_MESSAGE = "입력하신 정보를 다시 한 번 확인해주시기 바랍니다."
     }
 }

@@ -1,13 +1,20 @@
 package com.san.heartratemonitormobile.data.remote.retrofit
 
 import com.san.heartratemonitormobile.data.entity.ServiceResponse
-import retrofit2.Response
+import com.san.heartratemonitormobile.data.entity.SignUpEntity
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface LoginService {
     @GET("/register/duplication")
     suspend fun getIdDuplication(
         @Query("userId") id: String
+    ): ServiceResponse<String?>
+
+    @POST("/register")
+    suspend fun signUp(
+        @Body entity: SignUpEntity
     ): ServiceResponse<String?>
 }

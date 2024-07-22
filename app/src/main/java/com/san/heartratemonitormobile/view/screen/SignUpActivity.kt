@@ -73,6 +73,10 @@ class SignUpActivity : AppCompatActivity() {
             activity as LifecycleOwner,
             weightMessageObserver()
         )
+        viewModel.signUpMessage.observe(
+            activity as LifecycleOwner,
+            signUpMessageObserver(activity)
+        )
     }
 
     private fun idMessageObserver() = Observer<String> {
@@ -141,6 +145,13 @@ class SignUpActivity : AppCompatActivity() {
             binding.txtWeightError.text = it
             binding.txtWeightError.visibility = View.VISIBLE
         }
+    }
+
+    private fun signUpMessageObserver(activity: Activity) = Observer<String> {
+        if (it == VALID) {
+            Toast.makeText(activity, SIGN_UP_SUCCESS_MESSAGE, Toast.LENGTH_SHORT).show()
+            finish()
+        } else Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
     }
 
     private fun initListener() {
@@ -298,5 +309,6 @@ class SignUpActivity : AppCompatActivity() {
 
     companion object {
         private const val VALID = ""
+        private const val SIGN_UP_SUCCESS_MESSAGE = "회원 가입에 성공하였습니다."
     }
 }

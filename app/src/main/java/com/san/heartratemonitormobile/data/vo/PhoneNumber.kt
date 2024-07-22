@@ -16,7 +16,7 @@ data class PhoneNumber(
     private fun isNotEmpty() = value.isNotEmpty()
 
     private fun isPhoneNumberFormat(): Boolean {
-        val pattern = Regex("^\\d{3}-\\d{4}-\\d{4}$")
+        val pattern = Regex("^010\\d{8}\$")
 
         return pattern.matches(value)
     }
