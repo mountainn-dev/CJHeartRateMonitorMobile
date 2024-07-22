@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Error
+import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.LoginRepository
 import com.san.heartratemonitormobile.data.vo.Birth
 import com.san.heartratemonitormobile.data.vo.Height
@@ -27,6 +29,9 @@ class SignUpViewModelImpl(
     override val idMessage: LiveData<String>
         get() = idValidationMessage
     private val idValidationMessage = MutableLiveData<String>()
+    override val checkIdMessage: LiveData<String>
+        get() = idDuplicationMessage
+    private val idDuplicationMessage = MutableLiveData<String>()
     override val pwMessage: LiveData<String>
         get() = pwValidationMessage
     private val pwValidationMessage = MutableLiveData<String>()
@@ -50,8 +55,9 @@ class SignUpViewModelImpl(
     private val heightValidationMessage = MutableLiveData<String>()
 
     private var id: Id? = null
+    private var idDuplicated = true
     private var pw: PassWord? = null
-    private var userPW = BLANK
+    private var pwTemp = BLANK
     private var checkPW: String? = null
     private var name: Name? = null
     private var phoneNumber: PhoneNumber? = null
@@ -63,6 +69,7 @@ class SignUpViewModelImpl(
     private var privacyTerm = false
 
     override fun setId(id: String) {
+        if (!idDuplicated) idDuplicated = true   // 중복 검사 후 아이디 수정 상황 방지용
         val result = InputValidator.checkId(id)
 
         if (result is Valid) {
@@ -73,8 +80,29 @@ class SignUpViewModelImpl(
         }
     }
 
+    override fun checkIdDuplication() {
+        if (id != null) {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    getIdDuplication(id!!)
+                }
+            }
+        }
+    }
+
+    private suspend fun getIdDuplication(id: Id) {
+        val result = repository.getIdDuplication(id.get())
+
+        if (result is Success) {
+            this.idDuplicated = result.data
+            idDuplicationMessage.postValue(AVAILABLE_ID_MESSAGE)
+        } else {
+            idDuplicationMessage.postValue((result as Error).message())
+        }
+    }
+
     override fun setPassWord(pw: String) {
-        userPW = pw
+        pwTemp = pw
         val result = InputValidator.checkPassWord(pw)
 
         if (result is Valid) {
@@ -86,7 +114,7 @@ class SignUpViewModelImpl(
     }
 
     override fun checkPassWord(pw: String) {
-        val result = InputValidator.doubleCheckPassWord(userPW, pw)
+        val result = InputValidator.doubleCheckPassWord(pwTemp, pw)
 
         if (result is Valid) {
             this.checkPW = result.data
@@ -179,10 +207,11 @@ class SignUpViewModelImpl(
     }
 
     private fun signUpCondition() =
-        id != null && pw != null && checkPW != null && name != null && phoneNumber != null
+        id != null && !idDuplicated && pw != null && checkPW != null && name != null && phoneNumber != null
                 && birth != null && height != null && weight != null && serviceTerm
 
     companion object {
         private const val BLANK = ""
+        private const val AVAILABLE_ID_MESSAGE = "사용 가능한 ID 입니다."
     }
 }

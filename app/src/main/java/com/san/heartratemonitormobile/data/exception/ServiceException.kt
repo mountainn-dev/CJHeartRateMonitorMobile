@@ -23,4 +23,11 @@ object ServiceException {
      * 로그인 관련 Exception
      */
     class LoginException(override val message: String?) : IOException(message)
+
+    /**
+     * class ServerException
+     *
+     * 서비스 서버 관련 Exception
+     */
+    class ServerException(override val message: String?) : IOException(message)
 }

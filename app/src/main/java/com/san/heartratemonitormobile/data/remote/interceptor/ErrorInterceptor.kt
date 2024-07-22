@@ -1,5 +1,6 @@
 package com.san.heartratemonitormobile.data.remote.interceptor
 
+import android.util.Log
 import com.san.heartratemonitormobile.data.exception.ServiceException
 import com.san.heartratemonitormobile.data.remote.retrofit.ServiceResult.*
 import okhttp3.Interceptor
@@ -10,13 +11,14 @@ class ErrorInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val response = chain.proceed(request)
-        val resultCode = response.code()
 
-        parseServiceResult(resultCode)
+        parseServiceResultCode(response.code())
+        response.close()
+
         return chain.proceed(request)
     }
 
-    private fun parseServiceResult(code: Int) {
+    private fun parseServiceResultCode(code: Int) {
         when (code) {
             SUCCESS.code -> {}
             WRONG_ID_PASSWORD.code -> throw ServiceException.LoginException(WRONG_ID_PASSWORD.message)

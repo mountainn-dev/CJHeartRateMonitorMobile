@@ -3,10 +3,25 @@ package com.san.heartratemonitormobile.data.repositoryimpl
 import com.san.heartratemonitormobile.data.remote.retrofit.LoginService
 import com.san.heartratemonitormobile.data.repository.LoginRepository
 import com.san.heartratemonitormobile.domain.model.AccountModel
+import com.san.heartratemonitormobile.data.Result
+import com.san.heartratemonitormobile.data.exception.ServiceException
+import com.san.heartratemonitormobile.data.remote.retrofit.ServiceResult
+import java.io.IOException
 
 class LoginRepositoryImpl(
     private val service: LoginService
 ) : LoginRepository {
+    override suspend fun getIdDuplication(id: String): Result<Boolean> {
+        try {
+            val response = service.getIdDuplication(id)
+
+            if (response.message == "데이터 없음") return Result.success(true)
+            else throw ServiceException.SignUpException(ServiceResult.ID_DUPLICATION.message)
+        } catch (e: Exception) {
+            return Result.error(e)
+        }
+    }
+
     override suspend fun loginForWorker(): AccountModel {
         return AccountModel("testToken", false)
     }

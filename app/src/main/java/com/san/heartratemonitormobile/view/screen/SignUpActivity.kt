@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.view.screen
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -40,6 +41,10 @@ class SignUpActivity : AppCompatActivity() {
             activity as LifecycleOwner,
             idMessageObserver()
         )
+        viewModel.checkIdMessage.observe(
+            activity as LifecycleOwner,
+            idDuplicationObserver(activity)
+        )
         viewModel.pwMessage.observe(
             activity as LifecycleOwner,
             pwMessageObserver()
@@ -76,6 +81,10 @@ class SignUpActivity : AppCompatActivity() {
             binding.txtIdError.text = it
             binding.txtIdError.visibility = View.VISIBLE
         }
+    }
+
+    private fun idDuplicationObserver(activity: Activity) = Observer<String> {
+        Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
     }
 
     private fun pwMessageObserver() = Observer<String> {
@@ -148,6 +157,7 @@ class SignUpActivity : AppCompatActivity() {
         setEdtHeightListener()
         setEdtWeightListener()
         setRadioGenderListener()
+        setBtnDbCheckIdListener()
         setBtnCheckTermListener()
         setBtnShowTermDetailListener()
         setBtnSignUpListener()
@@ -253,6 +263,12 @@ class SignUpActivity : AppCompatActivity() {
     private fun setRadioGenderListener() {
         binding.radioMale.setOnClickListener { viewModel.setGender(Gender.MALE) }
         binding.radioFemale.setOnClickListener { viewModel.setGender(Gender.FEMALE) }
+    }
+
+    private fun setBtnDbCheckIdListener() {
+        binding.btnDbCheckId.setOnClickListener {
+            viewModel.checkIdDuplication()
+        }
     }
 
 

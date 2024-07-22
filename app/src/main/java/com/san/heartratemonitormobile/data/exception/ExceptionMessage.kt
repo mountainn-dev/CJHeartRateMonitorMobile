@@ -12,7 +12,9 @@ object ExceptionMessage {
     const val WRONG_CHECK_PASS_WORD_EXCEPTION = "비밀번호가 일치하지 않습니다."
     const val WRONG_PHONE_NUMBER_FORMAT_EXCEPTION = "전화번호 형식이 올바르지 않습니다."
 
-    // API Parse
+    // Service API
+    const val UNSTABLE_SERVER_EXCEPTION = "현재 서버 상태가 불안정합니다."
+    const val UNSTABLE_INTERNET_CONNECTION = "인터넷 연결에 실패하였습니다."
     const val WRONG_ADMIN_VALUE_EXCEPTION = "관리자 여부 값이 올바르지 않습니다."
     const val WRONG_GENDER_VALUE_EXCEPTION = "성별 값이 올바르지 않습니다."
     const val WRONG_REPORT_DATE_TIME_FORAMT_EXCEPTION = "신고 시간 형식이 올바르지 않습니다."
