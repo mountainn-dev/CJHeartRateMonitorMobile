@@ -11,12 +11,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
+import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentUrgentBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.domain.viewmodel.UrgentViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.UrgentViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.UrgentViewModelImpl
@@ -24,14 +26,14 @@ import com.san.heartratemonitormobile.view.adapter.ReportAdapter
 import com.san.heartratemonitormobile.view.adapter.UserAdapter
 import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
 
-class UrgentFragment(private val account: AccountModel) : Fragment() {
+class UrgentFragment(private val userId: String) : Fragment() {
     private lateinit var binding: FragmentUrgentBinding
     private lateinit var viewModel: UrgentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val repo = ServiceRepositoryImpl()
+        val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit().create(HeartRateService::class.java))
         viewModel = ViewModelProvider(requireActivity(), UrgentViewModelFactory(repo)).get(UrgentViewModelImpl::class.java)
     }
 
@@ -91,6 +93,7 @@ class UrgentFragment(private val account: AccountModel) : Fragment() {
         override fun onItemClickListener(position: Int) {
             val intent = Intent(activity, ReportDetailActivity::class.java)
             intent.putExtra(Const.TAG_REPORT, items[position])
+            intent.putExtra(Const.TAG_ID, userId)
 
             activity.startActivity(intent)
         }

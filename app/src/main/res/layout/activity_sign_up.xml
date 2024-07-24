@@ -134,7 +134,7 @@
             android:autofillHints="phone"
             android:background="@drawable/bg_white_rectangle_black_bordered"
             android:hint="@string/phone_number_hint"
-            android:inputType="phone"
+            android:inputType="number"
             android:paddingHorizontal="@dimen/margin_padding_small"
             android:textSize="@dimen/text_default"
             android:nextFocusRight="@id/edtBirth"/>
@@ -195,7 +195,7 @@
             android:layout_marginTop="@dimen/margin_padding_small"
             android:background="@drawable/bg_white_rectangle_black_bordered"
             android:hint="@string/birth_hint"
-            android:inputType="number"
+            android:inputType="text"
             android:paddingHorizontal="@dimen/margin_padding_small"
             android:textSize="@dimen/text_default" />
 

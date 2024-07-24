@@ -9,21 +9,22 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
-import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
+import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityReportDetailBinding
 import com.san.heartratemonitormobile.domain.enums.Action
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.domain.viewmodel.ReportDetailViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.ReportDetailViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportDetailViewModelImpl
@@ -40,8 +41,10 @@ class ReportDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val reportModel = intent.getSerializableExtra(Const.TAG_REPORT) as ReportModel
-        val repo = ServiceRepositoryImpl()
-        viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel)).get(
+        val userId = intent.getStringExtra(Const.TAG_ID) ?: ""
+        val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+        val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
+        viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel, userId)).get(
             ReportDetailViewModelImpl::class.java
         )
 
@@ -63,6 +66,7 @@ class ReportDetailActivity : AppCompatActivity() {
         when (it) {
             UiState.Success -> {
                 loadSummary()
+                loadGraph(activity)
                 toggleView(binding.svReportDetail)
             }
             UiState.Loading -> {
@@ -107,6 +111,22 @@ class ReportDetailActivity : AppCompatActivity() {
         toggleActionImage(report.action)
     }
 
+    private fun loadGraph(activity: Activity) {
+        val values = arrayListOf<Entry>()
+        for (i in viewModel.heartRateData.indices) {
+            values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+        }
+        val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
+        set.color = ContextCompat.getColor(activity, R.color.orange)
+        set.setDrawCircles(false)
+        set.valueTextSize = 0f
+        val dataset = arrayListOf<ILineDataSet>(set)
+        val data = LineData(dataset)
+        binding.chartDayHeartRate.data = data
+        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateData.average())
+        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateData.max())
+    }
+
     private fun initListener() {
         setBtnBackListener()
         setBtnActionListener()
@@ -129,18 +149,6 @@ class ReportDetailActivity : AppCompatActivity() {
         setGraphLegend(activity)
         setAxisBottom(activity)
         setAxisLeft(activity)
-
-        // TODO: data 처리를 uistate observer 에서 처리
-        val values = arrayListOf(Entry(1f, 100f), Entry(320f, 120f), Entry(840f, 80f), Entry(1000f, 100f), Entry(1100f, 100f))
-        val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
-        set.color = ContextCompat.getColor(activity, R.color.orange)
-        set.setDrawCircles(false)
-        set.valueTextSize = 0f
-        val dataset = arrayListOf<ILineDataSet>(set)
-        val data = LineData(dataset)
-        binding.chartDayHeartRate.data = data
-        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, 100)
-        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, 120)
     }
 
     private fun setGraphStyle() {

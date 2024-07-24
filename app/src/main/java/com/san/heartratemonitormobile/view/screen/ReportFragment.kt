@@ -2,6 +2,7 @@ package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,12 +14,16 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
+import com.san.heartratemonitormobile.BuildConfig
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
+import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
+import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.databinding.FragmentReportBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.domain.viewmodel.ReportViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.ReportViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportViewModelImpl
@@ -26,15 +31,16 @@ import com.san.heartratemonitormobile.view.adapter.ReportAdapter
 import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
 import java.time.LocalDate
 
-class ReportFragment(private val account: AccountModel) : Fragment() {
+class ReportFragment(private val account: AccountModel, private val id: String) : Fragment() {
     private lateinit var binding: FragmentReportBinding
     private lateinit var viewModel: ReportViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val repo = ServiceRepositoryImpl()
-        viewModel = ViewModelProvider(requireActivity(), ReportViewModelFactory(repo, account)).get(
+        val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+        val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
+        viewModel = ViewModelProvider(requireActivity(), ReportViewModelFactory(repo, account, id)).get(
             ReportViewModelImpl::class.java)
     }
 

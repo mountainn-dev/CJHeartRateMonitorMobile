@@ -3,15 +3,17 @@ package com.san.heartratemonitormobile.view.screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.san.heartratemonitormobile.data.remote.retrofit.LoginService
 import com.san.heartratemonitormobile.data.repositoryimpl.LoginRepositoryImpl
-import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityLoginBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.domain.viewmodel.LoginViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.LoginViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.LoginViewModelImpl
@@ -25,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repo = LoginRepositoryImpl()
+        val repo = LoginRepositoryImpl(Utils.getRetrofit().create(LoginService::class.java))
         viewModel = ViewModelProvider(this, LoginViewModelFactory(repo)).get(LoginViewModelImpl::class.java)
 
         initObserver(this)
@@ -37,34 +39,36 @@ class LoginActivity : AppCompatActivity() {
             activity as LifecycleOwner,
             accountObserver(activity)
         )
+        viewModel.loginFail.observe(
+            activity as LifecycleOwner,
+            loginFailObserver(activity)
+        )
     }
 
     private fun accountObserver(activity: Activity) = Observer<AccountModel> {
-        sendUserToHomeScreen(activity, it)
+        sendUserToHomeScreen(activity, it, binding.edtId.text.toString())
     }
 
-    private fun sendUserToHomeScreen(activity: Activity, account: AccountModel) {
+    private fun loginFailObserver(activity: Activity) = Observer<Boolean> {
+        Toast.makeText(activity, LOGIN_FAIL_MESSAGE, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun sendUserToHomeScreen(activity: Activity, account: AccountModel, id: String) {
         val intent = Intent(activity, HomeActivity::class.java)
         intent.putExtra(Const.TAG_ACCOUNT, account)
+        intent.putExtra(Const.TAG_ID, id)
 
         startActivity(intent)
     }
 
     private fun initListener(activity: Activity) {
-        setBtnLoginForWorkerListener()
-        setBtnLoginForAdminListener()
+        setBtnLoginListener()
         setBtnSignUpListener(activity)
     }
 
-    private fun setBtnLoginForWorkerListener() {
-        binding.btnWorkerLogin.setOnClickListener {
-            viewModel.loginForWorker()
-        }
-    }
-
-    private fun setBtnLoginForAdminListener() {
-        binding.btnAdminLogin.setOnClickListener {
-            viewModel.loginForAdmin()
+    private fun setBtnLoginListener() {
+        binding.btnLogin.setOnClickListener {
+            viewModel.login(binding.edtId.text.toString(), binding.edtPassword.text.toString())
         }
     }
 
@@ -78,5 +82,9 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(activity, SignUpActivity::class.java)
 
         startActivity(intent)
+    }
+
+    companion object {
+        private const val LOGIN_FAIL_MESSAGE = "로그인에 실패하였습니다."
     }
 }

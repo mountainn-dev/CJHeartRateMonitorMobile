@@ -5,7 +5,7 @@ import com.san.heartratemonitormobile.domain.model.AccountModel
 
 interface LoginViewModel {
     val account: LiveData<AccountModel>
+    val loginFail: LiveData<Boolean>
 
-    fun loginForWorker()
-    fun loginForAdmin()
+    fun login(id: String, pw: String)
 }

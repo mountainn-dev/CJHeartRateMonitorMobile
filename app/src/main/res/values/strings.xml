@@ -14,7 +14,7 @@
     <string name="pass_word_hint">비밀번호( 최소 8글자 이상의 영문, 숫자, 특수문자 조합 )</string>
     <string name="check_password_hint">비밀번호 확인</string>
     <string name="name_hint">이름</string>
-    <string name="phone_number_hint">전화번호\( \'-\' 포함 )</string>
+    <string name="phone_number_hint">전화번호\( \'-\' 빼고 입력 ex. 01012345678 )</string>
     <string name="birth_hint">생년월일\( ex. 2000\-01\-01 )</string>
     <string name="height_hint">신장( cm )</string>
     <string name="weight_hint">체중( kg )</string>
