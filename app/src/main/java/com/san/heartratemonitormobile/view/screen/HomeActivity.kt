@@ -29,7 +29,7 @@ class HomeActivity : AppCompatActivity() {
         account: AccountModel, userId: String
     ) {
         if (account.admin) {
-            add(UrgentFragment())
+            add(UrgentFragment(userId))
             binding.btmNav.inflateMenu(R.menu.menu_admin_bottom_navigation)
         } else {
             add(ReportFragment(account, userId))
@@ -38,7 +38,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.btmNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.navWorking -> replaceTo(UrgentFragment())
+                R.id.navWorking -> replaceTo(UrgentFragment(userId))
                 R.id.navReport -> replaceTo(ReportFragment(account, userId))
                 R.id.navUser -> replaceTo(UserFragment(account))
             }

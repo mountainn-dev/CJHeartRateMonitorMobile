@@ -26,7 +26,7 @@ import com.san.heartratemonitormobile.view.adapter.ReportAdapter
 import com.san.heartratemonitormobile.view.adapter.UserAdapter
 import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
 
-class UrgentFragment : Fragment() {
+class UrgentFragment(private val userId: String) : Fragment() {
     private lateinit var binding: FragmentUrgentBinding
     private lateinit var viewModel: UrgentViewModel
 
@@ -93,6 +93,7 @@ class UrgentFragment : Fragment() {
         override fun onItemClickListener(position: Int) {
             val intent = Intent(activity, ReportDetailActivity::class.java)
             intent.putExtra(Const.TAG_REPORT, items[position])
+            intent.putExtra(Const.TAG_ID, userId)
 
             activity.startActivity(intent)
         }
