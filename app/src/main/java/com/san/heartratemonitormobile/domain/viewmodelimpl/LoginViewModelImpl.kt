@@ -36,42 +36,10 @@ class LoginViewModelImpl(
         }
     }
 
-    override fun loginForWorker() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                loginAsWorker()
-            }
-        }
-    }
-
-    override fun loginForAdmin() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                loginAsAdmin()
-            }
-        }
-    }
-
     private suspend fun serviceLogin(id: String, pw: String) {
         val result = repository.login(id, pw)
 
         if (result is Success) userAccount.postValue(result.data)
         else loginError.postValue(true)
-    }
-
-    private suspend fun loginAsWorker() {
-        val result = repository.loginForWorker()
-
-        userAccount.postValue(result)
-    }
-
-    private suspend fun loginAsAdmin() {
-        val result = repository.loginForAdmin()
-
-        userAccount.postValue(result)
-    }
-
-    companion object {
-        private const val BLANK = ""
     }
 }

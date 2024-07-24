@@ -41,12 +41,4 @@ class LoginRepositoryImpl(
             return Result.error(e)
         }
     }
-
-    override suspend fun loginForWorker(): AccountModel {
-        return AccountModel("testToken", false)
-    }
-
-    override suspend fun loginForAdmin(): AccountModel {
-        return AccountModel("testToken", true)
-    }
 }

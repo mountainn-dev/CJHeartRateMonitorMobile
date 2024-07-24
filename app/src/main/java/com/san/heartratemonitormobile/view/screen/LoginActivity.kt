@@ -62,26 +62,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initListener(activity: Activity) {
         setBtnLoginListener()
-        setBtnLoginForWorkerListener()
-        setBtnLoginForAdminListener()
         setBtnSignUpListener(activity)
     }
 
     private fun setBtnLoginListener() {
         binding.btnLogin.setOnClickListener {
             viewModel.login(binding.edtId.text.toString(), binding.edtPassword.text.toString())
-        }
-    }
-
-    private fun setBtnLoginForWorkerListener() {
-        binding.btnWorkerLogin.setOnClickListener {
-            viewModel.loginForWorker()
-        }
-    }
-
-    private fun setBtnLoginForAdminListener() {
-        binding.btnAdminLogin.setOnClickListener {
-            viewModel.loginForAdmin()
         }
     }
 

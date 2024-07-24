@@ -8,6 +8,4 @@ interface LoginViewModel {
     val loginFail: LiveData<Boolean>
 
     fun login(id: String, pw: String)
-    fun loginForWorker()
-    fun loginForAdmin()
 }

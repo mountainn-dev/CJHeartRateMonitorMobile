@@ -50,26 +50,6 @@
         android:clickable="true"/>
 
     <TextView
-        android:id="@+id/btnWorkerLogin"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_login_item"
-        android:layout_marginTop="@dimen/margin_padding_default"
-        android:gravity="center"
-        android:background="@color/grey"
-        android:text="근로자 로그인"
-        android:clickable="true"/>
-
-    <TextView
-        android:id="@+id/btnAdminLogin"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_login_item"
-        android:layout_marginTop="@dimen/margin_padding_default"
-        android:gravity="center"
-        android:background="@color/grey"
-        android:text="관리자 로그인"
-        android:clickable="true"/>
-
-    <TextView
         android:id="@+id/btnBiometricLogin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_login_item"
