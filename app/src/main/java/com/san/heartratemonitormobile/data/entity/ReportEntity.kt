@@ -59,7 +59,7 @@ data class ReportEntity(
         try {
             return LocalDate.parse(reportDateTime.split(DIVIDER_REPORT_DATE_TIME)[0])
         } catch (e: Exception) {
-            throw NoSuchElementException(ExceptionMessage.WRONG_REPORT_DATE_TIME_FORAMT_EXCEPTION)
+            throw NoSuchElementException(ExceptionMessage.WRONG_REPORT_DATE_TIME_FORMAT_EXCEPTION)
         }
     }
 
@@ -67,7 +67,7 @@ data class ReportEntity(
         try {
             return LocalTime.parse(reportDateTime.split(DIVIDER_REPORT_DATE_TIME)[1])
         } catch (e: Exception) {
-            throw NoSuchElementException(ExceptionMessage.WRONG_REPORT_DATE_TIME_FORAMT_EXCEPTION)
+            throw NoSuchElementException(ExceptionMessage.WRONG_REPORT_DATE_TIME_FORMAT_EXCEPTION)
         }
     }
 

@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.view.screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -39,10 +40,18 @@ class LoginActivity : AppCompatActivity() {
             activity as LifecycleOwner,
             accountObserver(activity)
         )
+        viewModel.loginFail.observe(
+            activity as LifecycleOwner,
+            loginFailObserver(activity)
+        )
     }
 
     private fun accountObserver(activity: Activity) = Observer<AccountModel> {
         sendUserToHomeScreen(activity, it)
+    }
+
+    private fun loginFailObserver(activity: Activity) = Observer<Boolean> {
+        Toast.makeText(activity, LOGIN_FAIL_MESSAGE, Toast.LENGTH_SHORT).show()
     }
 
     private fun sendUserToHomeScreen(activity: Activity, account: AccountModel) {
@@ -53,9 +62,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initListener(activity: Activity) {
+        setBtnLoginListener()
         setBtnLoginForWorkerListener()
         setBtnLoginForAdminListener()
         setBtnSignUpListener(activity)
+    }
+
+    private fun setBtnLoginListener() {
+        binding.btnLogin.setOnClickListener {
+            viewModel.login(binding.edtId.text.toString(), binding.edtPassword.text.toString())
+        }
     }
 
     private fun setBtnLoginForWorkerListener() {
@@ -80,5 +96,9 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(activity, SignUpActivity::class.java)
 
         startActivity(intent)
+    }
+
+    companion object {
+        private const val LOGIN_FAIL_MESSAGE = "로그인에 실패하였습니다."
     }
 }

@@ -21,9 +21,10 @@ class ErrorInterceptor : Interceptor {
     private fun parseServiceResultCode(code: Int) {
         when (code) {
             SUCCESS.code -> {}
-            WRONG_ID_PASSWORD.code -> throw ServiceException.LoginException(WRONG_ID_PASSWORD.message)
-            NO_RESULT.code -> throw ServiceException.NoResultException(NO_RESULT.message)
-            ID_DUPLICATION.code -> throw ServiceException.SignUpException(ID_DUPLICATION.message)
+            // TODO: 서버 status code 정의 미완료로 우선 IOException 으로 일괄 처리
+//            WRONG_ID_PASSWORD.code -> throw ServiceException.LoginException(WRONG_ID_PASSWORD.message)
+//            NO_RESULT.code -> throw ServiceException.NoResultException(NO_RESULT.message)
+//            ID_DUPLICATION.code -> throw ServiceException.SignUpException(ID_DUPLICATION.message)
             else -> throw IOException(code.toString())
         }
     }

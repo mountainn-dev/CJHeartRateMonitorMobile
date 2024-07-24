@@ -7,27 +7,32 @@ import com.san.heartratemonitormobile.data.Result
 import com.san.heartratemonitormobile.data.exception.ServiceException
 import com.san.heartratemonitormobile.data.remote.retrofit.ServiceResult
 import com.san.heartratemonitormobile.domain.model.SignUpModel
-import java.io.IOException
 
 class LoginRepositoryImpl(
     private val service: LoginService
 ) : LoginRepository {
     override suspend fun getIdDuplication(id: String): Result<Boolean> {
         try {
-            val response = service.getIdDuplication(id)
-
-            if (response.message == "데이터 없음") return Result.success(false)
-            else throw ServiceException.SignUpException(ServiceResult.ID_DUPLICATION.message)
+            service.getIdDuplication(id)
+            return Result.success(false)
         } catch (e: Exception) {
-            return Result.error(e)
+            return Result.error(ServiceException.SignUpException(ServiceResult.ID_DUPLICATION.message))
         }
     }
 
     override suspend fun signUp(model: SignUpModel): Result<Boolean> {
         try {
             service.signUp(model.toSignUpEntity())
-
             return Result.success(true)
+        } catch (e: Exception) {
+            return Result.error(e)
+        }
+    }
+
+    override suspend fun login(id: String, pw: String): Result<AccountModel> {
+        try {
+            val response = service.login(id, pw)
+            return Result.success(response.data.toAccountModel())
         } catch (e: Exception) {
             return Result.error(e)
         }

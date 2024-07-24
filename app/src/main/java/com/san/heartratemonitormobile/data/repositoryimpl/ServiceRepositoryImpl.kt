@@ -20,7 +20,7 @@ class ServiceRepositoryImpl : ServiceRepository {
         val testModel = ReportModel(
             Id("test123"),
             Name("홍성산"),
-            PhoneNumber("010-1234-1234"),
+            PhoneNumber("01012341234"),
             Gender.MALE,
             Birth("2000-01-01"),
             Height("100"),
@@ -46,7 +46,7 @@ class ServiceRepositoryImpl : ServiceRepository {
         val testModel1 = UserModel(
             Id("test123"),
             Name("홍성산"),
-            PhoneNumber("010-1234-1234"),
+            PhoneNumber("01012341234"),
             Gender.MALE,
             Birth("2000-01-01"),
             Height("100"),
@@ -59,7 +59,7 @@ class ServiceRepositoryImpl : ServiceRepository {
         val testModel2 = UserModel(
             Id("test123"),
             Name("홍성산"),
-            PhoneNumber("010-1234-1234"),
+            PhoneNumber("01012341234"),
             Gender.MALE,
             Birth("2000-01-01"),
             Height("100"),

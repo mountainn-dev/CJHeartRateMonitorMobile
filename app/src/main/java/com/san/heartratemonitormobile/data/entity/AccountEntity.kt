@@ -7,7 +7,7 @@ data class AccountEntity(
     val token: String,
     val isAdmin: Int
 ) {
-    fun toLoginModel() = AccountModel(
+    fun toAccountModel() = AccountModel(
         token,
         admin(isAdmin)
     )

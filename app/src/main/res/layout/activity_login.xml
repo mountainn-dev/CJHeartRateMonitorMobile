@@ -40,6 +40,16 @@
         android:textSize="@dimen/text_default"/>
 
     <TextView
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_login_item"
+        android:layout_marginTop="@dimen/margin_padding_default"
+        android:gravity="center"
+        android:background="@color/grey"
+        android:text="@string/login"
+        android:clickable="true"/>
+
+    <TextView
         android:id="@+id/btnWorkerLogin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_login_item"
