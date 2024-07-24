@@ -20,23 +20,26 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val account = intent.getSerializableExtra(Const.TAG_ACCOUNT) as AccountModel
-        initBottomNav(account)
+        val userId = intent.getStringExtra(Const.TAG_ID) ?: ""
+        initBottomNav(account, userId)
         saveToken(this, account.idToken)
     }
 
-    private fun initBottomNav(account: AccountModel) {
+    private fun initBottomNav(
+        account: AccountModel, userId: String
+    ) {
         if (account.admin) {
             add(UrgentFragment())
             binding.btmNav.inflateMenu(R.menu.menu_admin_bottom_navigation)
         } else {
-            add(ReportFragment(account))
+            add(ReportFragment(account, userId))
             binding.btmNav.inflateMenu(R.menu.menu_worker_bottom_navigation)
         }
 
         binding.btmNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navWorking -> replaceTo(UrgentFragment())
-                R.id.navReport -> replaceTo(ReportFragment(account))
+                R.id.navReport -> replaceTo(ReportFragment(account, userId))
                 R.id.navUser -> replaceTo(UserFragment(account))
             }
 

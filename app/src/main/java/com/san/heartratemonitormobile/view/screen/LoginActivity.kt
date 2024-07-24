@@ -46,16 +46,17 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun accountObserver(activity: Activity) = Observer<AccountModel> {
-        sendUserToHomeScreen(activity, it)
+        sendUserToHomeScreen(activity, it, binding.edtId.text.toString())
     }
 
     private fun loginFailObserver(activity: Activity) = Observer<Boolean> {
         Toast.makeText(activity, LOGIN_FAIL_MESSAGE, Toast.LENGTH_SHORT).show()
     }
 
-    private fun sendUserToHomeScreen(activity: Activity, account: AccountModel) {
+    private fun sendUserToHomeScreen(activity: Activity, account: AccountModel, id: String) {
         val intent = Intent(activity, HomeActivity::class.java)
         intent.putExtra(Const.TAG_ACCOUNT, account)
+        intent.putExtra(Const.TAG_ID, id)
 
         startActivity(intent)
     }

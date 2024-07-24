@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
+import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.viewmodel.UserViewModel
@@ -14,7 +16,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class UserViewModelImpl(
-    private val repository: HeartRateServiceRepository
+    private val repository: HeartRateServiceRepository,
 ) : UserViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
@@ -38,12 +40,15 @@ class UserViewModelImpl(
     }
 
     private suspend fun loadUserContent() {
-        // TODO: api 개발 이후 근무중 인원이 아닌 전체 회원 호출하는 api 로 수정
-        val result = repository.getUsers()
+        val result = repository.getAllUsers(workStartDate.value!!, workEndDate.value!!)
 
-        users = result
-        temp = result
-        viewModelState.postValue(UiState.Success)
+        if (result is Success) {
+            users = result.data
+            temp = result.data
+            viewModelState.postValue(UiState.Success)
+        } else {
+            viewModelState.postValue(UiState.ServiceError)
+        }
     }
 
     override fun setStartDateAndLoad(date: LocalDate) {

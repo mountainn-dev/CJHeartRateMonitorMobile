@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
+import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
@@ -16,7 +18,8 @@ import java.time.LocalDate
 
 class ReportViewModelImpl(
     private val repository: HeartRateServiceRepository,
-    private val account: AccountModel
+    private val account: AccountModel,
+    private val id: String
 ) : ReportViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
@@ -40,13 +43,16 @@ class ReportViewModelImpl(
     }
 
     private suspend fun loadReportContent() {
-        // TODO: api 개발 이후 getReports 에 start, end date param 추가 필요
-        // TODO: 레포 getAllReports, getMyReports 나누어지면 admin 따라서 분기
-        val result = repository.getReports()
+        val result = if (account.admin) repository.getAllUserReports(reportStartDate.value!!, reportEndDate.value!!)
+        else repository.getSingleUserReports(Id(id), reportStartDate.value!!, reportEndDate.value!!)
 
-        reports = result
-        save = result
-        viewModelState.postValue(UiState.Success)
+        if (result is Success) {
+            reports = result.data
+            save = result.data
+            viewModelState.postValue(UiState.Success)
+        } else {
+            viewModelState.postValue(UiState.ServiceError)
+        }
     }
 
     override fun setStartDateAndLoad(date: LocalDate) {

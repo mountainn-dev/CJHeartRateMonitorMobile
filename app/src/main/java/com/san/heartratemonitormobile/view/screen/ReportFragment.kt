@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
+import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.databinding.FragmentReportBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
@@ -30,7 +31,7 @@ import com.san.heartratemonitormobile.view.adapter.ReportAdapter
 import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
 import java.time.LocalDate
 
-class ReportFragment(private val account: AccountModel) : Fragment() {
+class ReportFragment(private val account: AccountModel, private val id: String) : Fragment() {
     private lateinit var binding: FragmentReportBinding
     private lateinit var viewModel: ReportViewModel
 
@@ -39,7 +40,7 @@ class ReportFragment(private val account: AccountModel) : Fragment() {
 
         val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
-        viewModel = ViewModelProvider(requireActivity(), ReportViewModelFactory(repo, account)).get(
+        viewModel = ViewModelProvider(requireActivity(), ReportViewModelFactory(repo, account, id)).get(
             ReportViewModelImpl::class.java)
     }
 

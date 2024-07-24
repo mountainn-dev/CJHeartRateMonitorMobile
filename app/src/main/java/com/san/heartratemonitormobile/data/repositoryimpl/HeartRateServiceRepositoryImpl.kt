@@ -72,68 +72,6 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         }
     }
 
-
-    override suspend fun getReports(): List<ReportModel> {
-        val list = mutableListOf<ReportModel>()
-        val testModel = ReportModel(
-            Id("test123"),
-            Name("홍성산"),
-            PhoneNumber("01012341234"),
-            Gender.MALE,
-            Birth("2000-01-01"),
-            Height("100"),
-            Weight("100"),
-            140,
-            1,
-            1,
-            150,
-            LocalDate.parse("2024-07-14"),
-            LocalTime.parse("12:00:00"),
-            Action.WORK,
-            32.123f,
-            127.1f
-        )
-
-        repeat(2, {list.add(testModel)})
-
-        return list
-    }
-
-    override suspend fun getUsers(): List<UserModel> {
-        val list = mutableListOf<UserModel>()
-        val testModel1 = UserModel(
-            Id("test123"),
-            Name("홍성산"),
-            PhoneNumber("01012341234"),
-            Gender.MALE,
-            Birth("2000-01-01"),
-            Height("100"),
-            Weight("100"),
-            1,
-            1,
-            1,
-            130
-        )
-        val testModel2 = UserModel(
-            Id("test123"),
-            Name("홍성산"),
-            PhoneNumber("01012341234"),
-            Gender.MALE,
-            Birth("2000-01-01"),
-            Height("100"),
-            Weight("100"),
-            1,
-            0,
-            1,
-            130
-        )
-
-        list.add(testModel1)
-        list.add(testModel2)
-
-        return list
-    }
-
     override suspend fun getWorkingUsers(): Result<List<UserModel>> {
         try {
             val response = service.getWorkingUser()
