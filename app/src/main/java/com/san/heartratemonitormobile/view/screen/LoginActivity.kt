@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.san.heartratemonitormobile.data.remote.retrofit.LoginService
 import com.san.heartratemonitormobile.data.repositoryimpl.LoginRepositoryImpl
-import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityLoginBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.utils.Const

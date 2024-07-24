@@ -2,6 +2,7 @@ package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +13,17 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
+import com.san.heartratemonitormobile.BuildConfig
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
+import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentUserBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.state.UiState
+import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.domain.viewmodel.UserViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.UserViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.UserViewModelImpl
-import com.san.heartratemonitormobile.view.adapter.ReportAdapter
 import com.san.heartratemonitormobile.view.adapter.UserAdapter
 import java.time.LocalDate
 
@@ -30,7 +34,10 @@ class UserFragment(private val account: AccountModel) : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val repo = ServiceRepositoryImpl()
+        val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+        val repo = HeartRateServiceRepositoryImpl(
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
+                HeartRateService::class.java))
         viewModel = ViewModelProvider(requireActivity(), UserViewModelFactory(repo)).get(
             UserViewModelImpl::class.java)
     }

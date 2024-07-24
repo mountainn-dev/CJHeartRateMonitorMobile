@@ -1,11 +1,12 @@
 package com.san.heartratemonitormobile.data.entity
 
+import com.google.gson.annotations.SerializedName
 import com.san.heartratemonitormobile.data.exception.ExceptionMessage
 import com.san.heartratemonitormobile.domain.model.AccountModel
 
 data class AccountEntity(
-    val token: String,
-    val isAdmin: Int
+    @SerializedName("accessToken") val token: String,
+    @SerializedName("level") val isAdmin: Int
 ) {
     fun toAccountModel() = AccountModel(
         token,

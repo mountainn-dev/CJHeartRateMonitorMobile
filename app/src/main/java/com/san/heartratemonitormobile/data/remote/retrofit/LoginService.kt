@@ -1,6 +1,7 @@
 package com.san.heartratemonitormobile.data.remote.retrofit
 
 import com.san.heartratemonitormobile.data.entity.AccountEntity
+import com.san.heartratemonitormobile.data.entity.LoginEntity
 import com.san.heartratemonitormobile.data.entity.ServiceResponse
 import com.san.heartratemonitormobile.data.entity.SignUpEntity
 import retrofit2.http.Body
@@ -16,12 +17,11 @@ interface LoginService {
 
     @POST("/register")
     suspend fun signUp(
-        @Body entity: SignUpEntity
+        @Body data: SignUpEntity
     ): ServiceResponse<String?>
 
-    @GET("/login")
+    @POST("/login")
     suspend fun login(
-        @Query("userId") id: String,
-        @Query("password") pw: String
+        @Body data: LoginEntity
     ): ServiceResponse<AccountEntity>
 }

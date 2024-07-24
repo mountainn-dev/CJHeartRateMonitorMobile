@@ -71,6 +71,7 @@ class SignUpViewModelImpl(
     private var weight: Weight? = null
     private var serviceTerm = false
     private var privacyTerm = false
+    private var signUpProcess = false
 
     override fun setId(id: String) {
         if (!idDuplicated) idDuplicated = true   // 중복 검사 후 아이디 수정 상황 방지용
@@ -206,10 +207,13 @@ class SignUpViewModelImpl(
     }
 
     override fun signUp() {
-        if (signUpCondition()) {
+        if (signUpCondition() && !signUpProcess) {
+            signUpProcess = true
+
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     userSignUp()
+                    signUpProcess = false
                 }
             }
         } else notifySignUpCondition()

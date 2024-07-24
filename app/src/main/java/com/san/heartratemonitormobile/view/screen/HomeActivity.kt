@@ -1,8 +1,11 @@
 package com.san.heartratemonitormobile.view.screen
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
 import com.san.heartratemonitormobile.databinding.ActivityHomeBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
@@ -18,11 +21,12 @@ class HomeActivity : AppCompatActivity() {
 
         val account = intent.getSerializableExtra(Const.TAG_ACCOUNT) as AccountModel
         initBottomNav(account)
+        saveToken(this, account.idToken)
     }
 
     private fun initBottomNav(account: AccountModel) {
         if (account.admin) {
-            add(UrgentFragment(account))
+            add(UrgentFragment())
             binding.btmNav.inflateMenu(R.menu.menu_admin_bottom_navigation)
         } else {
             add(ReportFragment(account))
@@ -31,7 +35,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.btmNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.navWorking -> replaceTo(UrgentFragment(account))
+                R.id.navWorking -> replaceTo(UrgentFragment())
                 R.id.navReport -> replaceTo(ReportFragment(account))
                 R.id.navUser -> replaceTo(UserFragment(account))
             }
@@ -50,5 +54,11 @@ class HomeActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(binding.flHome.id, fragment)
         transaction.commit()
+    }
+
+    private fun saveToken(context: Context, token: String) {
+        val preference = context.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+
+        preference.edit().putString(Const.TAG_ID_TOKEN, token).apply()
     }
 }

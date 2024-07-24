@@ -9,21 +9,22 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
-import com.san.heartratemonitormobile.data.repositoryimpl.ServiceRepositoryImpl
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
+import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityReportDetailBinding
 import com.san.heartratemonitormobile.domain.enums.Action
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.domain.viewmodel.ReportDetailViewModel
 import com.san.heartratemonitormobile.domain.viewmodelfactory.ReportDetailViewModelFactory
 import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportDetailViewModelImpl
@@ -40,7 +41,8 @@ class ReportDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val reportModel = intent.getSerializableExtra(Const.TAG_REPORT) as ReportModel
-        val repo = ServiceRepositoryImpl()
+        val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+        val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
         viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel)).get(
             ReportDetailViewModelImpl::class.java
         )

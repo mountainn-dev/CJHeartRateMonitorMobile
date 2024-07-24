@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.LoginRepository
-import com.san.heartratemonitormobile.data.repository.ServiceRepository
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.viewmodel.LoginViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,11 +22,16 @@ class LoginViewModelImpl(
     override val loginFail: LiveData<Boolean>
         get() = loginError
     private val loginError = MutableLiveData<Boolean>()
+    private var loginProcess = false
 
     override fun login(id: String, pw: String) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                serviceLogin(id, pw)
+        if (!loginProcess) {
+            loginProcess = true
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    serviceLogin(id, pw)
+                    loginProcess = false
+                }
             }
         }
     }

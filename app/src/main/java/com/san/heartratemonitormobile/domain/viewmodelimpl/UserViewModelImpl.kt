@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.san.heartratemonitormobile.data.repository.ServiceRepository
+import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.viewmodel.UserViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class UserViewModelImpl(
-    private val repository: ServiceRepository
+    private val repository: HeartRateServiceRepository
 ) : UserViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState

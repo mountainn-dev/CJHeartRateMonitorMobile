@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.san.heartratemonitormobile.data.repository.ServiceRepository
+import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.domain.enums.Action
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ReportDetailViewModelImpl(
-    private val repository: ServiceRepository,
+    private val repository: HeartRateServiceRepository,
     private val reportModel: ReportModel
 ) : ReportDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>

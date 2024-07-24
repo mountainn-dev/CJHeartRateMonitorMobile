@@ -49,7 +49,8 @@ data class PassWord(
             Character.MATH_SYMBOL.toInt(),
             Character.CURRENCY_SYMBOL.toInt(),
             Character.MODIFIER_SYMBOL.toInt(),
-            Character.OTHER_SYMBOL.toInt() -> true
+            Character.OTHER_SYMBOL.toInt(),
+            Character.OTHER_PUNCTUATION.toInt() -> true
             else -> false
         }
     }

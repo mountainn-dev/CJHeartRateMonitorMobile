@@ -3,7 +3,6 @@ package com.san.heartratemonitormobile.domain.viewmodelfactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.san.heartratemonitormobile.data.repository.LoginRepository
-import com.san.heartratemonitormobile.data.repository.ServiceRepository
 import com.san.heartratemonitormobile.domain.viewmodelimpl.LoginViewModelImpl
 
 class LoginViewModelFactory(

@@ -1,9 +1,11 @@
 package com.san.heartratemonitormobile.data.repositoryimpl
 
+import android.util.Log
 import com.san.heartratemonitormobile.data.remote.retrofit.LoginService
 import com.san.heartratemonitormobile.data.repository.LoginRepository
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.data.Result
+import com.san.heartratemonitormobile.data.entity.LoginEntity
 import com.san.heartratemonitormobile.data.exception.ServiceException
 import com.san.heartratemonitormobile.data.remote.retrofit.ServiceResult
 import com.san.heartratemonitormobile.domain.model.SignUpModel
@@ -25,15 +27,17 @@ class LoginRepositoryImpl(
             service.signUp(model.toSignUpEntity())
             return Result.success(true)
         } catch (e: Exception) {
+            Log.d("signUp", e.toString())
             return Result.error(e)
         }
     }
 
     override suspend fun login(id: String, pw: String): Result<AccountModel> {
         try {
-            val response = service.login(id, pw)
+            val response = service.login(LoginEntity(id, pw))
             return Result.success(response.data.toAccountModel())
         } catch (e: Exception) {
+            Log.d("login", e.toString())
             return Result.error(e)
         }
     }
