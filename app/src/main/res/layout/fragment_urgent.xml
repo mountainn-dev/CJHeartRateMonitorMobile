@@ -49,8 +49,7 @@
             android:id="@+id/llUrgent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,7 +126,8 @@
             android:layout_gravity="center"
             app:indicatorColor="@color/grey"
             app:trackColor="@color/light_grey"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/llTimeout"
