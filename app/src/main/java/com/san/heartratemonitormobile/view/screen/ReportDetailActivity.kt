@@ -123,7 +123,7 @@ class ReportDetailActivity : AppCompatActivity() {
         val dataset = arrayListOf<ILineDataSet>(set)
         val data = LineData(dataset)
         binding.chartDayHeartRate.data = data
-        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateData.average())
+        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateData.average().toInt())
         binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateData.max())
     }
 

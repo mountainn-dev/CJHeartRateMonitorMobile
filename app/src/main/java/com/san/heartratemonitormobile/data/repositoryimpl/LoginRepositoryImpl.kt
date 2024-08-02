@@ -33,12 +33,18 @@ class LoginRepositoryImpl(
     }
 
     override suspend fun login(id: String, pw: String): Result<AccountModel> {
-        try {
-            val response = service.login(LoginEntity(id, pw))
-            return Result.success(response.data.toAccountModel())
-        } catch (e: Exception) {
-            Log.d("login", e.toString())
-            return Result.error(e)
-        }
+//        try {
+//            val response = service.login(LoginEntity(id, pw))
+//            return Result.success(response.data.toAccountModel())
+//        } catch (e: Exception) {
+//            Log.d("login", e.toString())
+//            return Result.error(e)
+//        }
+        return Result.success(
+            AccountModel(
+                "",
+                true
+            )
+        )
     }
 }

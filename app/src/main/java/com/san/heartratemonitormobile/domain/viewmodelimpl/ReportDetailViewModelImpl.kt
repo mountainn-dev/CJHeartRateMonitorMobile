@@ -26,7 +26,7 @@ class ReportDetailViewModelImpl(
 ) : ReportDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
-    private val viewModelState = MutableLiveData<UiState>(UiState.Success)
+    private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
     override val report: ReportModel = reportModel
     override lateinit var heartRateData: List<Int>
 
