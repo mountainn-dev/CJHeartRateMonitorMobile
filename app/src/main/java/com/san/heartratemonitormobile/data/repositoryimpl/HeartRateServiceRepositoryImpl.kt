@@ -48,8 +48,8 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
                     LocalDate.now(),
                     LocalTime.now(),
                     Action.NONE,
-                    127.0286f,
-                    37.263573f
+                    37.263573f,
+                    127.0286f
                 ),
                 ReportModel(
                     Id("worker12"),
@@ -66,8 +66,8 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
                     LocalDate.now(),
                     LocalTime.now(),
                     Action.NONE,
-                    127.0286f,
-                    37.263573f
+                    37.263573f,
+                    127.0286f
                 )
             )
         )
@@ -101,8 +101,8 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
                     LocalDate.now(),
                     LocalTime.now(),
                     Action.REST,
-                    127.0286f,
-                    37.263573f
+                    37.263573f,
+                    127.0286f
                 ),
                 ReportModel(
                     Id("worker11"),
@@ -119,8 +119,8 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
                     LocalDate.now(),
                     LocalTime.now(),
                     Action.NONE,
-                    127.0286f,
-                    37.263573f
+                    37.263573f,
+                    127.0286f
                 ),
                 ReportModel(
                     Id("worker12"),
@@ -137,8 +137,8 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
                     LocalDate.now(),
                     LocalTime.now(),
                     Action.NONE,
-                    127.0286f,
-                    37.263573f
+                    37.263573f,
+                    127.0286f
                 )
             )
         )

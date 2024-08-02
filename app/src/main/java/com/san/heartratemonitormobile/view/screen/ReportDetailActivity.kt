@@ -15,6 +15,10 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
@@ -51,6 +55,7 @@ class ReportDetailActivity : AppCompatActivity() {
         initObserver(this)
         initListener()
         initHeartRateGraph(this)
+        initReportLocationMap(savedInstanceState)
     }
 
     private fun initObserver(activity: Activity) {
@@ -228,6 +233,23 @@ class ReportDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun initReportLocationMap(savedInstanceState: Bundle?) {
+        binding.mapReportLocation.onCreate(savedInstanceState)
+        val location = LatLng(viewModel.report.locationLatitude.toDouble(),
+            viewModel.report.locationLongitude.toDouble())
+
+        binding.mapReportLocation.getMapAsync {
+            it.addMarker(MarkerOptions().position(location).title(REPORT_POSITION))
+            it.uiSettings.isZoomControlsEnabled = true
+            it.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+        }
+    }
+
+    override fun onDestroy() {
+        binding.mapReportLocation.onDestroy()
+        super.onDestroy()
+    }
+
     companion object {
         private const val THRESHOLD_OVER_MESSAGE = "+%d"
         private const val AGE_MESSAGE = "%d세"
@@ -236,6 +258,7 @@ class ReportDetailActivity : AppCompatActivity() {
         private const val TODAY_REPORT_COUNT_MESSAGE = "%d건"
         private const val HEART_RATE_MESSAGE = "%d bpm"
         private const val HEART_RATE_GRAPH_LEGEND = "심박수 구간 안내"
+        private const val REPORT_POSITION = "신고 위치"
 
         private const val MAX_AXIS_LEFT = 160f
         private const val MIN_AXIS_LEFT = 0f

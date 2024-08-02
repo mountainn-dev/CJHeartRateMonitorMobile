@@ -416,6 +416,11 @@
                     android:textColor="@color/text_sub"
                     android:textStyle="bold" />
 
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapReportLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_report_location_map" />
+
             </LinearLayout>
 
         </ScrollView>
