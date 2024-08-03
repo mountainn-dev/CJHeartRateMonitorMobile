@@ -15,46 +15,43 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
-import com.san.heartratemonitormobile.databinding.ActivityReportDetailBinding
-import com.san.heartratemonitormobile.domain.enums.Action
-import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.databinding.ActivityUserDetailBinding
+import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.utils.Utils
-import com.san.heartratemonitormobile.view.viewmodel.ReportDetailViewModel
-import com.san.heartratemonitormobile.view.viewmodelfactory.ReportDetailViewModelFactory
-import com.san.heartratemonitormobile.view.viewmodelimpl.ReportDetailViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodel.UserDetailViewModel
+import com.san.heartratemonitormobile.view.viewmodelfactory.UserDetailViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelimpl.UserDetailViewModelImpl
 import java.time.LocalDate
 import java.time.LocalTime
 
-class ReportDetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityReportDetailBinding
-    private lateinit var viewModel: ReportDetailViewModel
+class UserDetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityUserDetailBinding
+    private lateinit var viewModel: UserDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityReportDetailBinding.inflate(layoutInflater)
+        binding = ActivityUserDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val reportModel = intent.getSerializableExtra(Const.TAG_REPORT) as ReportModel
+        val userModel = intent.getSerializableExtra(Const.TAG_USER) as UserModel
         val userId = intent.getStringExtra(Const.TAG_ID) ?: ""
         val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
-        val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
-        viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel, userId)).get(
-            ReportDetailViewModelImpl::class.java
+        val repo = HeartRateServiceRepositoryImpl(
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
+                HeartRateService::class.java))
+        viewModel = ViewModelProvider(this, UserDetailViewModelFactory(repo, userModel, userId)).get(
+            UserDetailViewModelImpl::class.java
         )
 
         initObserver(this)
         initListener()
         initHeartRateGraph(this)
-        initReportLocationMap(savedInstanceState)
     }
 
     private fun initObserver(activity: Activity) {
@@ -64,14 +61,12 @@ class ReportDetailActivity : AppCompatActivity() {
         )
     }
 
-    private fun stateObserver(
-        activity: Activity
-    ) = Observer<UiState> {
+    private fun stateObserver(activity: Activity) = Observer<UiState> {
         when (it) {
             UiState.Success -> {
                 loadSummary()
                 loadGraph(activity)
-                toggleView(binding.svReportDetail)
+                toggleView(binding.svUserDetail)
             }
             UiState.Loading -> {
                 toggleView(binding.pgbSearchRoute)
@@ -86,33 +81,25 @@ class ReportDetailActivity : AppCompatActivity() {
     }
 
     private fun loadSummary() {
-        val report = viewModel.report
+        val user = viewModel.user
 
-        loadReportSummary(report)
-        loadReportAction(report)
+        loadUserSummary(user)
     }
 
-    private fun loadReportSummary(report: ReportModel) {
-        binding.txtReportDate.text = report.reportDate.toString()
-        binding.txtReportTime.text = report.reportTime.toString()
-        binding.txtThreshold.text = report.threshold.toString()
-        binding.txtThresholdOver.text = String.format(
-            THRESHOLD_OVER_MESSAGE,
-            report.reportHeartRate - report.threshold)
-        binding.txtName.text = report.name.get()
-        binding.txtGender.text = report.gender.genderName
+    private fun loadUserSummary(user: UserModel) {
+        binding.txtName.text = user.name.get()
+        binding.txtThreshold.text = user.threshold.toString()
+        binding.txtGender.text = user.gender.genderName
         binding.txtAge.text = String.format(
             AGE_UNIT,
-            LocalDate.now().year - report.birth.get().year + 1)
-        binding.txtHeight.text = "${report.height.get()}$HEIGHT_UNIT"
-        binding.txtWeight.text = "${report.weight.get()}$WEIGHT_UNIT"
-        binding.txtId.text = report.id.get()
-        binding.txtTodayReportCount.text = String.format(
-            TODAY_REPORT_COUNT_MESSAGE, report.reportCountToday)
-    }
-
-    private fun loadReportAction(report: ReportModel) {
-        toggleActionImage(report.action)
+            LocalDate.now().year - user.birth.get().year + 1)
+        binding.txtHeight.text = "${user.height.get()}${HEIGHT_UNIT}"
+        binding.txtWeight.text = "${user.weight.get()}${WEIGHT_UNIT}"
+        binding.txtId.text = user.id.get()
+        binding.txtPhoneNumber.text = String.format(
+            PHONE_NUMBER_FORMAT,
+            user.phoneNumber.first(), user.phoneNumber.mid(), user.phoneNumber.last()
+        )
     }
 
     private fun loadGraph(activity: Activity) {
@@ -135,19 +122,12 @@ class ReportDetailActivity : AppCompatActivity() {
 
     private fun initListener() {
         setBtnBackListener()
-        setBtnActionListener()
     }
 
     private fun setBtnBackListener() {
         binding.btnBack.setOnClickListener {
             finish()
         }
-    }
-
-    private fun setBtnActionListener() {
-        binding.btnEmergency.setOnClickListener { viewModel.setAction(Action.EMERGENCY) }
-        binding.btnRest.setOnClickListener { viewModel.setAction(Action.REST) }
-        binding.btnWork.setOnClickListener { viewModel.setAction(Action.WORK) }
     }
 
     private fun initHeartRateGraph(activity: Activity) {
@@ -203,83 +183,19 @@ class ReportDetailActivity : AppCompatActivity() {
     }
 
     private fun toggleView(view: View) {
-        binding.svReportDetail.visibility = if (view == binding.svReportDetail) View.VISIBLE else View.GONE
+        binding.svUserDetail.visibility = if (view == binding.svUserDetail) View.VISIBLE else View.GONE
         binding.pgbSearchRoute.visibility = if (view == binding.pgbSearchRoute) View.VISIBLE else View.GONE
         binding.llTimeout.visibility = if (view == binding.llTimeout) View.VISIBLE else View.GONE
         binding.llServiceError.visibility = if (view == binding.llServiceError) View.VISIBLE else View.GONE
     }
 
-    private fun toggleActionImage(action: Action) {
-        when (action.code) {
-            Action.NONE.code -> {
-                binding.icEmergency.setImageResource(R.drawable.ic_unchecked_emergency)
-                binding.icRest.setImageResource(R.drawable.ic_unchecked_rest)
-                binding.icWork.setImageResource(R.drawable.ic_unchecked_work)
-            }
-            Action.EMERGENCY.code -> {
-                binding.icEmergency.setImageResource(R.drawable.ic_checked_emergency)
-                binding.icRest.setImageResource(R.drawable.ic_unchecked_rest)
-                binding.icWork.setImageResource(R.drawable.ic_unchecked_work)
-            }
-            Action.REST.code -> {
-                binding.icEmergency.setImageResource(R.drawable.ic_unchecked_emergency)
-                binding.icRest.setImageResource(R.drawable.ic_checked_rest)
-                binding.icWork.setImageResource(R.drawable.ic_unchecked_work)
-            }
-            Action.WORK.code -> {
-                binding.icEmergency.setImageResource(R.drawable.ic_unchecked_emergency)
-                binding.icRest.setImageResource(R.drawable.ic_unchecked_rest)
-                binding.icWork.setImageResource(R.drawable.ic_checked_work)
-            }
-        }
-    }
-
-    private fun initReportLocationMap(savedInstanceState: Bundle?) {
-        binding.mapReportLocation.onCreate(savedInstanceState)
-        val location = LatLng(viewModel.report.locationLatitude.toDouble(),
-            viewModel.report.locationLongitude.toDouble())
-
-        binding.mapReportLocation.getMapAsync {
-            it.addMarker(MarkerOptions().position(location).title(REPORT_POSITION))
-            it.uiSettings.isZoomControlsEnabled = true
-            it.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
-        }
-    }
-
-    override fun onStart() {
-        binding.mapReportLocation.onStart()
-        super.onStart()
-    }
-
-    override fun onResume() {
-        binding.mapReportLocation.onResume()
-        super.onResume()
-    }
-
-    override fun onPause() {
-        binding.mapReportLocation.onPause()
-        super.onPause()
-    }
-
-    override fun onStop() {
-        binding.mapReportLocation.onStop()
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        binding.mapReportLocation.onDestroy()
-        super.onDestroy()
-    }
-
     companion object {
-        private const val THRESHOLD_OVER_MESSAGE = "+%d"
         private const val AGE_UNIT = "%d세"
         private const val HEIGHT_UNIT = "cm"
         private const val WEIGHT_UNIT = "kg"
-        private const val TODAY_REPORT_COUNT_MESSAGE = "%d건"
+        private const val PHONE_NUMBER_FORMAT = "%s-%s-%s"
         private const val HEART_RATE_MESSAGE = "%d bpm"
         private const val HEART_RATE_GRAPH_LEGEND = "심박수 구간 안내"
-        private const val REPORT_POSITION = "신고 위치"
         private const val EMPTY_HEART_RATE = 0
 
         private const val MAX_AXIS_LEFT = 160f

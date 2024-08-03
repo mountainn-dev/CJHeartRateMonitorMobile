@@ -1,20 +1,20 @@
-package com.san.heartratemonitormobile.domain.viewmodelfactory
+package com.san.heartratemonitormobile.view.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
-import com.san.heartratemonitormobile.domain.model.ReportModel
-import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportDetailViewModelImpl
+import com.san.heartratemonitormobile.domain.model.UserModel
+import com.san.heartratemonitormobile.view.viewmodelimpl.UserDetailViewModelImpl
 
-class ReportDetailViewModelFactory(
+class UserDetailViewModelFactory(
     private val repository: HeartRateServiceRepository,
-    private val reportModel: ReportModel,
+    private val userModel: UserModel,
     private val id: String
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ReportDetailViewModelImpl::class.java)) {
+        if (modelClass.isAssignableFrom(UserDetailViewModelImpl::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ReportDetailViewModelImpl(repository, reportModel, id) as T
+            return UserDetailViewModelImpl(repository, userModel, id) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

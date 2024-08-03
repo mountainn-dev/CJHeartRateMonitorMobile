@@ -13,9 +13,8 @@ class ErrorInterceptor : Interceptor {
         val response = chain.proceed(request)
 
         parseServiceResultCode(response.code())
-        response.close()
 
-        return chain.proceed(request)
+        return response
     }
 
     private fun parseServiceResultCode(code: Int) {
@@ -23,7 +22,7 @@ class ErrorInterceptor : Interceptor {
             SUCCESS.code -> {}
             // TODO: 서버 status code 정의 미완료로 우선 IOException 으로 일괄 처리
 //            WRONG_ID_PASSWORD.code -> throw ServiceException.LoginException(WRONG_ID_PASSWORD.message)
-//            NO_RESULT.code -> throw ServiceException.NoResultException(NO_RESULT.message)
+            NO_RESULT.code -> throw ServiceException.NoResultException(NO_RESULT.message)
 //            ID_DUPLICATION.code -> throw ServiceException.SignUpException(ID_DUPLICATION.message)
             else -> throw IOException(code.toString())
         }

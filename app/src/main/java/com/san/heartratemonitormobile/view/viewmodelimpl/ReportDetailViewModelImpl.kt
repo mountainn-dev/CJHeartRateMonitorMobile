@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.domain.viewmodelimpl
+package com.san.heartratemonitormobile.view.viewmodelimpl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +12,7 @@ import com.san.heartratemonitormobile.domain.enums.Action
 import com.san.heartratemonitormobile.domain.model.HeartRateModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
-import com.san.heartratemonitormobile.domain.viewmodel.ReportDetailViewModel
+import com.san.heartratemonitormobile.view.viewmodel.ReportDetailViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,7 +26,7 @@ class ReportDetailViewModelImpl(
 ) : ReportDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
-    private val viewModelState = MutableLiveData<UiState>(UiState.Success)
+    private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
     override val report: ReportModel = reportModel
     override lateinit var heartRateData: List<Int>
 
@@ -44,7 +44,7 @@ class ReportDetailViewModelImpl(
     }
 
     private suspend fun loadHeartRate() {
-        val result = repository.getHeartRate(Id(id), LocalDate.now())
+        val result = repository.getHeartRate(Id(id), reportModel.reportDate)
 
         if (result is Success) {
             heartRateData = result.data

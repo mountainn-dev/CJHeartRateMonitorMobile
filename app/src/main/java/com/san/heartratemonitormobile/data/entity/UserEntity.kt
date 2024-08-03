@@ -1,5 +1,6 @@
 package com.san.heartratemonitormobile.data.entity
 
+import com.google.gson.annotations.SerializedName
 import com.san.heartratemonitormobile.data.exception.ExceptionMessage
 import com.san.heartratemonitormobile.data.vo.Birth
 import com.san.heartratemonitormobile.data.vo.Height
@@ -11,9 +12,9 @@ import com.san.heartratemonitormobile.domain.enums.Gender
 import com.san.heartratemonitormobile.domain.model.UserModel
 
 data class UserEntity(
-    val id: String,
+    @SerializedName("userId") val id: String,
     val name: String,
-    val phoneNumber: String,
+    @SerializedName("phoneNum") val phoneNumber: String,
     val gender: Int,
     val birth: String,
     val height: String,

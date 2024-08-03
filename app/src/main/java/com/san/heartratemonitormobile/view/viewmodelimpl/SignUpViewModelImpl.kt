@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.domain.viewmodelimpl
+package com.san.heartratemonitormobile.view.viewmodelimpl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +19,7 @@ import com.san.heartratemonitormobile.domain.model.SignUpModel
 import com.san.heartratemonitormobile.domain.utils.InputValidator
 import com.san.heartratemonitormobile.domain.utils.Invalid
 import com.san.heartratemonitormobile.domain.utils.Valid
-import com.san.heartratemonitormobile.domain.viewmodel.SignUpViewModel
+import com.san.heartratemonitormobile.view.viewmodel.SignUpViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

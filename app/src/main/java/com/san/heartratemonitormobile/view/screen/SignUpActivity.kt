@@ -14,9 +14,9 @@ import com.san.heartratemonitormobile.data.repositoryimpl.LoginRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivitySignUpBinding
 import com.san.heartratemonitormobile.domain.enums.Gender
 import com.san.heartratemonitormobile.domain.utils.Utils
-import com.san.heartratemonitormobile.domain.viewmodel.SignUpViewModel
-import com.san.heartratemonitormobile.domain.viewmodelfactory.SignUpViewModelFactory
-import com.san.heartratemonitormobile.domain.viewmodelimpl.SignUpViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodel.SignUpViewModel
+import com.san.heartratemonitormobile.view.viewmodelfactory.SignUpViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelimpl.SignUpViewModelImpl
 import com.san.heartratemonitormobile.view.listener.EditTextChangedListener
 import com.san.heartratemonitormobile.view.listener.TextChangedListener
 

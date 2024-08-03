@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.domain.viewmodel
+package com.san.heartratemonitormobile.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.san.heartratemonitormobile.domain.model.AccountModel

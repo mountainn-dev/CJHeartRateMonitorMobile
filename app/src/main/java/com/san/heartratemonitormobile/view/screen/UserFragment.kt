@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.view.screen
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,16 +19,21 @@ import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentUserBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
+import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.utils.Utils
-import com.san.heartratemonitormobile.domain.viewmodel.UserViewModel
-import com.san.heartratemonitormobile.domain.viewmodelfactory.UserViewModelFactory
-import com.san.heartratemonitormobile.domain.viewmodelimpl.UserViewModelImpl
 import com.san.heartratemonitormobile.view.adapter.UserAdapter
+import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
+import com.san.heartratemonitormobile.view.viewmodel.UserViewModel
+import com.san.heartratemonitormobile.view.viewmodelfactory.UserViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelimpl.UserViewModelImpl
 import java.time.LocalDate
 
-class UserFragment(private val account: AccountModel) : Fragment() {
+class UserFragment(
+    private val account: AccountModel,
+    private val userId: String
+) : Fragment() {
     private lateinit var binding: FragmentUserBinding
     private lateinit var viewModel: UserViewModel
 
@@ -90,8 +96,25 @@ class UserFragment(private val account: AccountModel) : Fragment() {
     }
 
     private fun loadUsers(activity: Activity) {
-        binding.rvUser.adapter = UserAdapter(viewModel.users, activity)
+        binding.rvUser.adapter = UserAdapter(
+            viewModel.users,
+            userItemClickEventListener(viewModel.users, activity),
+            activity
+        )
         binding.rvUser.layoutManager = LinearLayoutManager(activity)
+    }
+
+    private fun userItemClickEventListener(
+        items: List<UserModel>,
+        activity: Activity
+    ) = object : ItemClickEventListener {
+        override fun onItemClickListener(position: Int) {
+            val intent = Intent(activity, UserDetailActivity::class.java)
+            intent.putExtra(Const.TAG_USER, items[position])
+            intent.putExtra(Const.TAG_ID, userId)
+
+            activity.startActivity(intent)
+        }
     }
 
     private fun startDateObserver() = Observer<LocalDate> {

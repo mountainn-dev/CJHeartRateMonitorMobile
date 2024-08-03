@@ -1,5 +1,6 @@
 package com.san.heartratemonitormobile.data.entity
 
+import com.google.gson.annotations.SerializedName
 import com.san.heartratemonitormobile.data.exception.ExceptionMessage
 import com.san.heartratemonitormobile.data.vo.Birth
 import com.san.heartratemonitormobile.data.vo.Height
@@ -14,9 +15,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class ReportEntity(
-    val id: String,
+    @SerializedName("userId") val id: String,
     val name: String,
-    val phoneNumber: String,
+    @SerializedName("phoneNum") val phoneNumber: String,
     val gender: Int,
     val birth: String,
     val height: String,
@@ -26,9 +27,9 @@ data class ReportEntity(
     val reportCountToday: Int,
     val reportHeartRate: Int,
     val reportDateTime: String,
-    val action: Int?,
-    val locationLatitude: Float,
-    val locationLongitude: Float
+    val action: String,
+    @SerializedName("locationXPos") val locationLatitude: Float,
+    @SerializedName("locationYPos") val locationLongitude: Float
 ) {
     fun toReportModel() = ReportModel(
         Id(id),
@@ -71,11 +72,11 @@ data class ReportEntity(
         }
     }
 
-    private fun action(action: Int?) = when (action) {
-        null -> NONE
-        EMERGENCY.code -> EMERGENCY
-        REST.code -> REST
-        WORK.code -> WORK
+    private fun action(action: String) = when (action) {
+        NONE.code.toString() -> NONE
+        EMERGENCY.code.toString() -> EMERGENCY
+        REST.code.toString() -> REST
+        WORK.code.toString() -> WORK
         else -> throw NoSuchElementException(ExceptionMessage.WRONG_ACTION_VALUE_EXCEPTION)
     }
 

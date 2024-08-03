@@ -7,6 +7,7 @@ import com.san.heartratemonitormobile.data.vo.Name
 import com.san.heartratemonitormobile.data.vo.PhoneNumber
 import com.san.heartratemonitormobile.data.vo.Weight
 import com.san.heartratemonitormobile.domain.enums.Gender
+import java.io.Serializable
 
 data class UserModel(
     val id: Id,
@@ -20,4 +21,4 @@ data class UserModel(
     val reportCountToday: Int,
     val threshold: Int,
     val lastHeartRate: Int
-)
+) : Serializable

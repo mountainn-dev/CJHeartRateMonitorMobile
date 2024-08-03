@@ -32,7 +32,8 @@ data class Id(
             }
         }
 
-        return hasNumber && hasAlphabet && !hasOther
+        // TODO: hasNumber &&
+        return hasAlphabet && !hasOther
     }
 
     private fun isNumber(data: Char) = data.isDigit()

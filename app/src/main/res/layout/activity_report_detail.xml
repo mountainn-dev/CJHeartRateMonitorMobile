@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
@@ -333,7 +332,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="@dimen/margin_padding_small"
-
                     android:orientation="vertical"
                     android:background="@color/white">
 
@@ -410,10 +408,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_margin="@dimen/margin_padding_small"
-                    android:text="@string/action_record"
+                    android:text="@string/report_location"
                     android:textColor="@color/text_sub"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapReportLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_report_location_map" />
 
             </LinearLayout>
 
@@ -426,7 +430,8 @@
             android:layout_gravity="center"
             app:indicatorColor="@color/grey"
             app:trackColor="@color/light_grey"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/llTimeout"

@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.data.repositoryimpl
 import android.util.Log
 import com.san.heartratemonitormobile.data.Result
 import com.san.heartratemonitormobile.data.entity.ActionEntity
+import com.san.heartratemonitormobile.data.exception.ServiceException
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.data.vo.Birth
@@ -25,8 +26,10 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         end: LocalDate,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory(null, start.toString(), end.toString(), Action.NONE.code.toString())
+            val response = service.getReportHistory("NULL", start.toString(), end.toString(), Action.NONE.code.toString())
             return Result.success(response.data.map { it.toReportModel() })
+        } catch (e: ServiceException.NoResultException) {
+            return Result.success(emptyList())
         } catch (e: Exception) {
             Log.e("reportException", e.toString())
             return Result.error(e)
@@ -38,9 +41,11 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         end: LocalDate,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory(null, start.toString(), end.toString(), null)
+            val response = service.getReportHistory("NULL", start.toString(), end.toString(), "NULL")
             return Result.success(response.data.map { it.toReportModel() })
-        } catch (e: Exception) {
+        } catch (e: ServiceException.NoResultException) {
+            return Result.success(emptyList())
+        }  catch (e: Exception) {
             Log.e("reportException", e.toString())
             return Result.error(e)
         }
@@ -54,7 +59,9 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         try {
             val response = service.getReportHistory(id.get(), start.toString(), end.toString(), Action.NONE.code.toString())
             return Result.success(response.data.map { it.toReportModel() })
-        } catch (e: Exception) {
+        } catch (e: ServiceException.NoResultException) {
+            return Result.success(emptyList())
+        }  catch (e: Exception) {
             Log.e("reportException", e.toString())
             return Result.error(e)
         }
@@ -68,7 +75,9 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         try {
             val response = service.getReportHistory(id.get(), start.toString(), end.toString(), null)
             return Result.success(response.data.map { it.toReportModel() })
-        } catch (e: Exception) {
+        } catch (e: ServiceException.NoResultException) {
+            return Result.success(emptyList())
+        }  catch (e: Exception) {
             Log.e("reportException", e.toString())
             return Result.error(e)
         }
@@ -78,7 +87,9 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         try {
             val response = service.getWorkingUser()
             return Result.success(response.data.map { it.toUserModel() })
-        } catch (e: Exception) {
+        } catch (e: ServiceException.NoResultException) {
+            return Result.success(emptyList())
+        }  catch (e: Exception) {
             Log.d("workingUser", e.toString())
             return Result.error(e)
         }
@@ -86,9 +97,11 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
 
     override suspend fun getAllUsers(start: LocalDate, end: LocalDate): Result<List<UserModel>> {
         try {
-            val response = service.getUser(null, start.toString(), end.toString())
+            val response = service.getUser("NULL", start.toString(), end.toString())
             return Result.success(response.data.map { it.toUserModel() })
-        } catch (e: Exception) {
+        } catch (e: ServiceException.NoResultException) {
+            return Result.success(emptyList())
+        }  catch (e: Exception) {
             Log.d("User", e.toString())
             return Result.error(e)
         }
@@ -111,7 +124,9 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         try {
             val response = service.getHeartRate(id.get(), heartRateDate.toString())
             return Result.success(response.data)
-        } catch (e: Exception) {
+        } catch (e: ServiceException.NoResultException) {
+            return Result.success(emptyList())
+        }  catch (e: Exception) {
             Log.d("HeartRate", e.toString())
             return Result.error(e)
         }

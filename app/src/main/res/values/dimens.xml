@@ -18,5 +18,6 @@
     <dimen name="height_sign_up_item">40dp</dimen>
     <dimen name="text_sign_up_error">12sp</dimen>
 
-    <!-- Working -->
+        <!-- Report Detail-->
+        <dimen name="height_report_location_map">300dp</dimen>
 </resources>
