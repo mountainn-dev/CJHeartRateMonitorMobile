@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
-import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.databinding.FragmentReportBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
@@ -132,15 +131,9 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
     }
 
     private fun setBtnRefreshListener() {
-        binding.btnRefresh.setOnClickListener {
-            viewModel.load()
-        }
-        binding.btnTimeoutRequest.setOnClickListener {
-            viewModel.load()
-        }
-        binding.btnServiceErrorRequest.setOnClickListener {
-            viewModel.load()
-        }
+        binding.btnRefresh.setOnClickListener { load() }
+        binding.btnTimeoutRequest.setOnClickListener { load() }
+        binding.btnServiceErrorRequest.setOnClickListener { load() }
     }
 
     private fun setBtnFilterDateListener() {
@@ -158,18 +151,21 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
     private fun startDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setStartDateAndLoad(LocalDate.of(year, month+1, day))
+            viewModel.setStartDate(LocalDate.of(year, month+1, day))
+            load()
         }
 
     private fun endDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setEndDateAndLoad(LocalDate.of(year, month+1, day))
+            viewModel.setEndDate(LocalDate.of(year, month+1, day))
+            load()
         }
 
     private fun setBtnFilterIdListener() {
         binding.edtId.setOnEditorActionListener { textView, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.filterById(binding.edtId.text.toString())
+                viewModel.setIdFilter(binding.edtId.text.toString())
+                load()
                 return@setOnEditorActionListener true
             }
 
@@ -186,6 +182,10 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
     override fun onResume() {
         super.onResume()
+        load()
+    }
+
+    private fun load() {
         viewModel.load()
     }
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
-import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.view.viewmodel.UserViewModel
@@ -24,13 +23,14 @@ class UserViewModelImpl(
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
 
     override lateinit var users: List<UserModel>
-    private lateinit var temp: List<UserModel>
+    private lateinit var save: List<UserModel>
     override val startDate: LiveData<LocalDate>
         get() = workStartDate
     private val workStartDate = MutableLiveData(LocalDate.now())
     override val endDate: LiveData<LocalDate>
         get() = workEndDate
     private val workEndDate = MutableLiveData(LocalDate.now())
+    private var idFilter = BLANK
 
     override fun load() {
         viewModelScope.launch {
@@ -44,8 +44,8 @@ class UserViewModelImpl(
         val result = repository.getAllUsers(workStartDate.value!!, workEndDate.value!!)
 
         if (result is Success) {
-            users = result.data
-            temp = result.data
+            save = result.data
+            users = save.filter { it.id.get().contains(idFilter) }
             viewModelState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
@@ -53,19 +53,19 @@ class UserViewModelImpl(
         }
     }
 
-    override fun setStartDateAndLoad(date: LocalDate) {
+    override fun setStartDate(date: LocalDate) {
         workStartDate.value = date
-        load()
     }
 
-    override fun setEndDateAndLoad(date: LocalDate) {
+    override fun setEndDate(date: LocalDate) {
         workEndDate.value = date
-        load()
     }
 
-    override fun filterById(id: String) {
-        users = temp.filter { it.id.get().contains(id) }
+    override fun setIdFilter(id: String) {
+        idFilter = id
+    }
 
-        viewModelState.postValue(UiState.Success)
+    companion object {
+        private const val BLANK = ""
     }
 }
