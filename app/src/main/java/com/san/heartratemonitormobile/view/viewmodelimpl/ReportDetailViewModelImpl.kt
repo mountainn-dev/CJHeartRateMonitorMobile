@@ -21,8 +21,7 @@ import java.time.LocalTime
 
 class ReportDetailViewModelImpl(
     private val repository: HeartRateServiceRepository,
-    private val reportModel: ReportModel,
-    private val id: String
+    private val reportModel: ReportModel
 ) : ReportDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
@@ -44,7 +43,7 @@ class ReportDetailViewModelImpl(
     }
 
     private suspend fun loadHeartRate() {
-        val result = repository.getHeartRate(Id(id), reportModel.reportDate)
+        val result = repository.getHeartRate(reportModel.id, reportModel.reportDate)
 
         if (result is Success) {
             heartRateData = result.data
@@ -63,7 +62,7 @@ class ReportDetailViewModelImpl(
     }
 
     private suspend fun changeAction(action: Action) {
-        val result = repository.setAction(Id(id), reportModel.reportDate, reportModel.reportTime, action)
+        val result = repository.setAction(reportModel.id, reportModel.reportDate, reportModel.reportTime, action)
 
         if (result is Error) {
             viewModelState.postValue(UiState.ServiceError)

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.data.vo.Id
@@ -18,7 +19,6 @@ import java.time.LocalDate
 class UserDetailViewModelImpl(
     private val repository: HeartRateServiceRepository,
     private val userModel: UserModel,
-    private val id: String
 ) : UserDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
@@ -39,7 +39,7 @@ class UserDetailViewModelImpl(
     }
 
     private suspend fun loadHeartRate() {
-        val result = repository.getHeartRate(Id(id), LocalDate.now())
+        val result = repository.getHeartRate(userModel.id, LocalDate.now())
 
         if (result is Success) {
             heartRateData = result.data
@@ -50,6 +50,18 @@ class UserDetailViewModelImpl(
     }
 
     override fun setThreshold(threshold: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                changeThreshold(threshold)
+            }
+        }
+    }
 
+    private suspend fun changeThreshold(threshold: Int) {
+        val result = repository.setThreshold(userModel.id, threshold)
+
+        if (result is Error) {
+            viewModelState.postValue(UiState.ServiceError)
+        }
     }
 }

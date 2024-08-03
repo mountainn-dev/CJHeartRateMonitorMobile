@@ -4,6 +4,9 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -40,17 +43,16 @@ class UserDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userModel = intent.getSerializableExtra(Const.TAG_USER) as UserModel
-        val userId = intent.getStringExtra(Const.TAG_ID) ?: ""
         val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(
             Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
                 HeartRateService::class.java))
-        viewModel = ViewModelProvider(this, UserDetailViewModelFactory(repo, userModel, userId)).get(
+        viewModel = ViewModelProvider(this, UserDetailViewModelFactory(repo, userModel)).get(
             UserDetailViewModelImpl::class.java
         )
 
         initObserver(this)
-        initListener()
+        initListener(this)
         initHeartRateGraph(this)
     }
 
@@ -120,14 +122,42 @@ class UserDetailActivity : AppCompatActivity() {
         binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, max)
     }
 
-    private fun initListener() {
+    private fun initListener(activity: Activity) {
         setBtnBackListener()
+        setBtnSetThresholdListener(activity)
     }
 
     private fun setBtnBackListener() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+    }
+
+    private fun setBtnSetThresholdListener(activity: Activity) {
+        val dialogBuilder = thresholdDialogBuilder(activity)
+
+        binding.btnSetThreshold.setOnClickListener {
+            dialogBuilder.show()
+        }
+    }
+
+    private fun thresholdDialogBuilder(activity: Activity): AlertDialog.Builder {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_user_input, null)
+        val builder = AlertDialog.Builder(activity)
+        builder.setView(dialogView)
+
+        val title = dialogView.findViewById<TextView>(R.id.txtTitle)
+        val userInput = dialogView.findViewById<EditText>(R.id.edtInput)
+
+        title.text = ADJUST_THRESHOLD_MESSAGE
+        builder.setPositiveButton(DIALOG_POSITIVE_BUTTON_TEXT) { dialog, id ->
+            viewModel.setThreshold(userInput.text.toString().toInt())
+            binding.txtThreshold.text = userInput.text.toString()
+        }
+            .setNegativeButton(DIALOG_NEGATIVE_BUTTON_TEXT) { dialog, id ->
+                dialog.cancel() }
+
+        return builder
     }
 
     private fun initHeartRateGraph(activity: Activity) {
@@ -197,6 +227,9 @@ class UserDetailActivity : AppCompatActivity() {
         private const val HEART_RATE_MESSAGE = "%d bpm"
         private const val HEART_RATE_GRAPH_LEGEND = "심박수 구간 안내"
         private const val EMPTY_HEART_RATE = 0
+        private const val ADJUST_THRESHOLD_MESSAGE = "임계치를 입력하세요."
+        private const val DIALOG_POSITIVE_BUTTON_TEXT = "확인"
+        private const val DIALOG_NEGATIVE_BUTTON_TEXT = "취소"
 
         private const val MAX_AXIS_LEFT = 160f
         private const val MIN_AXIS_LEFT = 0f

@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.data.repositoryimpl
 import android.util.Log
 import com.san.heartratemonitormobile.data.Result
 import com.san.heartratemonitormobile.data.entity.ActionEntity
+import com.san.heartratemonitormobile.data.entity.ThresholdEntity
 import com.san.heartratemonitormobile.data.exception.ServiceException
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
@@ -143,6 +144,18 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
             return Result.success(true)
         } catch (e: Exception) {
             Log.d("setAction", e.toString())
+            return Result.error(e)
+        }
+    }
+
+    override suspend fun setThreshold(
+        id: Id, threshold: Int
+    ): Result<Boolean> {
+        try {
+            service.setThreshold(ThresholdEntity(id.get(), threshold.toString()))
+            return Result.success(true)
+        } catch (e: Exception) {
+            Log.d("setThreshold", e.toString())
             return Result.error(e)
         }
     }

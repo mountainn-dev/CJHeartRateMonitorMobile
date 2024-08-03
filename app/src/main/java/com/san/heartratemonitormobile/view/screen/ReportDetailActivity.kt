@@ -44,10 +44,9 @@ class ReportDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val reportModel = intent.getSerializableExtra(Const.TAG_REPORT) as ReportModel
-        val userId = intent.getStringExtra(Const.TAG_ID) ?: ""
         val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
-        viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel, userId)).get(
+        viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel)).get(
             ReportDetailViewModelImpl::class.java
         )
 

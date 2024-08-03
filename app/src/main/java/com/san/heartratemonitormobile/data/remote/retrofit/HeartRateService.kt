@@ -4,6 +4,7 @@ import com.san.heartratemonitormobile.data.entity.ActionEntity
 import com.san.heartratemonitormobile.data.entity.HeartRateEntity
 import com.san.heartratemonitormobile.data.entity.ReportEntity
 import com.san.heartratemonitormobile.data.entity.ServiceResponse
+import com.san.heartratemonitormobile.data.entity.ThresholdEntity
 import com.san.heartratemonitormobile.data.entity.UserEntity
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -35,8 +36,13 @@ interface HeartRateService {
         @Query("heartRateDate") date: String
     ): ServiceResponse<List<Int>>
 
-    @POST("Action")
+    @POST("/Action")
     suspend fun setAction(
         @Body data: ActionEntity
+    )
+
+    @POST("/adjustThreshold")
+    suspend fun setThreshold(
+        @Body data: ThresholdEntity
     )
 }
