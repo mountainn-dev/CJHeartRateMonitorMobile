@@ -19,9 +19,9 @@ import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.utils.Utils
-import com.san.heartratemonitormobile.domain.viewmodel.UrgentViewModel
-import com.san.heartratemonitormobile.domain.viewmodelfactory.UrgentViewModelFactory
-import com.san.heartratemonitormobile.domain.viewmodelimpl.UrgentViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodel.UrgentViewModel
+import com.san.heartratemonitormobile.view.viewmodelfactory.UrgentViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelimpl.UrgentViewModelImpl
 import com.san.heartratemonitormobile.view.adapter.ReportAdapter
 import com.san.heartratemonitormobile.view.adapter.UserAdapter
 import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
@@ -34,7 +34,8 @@ class UrgentFragment(private val userId: String) : Fragment() {
         super.onCreate(savedInstanceState)
 
         val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit().create(HeartRateService::class.java))
-        viewModel = ViewModelProvider(requireActivity(), UrgentViewModelFactory(repo)).get(UrgentViewModelImpl::class.java)
+        viewModel = ViewModelProvider(requireActivity(), UrgentViewModelFactory(repo)).get(
+            UrgentViewModelImpl::class.java)
     }
 
     override fun onCreateView(

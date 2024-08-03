@@ -1,9 +1,9 @@
-package com.san.heartratemonitormobile.domain.viewmodelfactory
+package com.san.heartratemonitormobile.view.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.san.heartratemonitormobile.data.repository.LoginRepository
-import com.san.heartratemonitormobile.domain.viewmodelimpl.SignUpViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodelimpl.SignUpViewModelImpl
 
 class SignUpViewModelFactory(private val repository: LoginRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

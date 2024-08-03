@@ -14,9 +14,9 @@ import com.san.heartratemonitormobile.databinding.ActivityLoginBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.utils.Utils
-import com.san.heartratemonitormobile.domain.viewmodel.LoginViewModel
-import com.san.heartratemonitormobile.domain.viewmodelfactory.LoginViewModelFactory
-import com.san.heartratemonitormobile.domain.viewmodelimpl.LoginViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodel.LoginViewModel
+import com.san.heartratemonitormobile.view.viewmodelfactory.LoginViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelimpl.LoginViewModelImpl
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding

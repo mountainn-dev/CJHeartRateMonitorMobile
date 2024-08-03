@@ -28,9 +28,9 @@ import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.utils.Utils
-import com.san.heartratemonitormobile.domain.viewmodel.ReportDetailViewModel
-import com.san.heartratemonitormobile.domain.viewmodelfactory.ReportDetailViewModelFactory
-import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportDetailViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodel.ReportDetailViewModel
+import com.san.heartratemonitormobile.view.viewmodelfactory.ReportDetailViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelimpl.ReportDetailViewModelImpl
 import java.time.LocalDate
 import java.time.LocalTime
 

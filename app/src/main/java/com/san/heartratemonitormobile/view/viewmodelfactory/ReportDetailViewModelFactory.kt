@@ -1,10 +1,10 @@
-package com.san.heartratemonitormobile.domain.viewmodelfactory
+package com.san.heartratemonitormobile.view.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.domain.model.ReportModel
-import com.san.heartratemonitormobile.domain.viewmodelimpl.ReportDetailViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodelimpl.ReportDetailViewModelImpl
 
 class ReportDetailViewModelFactory(
     private val repository: HeartRateServiceRepository,

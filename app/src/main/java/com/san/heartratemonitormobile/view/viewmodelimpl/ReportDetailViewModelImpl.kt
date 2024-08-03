@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.domain.viewmodelimpl
+package com.san.heartratemonitormobile.view.viewmodelimpl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +12,7 @@ import com.san.heartratemonitormobile.domain.enums.Action
 import com.san.heartratemonitormobile.domain.model.HeartRateModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
-import com.san.heartratemonitormobile.domain.viewmodel.ReportDetailViewModel
+import com.san.heartratemonitormobile.view.viewmodel.ReportDetailViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

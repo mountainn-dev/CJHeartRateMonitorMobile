@@ -1,4 +1,4 @@
-package com.san.heartratemonitormobile.domain.viewmodelimpl
+package com.san.heartratemonitormobile.view.viewmodelimpl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,49 +6,45 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
-import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.domain.model.AccountModel
-import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
-import com.san.heartratemonitormobile.domain.viewmodel.ReportViewModel
+import com.san.heartratemonitormobile.view.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class ReportViewModelImpl(
+class UserViewModelImpl(
     private val repository: HeartRateServiceRepository,
-    private val account: AccountModel,
-    private val id: String
-) : ReportViewModel, ViewModel() {
+) : UserViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
 
-    override lateinit var reports: List<ReportModel>
-    private lateinit var save: List<ReportModel>   // Id 필터 적용을 위한 전체 신고 이력 세이브용 변수
+    override lateinit var users: List<UserModel>
+    private lateinit var temp: List<UserModel>
     override val startDate: LiveData<LocalDate>
-        get() = reportStartDate
-    private val reportStartDate = MutableLiveData(LocalDate.now())
+        get() = workStartDate
+    private val workStartDate = MutableLiveData(LocalDate.now())
     override val endDate: LiveData<LocalDate>
-        get() = reportEndDate
-    private val reportEndDate = MutableLiveData(LocalDate.now())
+        get() = workEndDate
+    private val workEndDate = MutableLiveData(LocalDate.now())
 
     override fun load() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                loadReportContent()
+                loadUserContent()
             }
         }
     }
 
-    private suspend fun loadReportContent() {
-        val result = if (account.admin) repository.getAllUserReports(reportStartDate.value!!, reportEndDate.value!!)
-        else repository.getSingleUserReports(Id(id), reportStartDate.value!!, reportEndDate.value!!)
+    private suspend fun loadUserContent() {
+        val result = repository.getAllUsers(workStartDate.value!!, workEndDate.value!!)
 
         if (result is Success) {
-            reports = result.data
-            save = result.data
+            users = result.data
+            temp = result.data
             viewModelState.postValue(UiState.Success)
         } else {
             viewModelState.postValue(UiState.ServiceError)
@@ -56,17 +52,17 @@ class ReportViewModelImpl(
     }
 
     override fun setStartDateAndLoad(date: LocalDate) {
-        reportStartDate.postValue(date)
+        workStartDate.postValue(date)
         load()
     }
 
     override fun setEndDateAndLoad(date: LocalDate) {
-        reportEndDate.postValue(date)
+        workEndDate.postValue(date)
         load()
     }
 
     override fun filterById(id: String) {
-        reports = save.filter { it.id.get().contains(id) }
+        users = temp.filter { it.id.get().contains(id) }
 
         viewModelState.postValue(UiState.Success)
     }
