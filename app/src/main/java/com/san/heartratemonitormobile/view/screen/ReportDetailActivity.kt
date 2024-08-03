@@ -16,7 +16,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.san.heartratemonitormobile.BuildConfig
@@ -243,6 +242,26 @@ class ReportDetailActivity : AppCompatActivity() {
             it.uiSettings.isZoomControlsEnabled = true
             it.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
         }
+    }
+
+    override fun onStart() {
+        binding.mapReportLocation.onStart()
+        super.onStart()
+    }
+
+    override fun onResume() {
+        binding.mapReportLocation.onResume()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        binding.mapReportLocation.onPause()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        binding.mapReportLocation.onStop()
+        super.onStop()
     }
 
     override fun onDestroy() {

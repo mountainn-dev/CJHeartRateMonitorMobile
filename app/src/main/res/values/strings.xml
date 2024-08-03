@@ -25,8 +25,6 @@
     <string name="service_term">(필수) Heart Rate Monitor 서비스 이용 약관 동의</string>
     <string name="privacy_term">(선택) 개인정보 수집 동의</string>
     <string name="show_term_detail">[보기]</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Home -->
     <string name="tab_name_my_page">마이페이지</string>
@@ -60,4 +58,13 @@
     <!-- User -->
     <string name="name_user">전체 회원</string>
     <string name="filter_work_date">근무 기간</string>
+
+        <!-- User Detail -->
+        <string name="name_user_detail">회원 상세</string>
+        <string name="user_summary_sub_title_1">임계치</string>
+        <string name="user_summary_sub_title_2">성별/나이</string>
+        <string name="user_summary_sub_title_3">신장/체중</string>
+        <string name="user_summary_sub_title_4">아이디</string>
+        <string name="user_summary_sub_title_5">전화번호</string>
+        <string name="set_heart_rate_threshold">수정하기</string>
 </resources>

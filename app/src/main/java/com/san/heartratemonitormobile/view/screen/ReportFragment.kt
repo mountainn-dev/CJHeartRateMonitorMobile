@@ -111,6 +111,7 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
         override fun onItemClickListener(position: Int) {
             val intent = Intent(activity, ReportDetailActivity::class.java)
             intent.putExtra(Const.TAG_REPORT, items[position])
+            intent.putExtra(Const.TAG_ID, id)
 
             activity.startActivity(intent)
         }
