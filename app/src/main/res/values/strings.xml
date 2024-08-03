@@ -46,7 +46,7 @@
 
         <!-- Report Detail -->
         <string name="name_report_detail">신고 상세</string>
-        <string name="action_emergency">응급 처리</string>
+        <string name="action_emergency">응급 조치</string>
         <string name="action_rest">즉시 휴식</string>
         <string name="action_work">작업 재개</string>
         <string name="day_heart_rate">당일 심박수</string>

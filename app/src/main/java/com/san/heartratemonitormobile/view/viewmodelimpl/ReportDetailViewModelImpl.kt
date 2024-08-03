@@ -58,13 +58,12 @@ class ReportDetailViewModelImpl(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 changeAction(action)
-                load()
             }
         }
     }
 
     private suspend fun changeAction(action: Action) {
-        val result = repository.setAction(Id(id), LocalDate.now(), LocalTime.now(), action)
+        val result = repository.setAction(Id(id), reportModel.reportDate, reportModel.reportTime, action)
 
         if (result is Error) {
             viewModelState.postValue(UiState.ServiceError)

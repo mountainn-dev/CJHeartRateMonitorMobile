@@ -145,9 +145,18 @@ class ReportDetailActivity : AppCompatActivity() {
     }
 
     private fun setBtnActionListener() {
-        binding.btnEmergency.setOnClickListener { viewModel.setAction(Action.EMERGENCY) }
-        binding.btnRest.setOnClickListener { viewModel.setAction(Action.REST) }
-        binding.btnWork.setOnClickListener { viewModel.setAction(Action.WORK) }
+        binding.btnEmergency.setOnClickListener {
+            viewModel.setAction(Action.EMERGENCY)
+            toggleActionImage(Action.EMERGENCY)
+        }
+        binding.btnRest.setOnClickListener {
+            viewModel.setAction(Action.REST)
+            toggleActionImage(Action.REST)
+        }
+        binding.btnWork.setOnClickListener {
+            viewModel.setAction(Action.WORK)
+            toggleActionImage(Action.WORK)
+        }
     }
 
     private fun initHeartRateGraph(activity: Activity) {
