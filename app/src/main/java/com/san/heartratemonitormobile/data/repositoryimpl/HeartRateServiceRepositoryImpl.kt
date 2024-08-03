@@ -25,7 +25,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         end: LocalDate,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory(null, start.toString(), end.toString(), Action.NONE.code.toString())
+            val response = service.getReportHistory("NULL", start.toString(), end.toString(), Action.NONE.code.toString())
             return Result.success(response.data.map { it.toReportModel() })
         } catch (e: Exception) {
             Log.e("reportException", e.toString())
@@ -38,7 +38,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         end: LocalDate,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory(null, start.toString(), end.toString(), null)
+            val response = service.getReportHistory("NULL", start.toString(), end.toString(), "NULL")
             return Result.success(response.data.map { it.toReportModel() })
         } catch (e: Exception) {
             Log.e("reportException", e.toString())
@@ -86,7 +86,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
 
     override suspend fun getAllUsers(start: LocalDate, end: LocalDate): Result<List<UserModel>> {
         try {
-            val response = service.getUser(null, start.toString(), end.toString())
+            val response = service.getUser("NULL", start.toString(), end.toString())
             return Result.success(response.data.map { it.toUserModel() })
         } catch (e: Exception) {
             Log.d("User", e.toString())

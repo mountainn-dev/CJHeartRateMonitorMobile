@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
-import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
