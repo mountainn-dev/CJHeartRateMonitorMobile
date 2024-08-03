@@ -21,6 +21,10 @@ data class PhoneNumber(
         return pattern.matches(value)
     }
 
+    fun first() = value.substring(0, 3)
+    fun mid() = value.substring(3, 7)
+    fun last() = value.substring(7, 11)
+
     companion object {
         private const val PHONE_NUMBER = "전화번호"
     }

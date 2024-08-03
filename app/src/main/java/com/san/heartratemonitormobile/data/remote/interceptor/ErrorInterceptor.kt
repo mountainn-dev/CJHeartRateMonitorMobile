@@ -13,9 +13,8 @@ class ErrorInterceptor : Interceptor {
         val response = chain.proceed(request)
 
         parseServiceResultCode(response.code())
-        response.close()
 
-        return chain.proceed(request)
+        return response
     }
 
     private fun parseServiceResultCode(code: Int) {
