@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.navWorking -> replaceTo(UrgentFragment(userId))
                 R.id.navReport -> replaceTo(ReportFragment(account, userId))
-                R.id.navUser -> replaceTo(UserFragment(account))
+                R.id.navUser -> replaceTo(UserFragment(account, userId))
             }
 
             return@setOnItemSelectedListener true

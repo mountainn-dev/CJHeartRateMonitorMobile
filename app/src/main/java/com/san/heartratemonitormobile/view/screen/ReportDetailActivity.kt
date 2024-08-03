@@ -102,7 +102,7 @@ class ReportDetailActivity : AppCompatActivity() {
         binding.txtName.text = report.name.get()
         binding.txtGender.text = report.gender.genderName
         binding.txtAge.text = String.format(
-            AGE_MESSAGE,
+            AGE_UNIT,
             LocalDate.now().year - report.birth.get().year + 1)
         binding.txtHeight.text = "${report.height.get()}$HEIGHT_UNIT"
         binding.txtWeight.text = "${report.weight.get()}$WEIGHT_UNIT"
@@ -271,7 +271,7 @@ class ReportDetailActivity : AppCompatActivity() {
 
     companion object {
         private const val THRESHOLD_OVER_MESSAGE = "+%d"
-        private const val AGE_MESSAGE = "%d세"
+        private const val AGE_UNIT = "%d세"
         private const val HEIGHT_UNIT = "cm"
         private const val WEIGHT_UNIT = "kg"
         private const val TODAY_REPORT_COUNT_MESSAGE = "%d건"

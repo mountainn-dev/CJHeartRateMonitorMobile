@@ -41,7 +41,7 @@
         android:layout_weight="1">
 
         <ScrollView
-            android:id="@+id/svReportDetail"
+            android:id="@+id/svUserDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

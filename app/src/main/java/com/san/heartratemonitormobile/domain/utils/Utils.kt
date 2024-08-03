@@ -10,13 +10,13 @@ import java.util.concurrent.TimeUnit
 
 object Utils {
     fun getRetrofit(token: String) = Retrofit.Builder()
-        .baseUrl("http://43.203.200.27:8080")
+        .baseUrl("http://49.247.41.208:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .client(getClientWithOrWithoutIdToken(token))
         .build()
 
     fun getRetrofit() = Retrofit.Builder()
-        .baseUrl("http://43.203.200.27:8080")
+        .baseUrl("http://49.247.41.208:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .client(getClientWithOrWithoutIdToken(null))
         .build()

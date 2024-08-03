@@ -9,11 +9,13 @@ import com.san.heartratemonitormobile.R
 import com.san.heartratemonitormobile.databinding.ItemUserBinding
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.view.listener.ItemClickEventListener
 import java.time.LocalDate
 
 class UserAdapter(
     private val items: List<UserModel>,
-    private val context: Context
+    private val itemClickEventListener: ItemClickEventListener,
+    private val context: Context,
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     inner class UserViewHolder(
         private val binding: ItemUserBinding
@@ -21,6 +23,7 @@ class UserAdapter(
         fun bind(position: Int) {
             loadContent(position)
             setContentColor(position)
+            setItemClickEventListener(position)
         }
 
         private fun loadContent(position: Int) {
@@ -45,6 +48,12 @@ class UserAdapter(
             } else {
                 val color = ContextCompat.getColor(context, R.color.black)
                 binding.txtTodayReportCount.setTextColor(color)
+            }
+        }
+
+        private fun setItemClickEventListener(position: Int) {
+            binding.itemUser.setOnClickListener {
+                itemClickEventListener.onItemClickListener(position)
             }
         }
     }

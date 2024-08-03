@@ -16,6 +16,7 @@ import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceReposi
 import com.san.heartratemonitormobile.databinding.FragmentUrgentBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.utils.Utils
@@ -101,9 +102,26 @@ class UrgentFragment(private val userId: String) : Fragment() {
     }
 
     private fun loadWorkingUsers(activity: Activity) {
-        binding.rvWorking.adapter = UserAdapter(viewModel.workingUsers, activity)
+        binding.rvWorking.adapter = UserAdapter(
+            viewModel.workingUsers,
+            userItemClickEventListener(viewModel.workingUsers, activity),
+            activity
+        )
         binding.rvWorking.layoutManager = LinearLayoutManager(activity)
         binding.txtWorkingCount.text = viewModel.workingUsers.size.toString()
+    }
+
+    private fun userItemClickEventListener(
+        items: List<UserModel>,
+        activity: Activity
+    ) = object : ItemClickEventListener {
+        override fun onItemClickListener(position: Int) {
+            val intent = Intent(activity, UserDetailActivity::class.java)
+            intent.putExtra(Const.TAG_USER, items[position])
+            intent.putExtra(Const.TAG_ID, userId)
+
+            activity.startActivity(intent)
+        }
     }
 
     private fun initListener() {
