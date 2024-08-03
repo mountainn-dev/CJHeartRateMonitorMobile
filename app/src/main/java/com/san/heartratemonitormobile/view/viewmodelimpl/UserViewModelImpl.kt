@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.domain.model.AccountModel
@@ -47,7 +48,8 @@ class UserViewModelImpl(
             temp = result.data
             viewModelState.postValue(UiState.Success)
         } else {
-            viewModelState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 

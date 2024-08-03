@@ -45,7 +45,8 @@ class UserDetailViewModelImpl(
             heartRateData = result.data
             viewModelState.postValue(UiState.Success)
         } else {
-            viewModelState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 
@@ -61,7 +62,8 @@ class UserDetailViewModelImpl(
         val result = repository.setThreshold(userModel.id, threshold)
 
         if (result is Error) {
-            viewModelState.postValue(UiState.ServiceError)
+            if (result.isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 }

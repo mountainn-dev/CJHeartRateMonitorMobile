@@ -49,7 +49,8 @@ class ReportDetailViewModelImpl(
             heartRateData = result.data
             viewModelState.postValue(UiState.Success)
         } else {
-            viewModelState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 
@@ -65,7 +66,8 @@ class ReportDetailViewModelImpl(
         val result = repository.setAction(reportModel.id, reportModel.reportDate, reportModel.reportTime, action)
 
         if (result is Error) {
-            viewModelState.postValue(UiState.ServiceError)
+            if (result.isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 }

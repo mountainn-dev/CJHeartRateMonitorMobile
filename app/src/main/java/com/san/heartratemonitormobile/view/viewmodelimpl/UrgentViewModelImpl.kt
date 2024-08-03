@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.domain.model.ReportModel
@@ -54,7 +55,8 @@ class UrgentViewModelImpl(
             reports = result.data
             reportState.postValue(UiState.Success)
         } else {
-            reportState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) reportState.postValue(UiState.Timeout)
+            else reportState.postValue(UiState.ServiceError)
         }
     }
 
@@ -65,7 +67,8 @@ class UrgentViewModelImpl(
             workingUsers = result.data
             workingUserState.postValue(UiState.Success)
         } else {
-            workingUserState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) workingUserState.postValue(UiState.Timeout)
+            else workingUserState.postValue(UiState.ServiceError)
         }
     }
 

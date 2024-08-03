@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.data.vo.Id
@@ -51,10 +52,13 @@ class ReportViewModelImpl(
             save = result.data
             viewModelState.postValue(UiState.Success)
         } else {
-            viewModelState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 
+    // postValue 이후 해당 value 를 곧바로 load 기능에서 param 으로 사용하는 경우, postValue 가 아닌
+    // setValue 방식으로 value 를 수정. postValue 의 경우 load() 직전에 수정 완료가 되지 않아 param 이 잘못 전달되는 상황이 발생한다.
     override fun setStartDateAndLoad(date: LocalDate) {
         reportStartDate.value = date
         load()
