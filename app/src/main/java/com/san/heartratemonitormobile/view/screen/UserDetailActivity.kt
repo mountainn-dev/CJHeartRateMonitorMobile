@@ -114,8 +114,10 @@ class UserDetailActivity : AppCompatActivity() {
         val dataset = arrayListOf<ILineDataSet>(set)
         val data = LineData(dataset)
         binding.chartDayHeartRate.data = data
-        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateData.average().toInt())
-        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateData.max())
+        val average = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.average().toInt()
+        val max = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.max().toInt()
+        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, average)
+        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, max)
     }
 
     private fun initListener() {
@@ -194,6 +196,7 @@ class UserDetailActivity : AppCompatActivity() {
         private const val PHONE_NUMBER_FORMAT = "%s-%s-%s"
         private const val HEART_RATE_MESSAGE = "%d bpm"
         private const val HEART_RATE_GRAPH_LEGEND = "심박수 구간 안내"
+        private const val EMPTY_HEART_RATE = 0
 
         private const val MAX_AXIS_LEFT = 160f
         private const val MIN_AXIS_LEFT = 0f

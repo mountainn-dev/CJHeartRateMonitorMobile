@@ -56,21 +56,13 @@ class ReportViewModelImpl(
     }
 
     override fun setStartDateAndLoad(date: LocalDate) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                reportStartDate.postValue(date)
-                load()
-            }
-        }
+        reportStartDate.value = date
+        load()
     }
 
     override fun setEndDateAndLoad(date: LocalDate) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                reportEndDate.postValue(date)
-                load()
-            }
-        }
+        reportEndDate.value = date
+        load()
     }
 
     override fun filterById(id: String) {

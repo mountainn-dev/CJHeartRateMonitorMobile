@@ -44,7 +44,7 @@ class ReportDetailViewModelImpl(
     }
 
     private suspend fun loadHeartRate() {
-        val result = repository.getHeartRate(Id(id), LocalDate.now())
+        val result = repository.getHeartRate(Id(id), reportModel.reportDate)
 
         if (result is Success) {
             heartRateData = result.data

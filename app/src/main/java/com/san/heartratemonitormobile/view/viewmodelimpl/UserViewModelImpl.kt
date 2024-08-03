@@ -52,12 +52,12 @@ class UserViewModelImpl(
     }
 
     override fun setStartDateAndLoad(date: LocalDate) {
-        workStartDate.postValue(date)
+        workStartDate.value = date
         load()
     }
 
     override fun setEndDateAndLoad(date: LocalDate) {
-        workEndDate.postValue(date)
+        workEndDate.value = date
         load()
     }
 
