@@ -28,7 +28,12 @@ class ReportDetailViewModelImpl(
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
     override val report: ReportModel = reportModel
     override lateinit var heartRateData: List<Int>
-
+    override val heartRateAverage: Int
+        get() = average
+    private var average = 0
+    override val heartRateMax: Int
+        get() = max
+    private var max = 0
 
     init {
          load()
@@ -47,10 +52,20 @@ class ReportDetailViewModelImpl(
 
         if (result is Success) {
             heartRateData = result.data
+            calculateAvgMax()
             viewModelState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
             else viewModelState.postValue(UiState.ServiceError)
+        }
+    }
+
+    private fun calculateAvgMax() {
+        val zeroRemovedHeartRate = heartRateData.filter { it != 0 }
+
+        if (zeroRemovedHeartRate.isNotEmpty()) {
+            average = zeroRemovedHeartRate.average().toInt()
+            max = zeroRemovedHeartRate.max()
         }
     }
 
