@@ -110,7 +110,6 @@ class UserDetailFragment(private val userId: String) : Fragment() {
 
     private fun loadUserSummary(user: UserModel) {
         binding.txtName.text = user.name.get()
-        binding.txtThreshold.text = user.threshold.toString()
         binding.txtGender.text = user.gender.genderName
         binding.txtAge.text = String.format(
             AGE_UNIT,

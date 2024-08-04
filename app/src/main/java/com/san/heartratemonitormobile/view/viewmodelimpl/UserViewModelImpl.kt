@@ -9,6 +9,7 @@ import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
+import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.view.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +27,8 @@ class UserViewModelImpl(
     private lateinit var save: List<UserModel>
     override val startDate: LiveData<LocalDate>
         get() = workStartDate
-    private val workStartDate = MutableLiveData(LocalDate.now())
+    private val workStartDate = MutableLiveData(
+        LocalDate.parse(String.format(Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)))
     override val endDate: LiveData<LocalDate>
         get() = workEndDate
     private val workEndDate = MutableLiveData(LocalDate.now())

@@ -11,6 +11,7 @@ import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.state.UiState
+import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.view.viewmodel.ReportViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,7 +31,8 @@ class ReportViewModelImpl(
     private lateinit var save: List<ReportModel>   // Id 필터 적용을 위한 전체 신고 이력 세이브용 변수
     override val startDate: LiveData<LocalDate>
         get() = reportStartDate
-    private val reportStartDate = MutableLiveData(LocalDate.now())
+    private val reportStartDate = MutableLiveData(LocalDate.parse(String.format(
+        Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)))
     override val endDate: LiveData<LocalDate>
         get() = reportEndDate
     private val reportEndDate = MutableLiveData(LocalDate.now())

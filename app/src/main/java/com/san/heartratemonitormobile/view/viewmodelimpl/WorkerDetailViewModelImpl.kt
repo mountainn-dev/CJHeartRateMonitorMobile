@@ -50,7 +50,9 @@ class WorkerDetailViewModelImpl(
 
     private suspend fun loadUser() {
         val result = repository.getSingleUser(
-            Id(userId), LocalDate.parse(Const.DATE_FILTER_DEFAULT_START_DATE), LocalDate.now()
+            Id(userId), LocalDate.parse(
+                String.format(Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)
+            ), LocalDate.now()
         )
 
         if (result is Success) {
