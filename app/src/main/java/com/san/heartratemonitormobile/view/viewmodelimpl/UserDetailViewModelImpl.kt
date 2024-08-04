@@ -8,6 +8,7 @@ import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.data.vo.Id
+import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.view.viewmodel.UserDetailViewModel
@@ -18,7 +19,7 @@ import java.time.LocalDate
 
 class UserDetailViewModelImpl(
     private val repository: HeartRateServiceRepository,
-    private val userModel: UserModel,
+    private val userModel: UserModel
 ) : UserDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
