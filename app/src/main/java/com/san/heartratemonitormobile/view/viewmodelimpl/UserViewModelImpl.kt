@@ -74,8 +74,9 @@ class UserViewModelImpl(
      * id 필터링은 api 통신 없이 로컬에서 진행되기 때문에 load() 대신 곧바로 notify
      */
     override fun setIdFilter(id: String) {
+        idFilter = id
+
         if (viewModelState.value!! == UiState.Success) {
-            idFilter = id
             filterUsersById()
 
             viewModelState.postValue(UiState.Success)
