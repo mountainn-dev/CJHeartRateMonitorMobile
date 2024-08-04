@@ -118,7 +118,9 @@ class ReportDetailActivity : AppCompatActivity() {
     private fun loadGraph(activity: Activity) {
         val values = arrayListOf<Entry>()
         for (i in viewModel.heartRateData.indices) {
-            values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            if (viewModel.heartRateData[i] != 0) {
+                values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            }
         }
         val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
         set.color = ContextCompat.getColor(activity, R.color.orange)
