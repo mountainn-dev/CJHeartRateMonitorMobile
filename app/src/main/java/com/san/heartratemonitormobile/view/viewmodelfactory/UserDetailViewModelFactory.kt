@@ -9,12 +9,11 @@ import com.san.heartratemonitormobile.view.viewmodelimpl.UserDetailViewModelImpl
 class UserDetailViewModelFactory(
     private val repository: HeartRateServiceRepository,
     private val userModel: UserModel,
-    private val id: String
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserDetailViewModelImpl::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return UserDetailViewModelImpl(repository, userModel, id) as T
+            return UserDetailViewModelImpl(repository, userModel) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

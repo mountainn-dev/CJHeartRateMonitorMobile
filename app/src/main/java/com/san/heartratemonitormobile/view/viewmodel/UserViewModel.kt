@@ -12,7 +12,7 @@ interface UserViewModel {
     val endDate: LiveData<LocalDate>
 
     fun load()
-    fun setStartDateAndLoad(date: LocalDate)
-    fun setEndDateAndLoad(date: LocalDate)
-    fun filterById(id: String)
+    fun setStartDate(date: LocalDate)
+    fun setEndDate(date: LocalDate)
+    fun setIdFilter(id: String)
 }

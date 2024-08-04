@@ -8,10 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
-import com.san.heartratemonitormobile.domain.model.ReportModel
+import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
-import com.san.heartratemonitormobile.view.viewmodel.UrgentViewModel
+import com.san.heartratemonitormobile.domain.utils.Const
+import com.san.heartratemonitormobile.view.viewmodel.UserDetailViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -19,56 +20,73 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class UrgentViewModelImpl(
+class WorkerDetailViewModelImpl(
     private val repository: HeartRateServiceRepository,
-) : UrgentViewModel, ViewModel() {
+    private val userId: String
+) : UserDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
     private val viewModelState = MediatorLiveData<UiState>()
-    private val reportState = MutableLiveData<UiState>(UiState.Loading)
-    private val workingUserState = MutableLiveData<UiState>(UiState.Loading)
-
-    override lateinit var reports: List<ReportModel>
-    override lateinit var workingUsers: List<UserModel>
+    private val userState = MutableLiveData<UiState>(UiState.Loading)
+    private val heartRateState = MutableLiveData<UiState>(UiState.Loading)
+    override lateinit var user: UserModel
+    override lateinit var heartRateData: List<Int>
+    override val dateFilter: LiveData<LocalDate>
+        get() = heartRateDate
+    private val heartRateDate = MutableLiveData(LocalDate.now())
 
     init {
-        merge(viewModelState, reportState, workingUserState)
+        merge(viewModelState, userState, heartRateState)
+        load()
     }
 
-    override fun load() {
-        val today = LocalDate.now()
-
+    private fun load() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 awaitAll(
-                    async { loadReportContent(today) },
-                    async { loadWorkingUserContent() }
+                    async { loadUser() },
+                    async { loadHeartRate() }
                 )
             }
         }
     }
 
-    private suspend fun loadReportContent(today: LocalDate) {
-        val result = repository.getAllUserActionNeededReports(today, today)
+    private suspend fun loadUser() {
+        val result = repository.getSingleUser(
+            Id(userId), LocalDate.parse(
+                String.format(Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)
+            ), LocalDate.now()
+        )
 
         if (result is Success) {
-            reports = result.data
-            reportState.postValue(UiState.Success)
+            user = result.data
+            userState.postValue(UiState.Success)
         } else {
-            if ((result as Error).isTimeOut()) reportState.postValue(UiState.Timeout)
-            else reportState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) userState.postValue(UiState.Timeout)
+            else userState.postValue(UiState.ServiceError)
         }
     }
 
-    private suspend fun loadWorkingUserContent() {
-        val result = repository.getWorkingUsers()
+    private suspend fun loadHeartRate() {
+        val result = repository.getHeartRate(Id(userId), heartRateDate.value!!)
 
         if (result is Success) {
-            workingUsers = result.data
-            workingUserState.postValue(UiState.Success)
+            heartRateData = result.data
+            viewModelState.postValue(UiState.Success)
         } else {
-            if ((result as Error).isTimeOut()) workingUserState.postValue(UiState.Timeout)
-            else workingUserState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
+        }
+    }
+
+    override fun setThreshold(threshold: Int) {}
+
+    override fun setDateFilter(date: LocalDate) {
+        viewModelScope.launch {
+            heartRateDate.value = date
+            withContext(Dispatchers.IO) {
+                loadHeartRate()
+            }
         }
     }
 

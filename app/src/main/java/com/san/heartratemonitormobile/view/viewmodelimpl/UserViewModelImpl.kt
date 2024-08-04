@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
-import com.san.heartratemonitormobile.domain.model.AccountModel
+import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
+import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.view.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,13 +25,15 @@ class UserViewModelImpl(
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
 
     override lateinit var users: List<UserModel>
-    private lateinit var temp: List<UserModel>
+    private lateinit var save: List<UserModel>
     override val startDate: LiveData<LocalDate>
         get() = workStartDate
-    private val workStartDate = MutableLiveData(LocalDate.now())
+    private val workStartDate = MutableLiveData(
+        LocalDate.parse(String.format(Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)))
     override val endDate: LiveData<LocalDate>
         get() = workEndDate
     private val workEndDate = MutableLiveData(LocalDate.now())
+    private var idFilter = BLANK
 
     override fun load() {
         viewModelScope.launch {
@@ -43,27 +47,43 @@ class UserViewModelImpl(
         val result = repository.getAllUsers(workStartDate.value!!, workEndDate.value!!)
 
         if (result is Success) {
-            users = result.data
-            temp = result.data
+            save = result.data
+            filterUsersById()
             viewModelState.postValue(UiState.Success)
         } else {
-            viewModelState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 
-    override fun setStartDateAndLoad(date: LocalDate) {
+    private fun filterUsersById() {
+        users = save.filter { it.id.get().contains(idFilter) }.sortedBy { it.name.get() }
+    }
+
+    override fun setStartDate(date: LocalDate) {
         workStartDate.value = date
-        load()
     }
 
-    override fun setEndDateAndLoad(date: LocalDate) {
+    override fun setEndDate(date: LocalDate) {
         workEndDate.value = date
-        load()
     }
 
-    override fun filterById(id: String) {
-        users = temp.filter { it.id.get().contains(id) }
+    /**
+     * setIdFilter()
+     *
+     * id 필터링은 api 통신 없이 로컬에서 진행되기 때문에 load() 대신 곧바로 notify
+     */
+    override fun setIdFilter(id: String) {
+        idFilter = id
 
-        viewModelState.postValue(UiState.Success)
+        if (viewModelState.value!! == UiState.Success) {
+            filterUsersById()
+
+            viewModelState.postValue(UiState.Success)
+        }
+    }
+
+    companion object {
+        private const val BLANK = ""
     }
 }

@@ -4,11 +4,17 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -17,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
-import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.databinding.FragmentReportBinding
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.ReportModel
@@ -52,7 +57,7 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
         initAdminOrNot()
         initObserver(requireActivity())
-        initListener()
+        initListener(requireActivity())
 
         return binding.root
     }
@@ -112,6 +117,7 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
             val intent = Intent(activity, ReportDetailActivity::class.java)
             intent.putExtra(Const.TAG_REPORT, items[position])
             intent.putExtra(Const.TAG_ID, id)
+            intent.putExtra(Const.TAG_ADMIN, account.admin)
 
             activity.startActivity(intent)
         }
@@ -125,55 +131,50 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
         binding.btnEndDatePick.text = it.toString()
     }
 
-    private fun initListener() {
+    private fun initListener(activity: Activity) {
         setBtnRefreshListener()
-        setBtnFilterDateListener()
-        setBtnFilterIdListener()
+        setBtnDateFilterListener(activity)
+        setBtnIdFilterListener()
     }
 
     private fun setBtnRefreshListener() {
-        binding.btnRefresh.setOnClickListener {
-            viewModel.load()
-        }
-        binding.btnTimeoutRequest.setOnClickListener {
-            viewModel.load()
-        }
-        binding.btnServiceErrorRequest.setOnClickListener {
-            viewModel.load()
-        }
+        binding.btnRefresh.setOnClickListener { load() }
+        binding.btnTimeoutRequest.setOnClickListener { load() }
+        binding.btnServiceErrorRequest.setOnClickListener { load() }
     }
 
-    private fun setBtnFilterDateListener() {
+    private fun setBtnDateFilterListener(activity: Activity) {
         binding.btnStartDatePick.setOnClickListener {
             val date = LocalDate.parse(binding.btnStartDatePick.text)
-            val dialog = DatePickerDialog(requireActivity(), startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            val dialog = DatePickerDialog(activity, startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            dialog.datePicker.maxDate = System.currentTimeMillis()
+            dialog.datePicker.setBackgroundColor(Color.WHITE)
             dialog.show()
         }
         binding.btnEndDatePick.setOnClickListener {
             val date = LocalDate.parse(binding.btnEndDatePick.text)
-            val dialog = DatePickerDialog(requireActivity(), endDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            val dialog = DatePickerDialog(activity, endDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            dialog.datePicker.maxDate = System.currentTimeMillis()
+            dialog.datePicker.setBackgroundColor(Color.WHITE)
             dialog.show()
         }
     }
 
     private fun startDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setStartDateAndLoad(LocalDate.of(year, month+1, day))
+            viewModel.setStartDate(LocalDate.of(year, month+1, day))
+            load()
         }
 
     private fun endDateSetListener() =
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            viewModel.setEndDateAndLoad(LocalDate.of(year, month+1, day))
+            viewModel.setEndDate(LocalDate.of(year, month+1, day))
+            load()
         }
 
-    private fun setBtnFilterIdListener() {
-        binding.edtId.setOnEditorActionListener { textView, i, keyEvent ->
-            if (i == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.filterById(binding.edtId.text.toString())
-                return@setOnEditorActionListener true
-            }
-
-            return@setOnEditorActionListener false
+    private fun setBtnIdFilterListener() {
+        binding.edtId.doOnTextChanged { text, start, before, count ->
+            viewModel.setIdFilter(text.toString())
         }
     }
 
@@ -186,6 +187,10 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
     override fun onResume() {
         super.onResume()
+        load()
+    }
+
+    private fun load() {
         viewModel.load()
     }
 }

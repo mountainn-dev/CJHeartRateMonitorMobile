@@ -44,15 +44,15 @@ class ReportDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val reportModel = intent.getSerializableExtra(Const.TAG_REPORT) as ReportModel
-        val userId = intent.getStringExtra(Const.TAG_ID) ?: ""
+        val admin = intent.getBooleanExtra(Const.TAG_ADMIN, false)
         val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
-        viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel, userId)).get(
+        viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel)).get(
             ReportDetailViewModelImpl::class.java
         )
 
         initObserver(this)
-        initListener()
+        initListener(admin)
         initHeartRateGraph(this)
         initReportLocationMap(savedInstanceState)
     }
@@ -118,7 +118,9 @@ class ReportDetailActivity : AppCompatActivity() {
     private fun loadGraph(activity: Activity) {
         val values = arrayListOf<Entry>()
         for (i in viewModel.heartRateData.indices) {
-            values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            if (viewModel.heartRateData[i] != 0) {
+                values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            }
         }
         val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
         set.color = ContextCompat.getColor(activity, R.color.orange)
@@ -127,15 +129,13 @@ class ReportDetailActivity : AppCompatActivity() {
         val dataset = arrayListOf<ILineDataSet>(set)
         val data = LineData(dataset)
         binding.chartDayHeartRate.data = data
-        val average = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.average().toInt()
-        val max = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.max().toInt()
-        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, average)
-        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, max)
+        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateAverage)
+        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateMax)
     }
 
-    private fun initListener() {
+    private fun initListener(admin: Boolean) {
         setBtnBackListener()
-        setBtnActionListener()
+        setBtnActionListener(admin)
     }
 
     private fun setBtnBackListener() {
@@ -144,10 +144,21 @@ class ReportDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setBtnActionListener() {
-        binding.btnEmergency.setOnClickListener { viewModel.setAction(Action.EMERGENCY) }
-        binding.btnRest.setOnClickListener { viewModel.setAction(Action.REST) }
-        binding.btnWork.setOnClickListener { viewModel.setAction(Action.WORK) }
+    private fun setBtnActionListener(admin: Boolean) {
+        if (!admin) return
+
+        binding.btnEmergency.setOnClickListener {
+            viewModel.setAction(Action.EMERGENCY)
+            toggleActionImage(Action.EMERGENCY)
+        }
+        binding.btnRest.setOnClickListener {
+            viewModel.setAction(Action.REST)
+            toggleActionImage(Action.REST)
+        }
+        binding.btnWork.setOnClickListener {
+            viewModel.setAction(Action.WORK)
+            toggleActionImage(Action.WORK)
+        }
     }
 
     private fun initHeartRateGraph(activity: Activity) {
@@ -280,7 +291,6 @@ class ReportDetailActivity : AppCompatActivity() {
         private const val HEART_RATE_MESSAGE = "%d bpm"
         private const val HEART_RATE_GRAPH_LEGEND = "심박수 구간 안내"
         private const val REPORT_POSITION = "신고 위치"
-        private const val EMPTY_HEART_RATE = 0
 
         private const val MAX_AXIS_LEFT = 160f
         private const val MIN_AXIS_LEFT = 0f

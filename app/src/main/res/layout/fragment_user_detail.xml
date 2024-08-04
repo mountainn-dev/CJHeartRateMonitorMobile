@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_grey"
     android:orientation="vertical"
-    tools:context=".view.screen.UserDetailActivity">
+    tools:context=".view.screen.UserDetailFragment">
 
     <Toolbar
         android:layout_width="match_parent"
@@ -17,19 +17,11 @@
         android:contentInsetEnd="@dimen/margin_padding_default"
         android:background="@color/blue">
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:src="@drawable/ic_back"
-            android:clickable="true"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/name_user_detail"
+            android:text="@string/name_worker_detail"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="@dimen/text_title"/>
@@ -66,48 +58,6 @@
                         android:textSize="@dimen/text_item_title"
                         android:textStyle="bold"
                         tools:text="Name" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:text="@string/user_summary_sub_title_1"
-                            android:textColor="@color/text_sub"/>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.75">
-
-                            <TextView
-                                android:id="@+id/txtThreshold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="threshold"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
-
-                            <TextView
-                                android:id="@+id/btnSetThreshold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:clickable="true"
-                                android:text="@string/set_heart_rate_threshold"
-                                android:textColor="@color/blue"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

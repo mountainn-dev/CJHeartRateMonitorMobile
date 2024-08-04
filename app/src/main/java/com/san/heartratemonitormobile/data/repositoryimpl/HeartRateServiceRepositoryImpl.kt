@@ -3,6 +3,7 @@ package com.san.heartratemonitormobile.data.repositoryimpl
 import android.util.Log
 import com.san.heartratemonitormobile.data.Result
 import com.san.heartratemonitormobile.data.entity.ActionEntity
+import com.san.heartratemonitormobile.data.entity.ThresholdEntity
 import com.san.heartratemonitormobile.data.exception.ServiceException
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
@@ -26,7 +27,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         end: LocalDate,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory("NULL", start.toString(), end.toString(), Action.NONE.code.toString())
+            val response = service.getReportHistory(NO_PARAM, start.toString(), end.toString(), Action.NONE.code.toString())
             return Result.success(response.data.map { it.toReportModel() })
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
@@ -41,7 +42,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         end: LocalDate,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory("NULL", start.toString(), end.toString(), "NULL")
+            val response = service.getReportHistory(NO_PARAM, start.toString(), end.toString(), NO_PARAM)
             return Result.success(response.data.map { it.toReportModel() })
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
@@ -73,7 +74,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         end: LocalDate,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory(id.get(), start.toString(), end.toString(), null)
+            val response = service.getReportHistory(id.get(), start.toString(), end.toString(), NO_PARAM)
             return Result.success(response.data.map { it.toReportModel() })
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
@@ -97,7 +98,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
 
     override suspend fun getAllUsers(start: LocalDate, end: LocalDate): Result<List<UserModel>> {
         try {
-            val response = service.getUser("NULL", start.toString(), end.toString())
+            val response = service.getUser(NO_PARAM, start.toString(), end.toString())
             return Result.success(response.data.map { it.toUserModel() })
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
@@ -145,5 +146,21 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
             Log.d("setAction", e.toString())
             return Result.error(e)
         }
+    }
+
+    override suspend fun setThreshold(
+        id: Id, threshold: Int
+    ): Result<Boolean> {
+        try {
+            service.setThreshold(ThresholdEntity(id.get(), threshold.toString()))
+            return Result.success(true)
+        } catch (e: Exception) {
+            Log.d("setThreshold", e.toString())
+            return Result.error(e)
+        }
+    }
+
+    companion object {
+        private const val NO_PARAM = "NULL"
     }
 }

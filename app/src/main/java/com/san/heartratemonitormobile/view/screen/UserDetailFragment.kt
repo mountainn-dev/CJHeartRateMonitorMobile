@@ -2,14 +2,17 @@ package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,38 +26,55 @@ import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
-import com.san.heartratemonitormobile.databinding.ActivityUserDetailBinding
+import com.san.heartratemonitormobile.databinding.FragmentUserDetailBinding
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.domain.utils.Utils
 import com.san.heartratemonitormobile.view.viewmodel.UserDetailViewModel
+import com.san.heartratemonitormobile.view.viewmodel.UserViewModel
 import com.san.heartratemonitormobile.view.viewmodelfactory.UserDetailViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelfactory.UserViewModelFactory
+import com.san.heartratemonitormobile.view.viewmodelfactory.WorkerDetailViewModelFactory
 import com.san.heartratemonitormobile.view.viewmodelimpl.UserDetailViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodelimpl.UserViewModelImpl
+import com.san.heartratemonitormobile.view.viewmodelimpl.WorkerDetailViewModelImpl
 import java.time.LocalDate
 import java.time.LocalTime
 
-class UserDetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUserDetailBinding
+/**
+ * UserDetailFragment
+ *
+ * UserDetailActivity 와 동일한 화면
+ * 관리자의 경우 회원 상세 페이지를 Activity 로 제공하고, 근로자의 경우 Fragment 로 제공한다.
+ */
+class UserDetailFragment(private val userId: String) : Fragment() {
+    private lateinit var binding: FragmentUserDetailBinding
     private lateinit var viewModel: UserDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityUserDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val userModel = intent.getSerializableExtra(Const.TAG_USER) as UserModel
-        val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+        val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(
             Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
                 HeartRateService::class.java))
-        viewModel = ViewModelProvider(this, UserDetailViewModelFactory(repo, userModel)).get(
-            UserDetailViewModelImpl::class.java
+        viewModel = ViewModelProvider(requireActivity(), WorkerDetailViewModelFactory(repo, userId)).get(
+            WorkerDetailViewModelImpl::class.java
         )
+    }
 
-        initObserver(this)
-        initListener(this)
-        initHeartRateGraph(this)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        binding = FragmentUserDetailBinding.inflate(layoutInflater)
+
+        initObserver(requireActivity())
+        initListener(requireActivity())
+        initHeartRateGraph(requireActivity())
+
+        return binding.root
     }
 
     private fun initObserver(activity: Activity) {
@@ -99,7 +119,6 @@ class UserDetailActivity : AppCompatActivity() {
 
     private fun loadUserSummary(user: UserModel) {
         binding.txtName.text = user.name.get()
-        binding.txtThreshold.text = user.threshold.toString()
         binding.txtGender.text = user.gender.genderName
         binding.txtAge.text = String.format(
             AGE_UNIT,
@@ -132,42 +151,7 @@ class UserDetailActivity : AppCompatActivity() {
     }
 
     private fun initListener(activity: Activity) {
-        setBtnBackListener()
-        setBtnSetThresholdListener(activity)
         setBtnDateFilterListener(activity)
-    }
-
-    private fun setBtnBackListener() {
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-    }
-
-    private fun setBtnSetThresholdListener(activity: Activity) {
-        val dialogBuilder = thresholdDialogBuilder(activity)
-
-        binding.btnSetThreshold.setOnClickListener {
-            dialogBuilder.show()
-        }
-    }
-
-    private fun thresholdDialogBuilder(activity: Activity): AlertDialog.Builder {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_user_input, null)
-        val builder = AlertDialog.Builder(activity)
-        builder.setView(dialogView)
-
-        val title = dialogView.findViewById<TextView>(R.id.txtTitle)
-        val userInput = dialogView.findViewById<EditText>(R.id.edtInput)
-
-        title.text = ADJUST_THRESHOLD_MESSAGE
-        builder.setPositiveButton(DIALOG_POSITIVE_BUTTON_TEXT) { dialog, id ->
-            viewModel.setThreshold(userInput.text.toString().toInt())
-            binding.txtThreshold.text = userInput.text.toString()
-        }
-            .setNegativeButton(DIALOG_NEGATIVE_BUTTON_TEXT) { dialog, id ->
-                dialog.cancel() }
-
-        return builder
     }
 
     private fun setBtnDateFilterListener(activity: Activity) {
@@ -252,9 +236,6 @@ class UserDetailActivity : AppCompatActivity() {
         private const val HEART_RATE_MESSAGE = "%d bpm"
         private const val HEART_RATE_GRAPH_LEGEND = "심박수 구간 안내"
         private const val EMPTY_HEART_RATE = 0
-        private const val ADJUST_THRESHOLD_MESSAGE = "임계치를 입력하세요."
-        private const val DIALOG_POSITIVE_BUTTON_TEXT = "확인"
-        private const val DIALOG_NEGATIVE_BUTTON_TEXT = "취소"
 
         private const val MAX_AXIS_LEFT = 160f
         private const val MIN_AXIS_LEFT = 0f

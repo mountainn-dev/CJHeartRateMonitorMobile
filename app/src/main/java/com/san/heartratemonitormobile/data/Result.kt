@@ -23,6 +23,6 @@ class Error <T> (private val error: Exception) : Result<T>() {
         }
     }
 
-    fun isCritical() = error is UnknownHostException || error is ServiceException.ServerException
-    fun isTimeOut() = error is SocketTimeoutException
+    fun isCritical() = error is UnknownHostException || error is ServiceException.ServerException   // 인터넷 연결 혹은 서버 에러
+    fun isTimeOut() = error is SocketTimeoutException   // 요청 시간 초과
 }

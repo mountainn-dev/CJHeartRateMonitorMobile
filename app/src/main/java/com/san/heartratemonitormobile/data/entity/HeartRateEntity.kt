@@ -4,11 +4,11 @@ import com.san.heartratemonitormobile.domain.model.HeartRateModel
 import java.time.LocalTime
 
 data class HeartRateEntity(
-//    val dateTime: String,
+    val dateTime: String,
     val heartRate: Int
 ) {
     fun toHeartRateModel() = HeartRateModel(
-//        parseTime(dateTime),
+        parseTime(dateTime),
         heartRate
     )
 

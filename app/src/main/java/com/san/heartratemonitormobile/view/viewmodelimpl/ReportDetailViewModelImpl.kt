@@ -21,15 +21,19 @@ import java.time.LocalTime
 
 class ReportDetailViewModelImpl(
     private val repository: HeartRateServiceRepository,
-    private val reportModel: ReportModel,
-    private val id: String
+    private val reportModel: ReportModel
 ) : ReportDetailViewModel, ViewModel() {
     override val state: LiveData<UiState>
         get() = viewModelState
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
     override val report: ReportModel = reportModel
     override lateinit var heartRateData: List<Int>
-
+    override val heartRateAverage: Int
+        get() = average
+    private var average = 0
+    override val heartRateMax: Int
+        get() = max
+    private var max = 0
 
     init {
          load()
@@ -44,13 +48,24 @@ class ReportDetailViewModelImpl(
     }
 
     private suspend fun loadHeartRate() {
-        val result = repository.getHeartRate(Id(id), reportModel.reportDate)
+        val result = repository.getHeartRate(reportModel.id, reportModel.reportDate)
 
         if (result is Success) {
             heartRateData = result.data
+            calculateAvgMax()
             viewModelState.postValue(UiState.Success)
         } else {
-            viewModelState.postValue(UiState.ServiceError)
+            if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
+        }
+    }
+
+    private fun calculateAvgMax() {
+        val zeroRemovedHeartRate = heartRateData.filter { it != 0 }
+
+        if (zeroRemovedHeartRate.isNotEmpty()) {
+            average = zeroRemovedHeartRate.average().toInt()
+            max = zeroRemovedHeartRate.max()
         }
     }
 
@@ -58,16 +73,16 @@ class ReportDetailViewModelImpl(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 changeAction(action)
-                load()
             }
         }
     }
 
     private suspend fun changeAction(action: Action) {
-        val result = repository.setAction(Id(id), LocalDate.now(), LocalTime.now(), action)
+        val result = repository.setAction(reportModel.id, reportModel.reportDate, reportModel.reportTime, action)
 
         if (result is Error) {
-            viewModelState.postValue(UiState.ServiceError)
+            if (result.isTimeOut()) viewModelState.postValue(UiState.Timeout)
+            else viewModelState.postValue(UiState.ServiceError)
         }
     }
 }

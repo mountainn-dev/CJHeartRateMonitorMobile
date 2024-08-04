@@ -10,6 +10,8 @@ interface ReportDetailViewModel {
     val state: LiveData<UiState>
     val report: ReportModel
     val heartRateData: List<Int>
+    val heartRateAverage: Int
+    val heartRateMax: Int
 
     fun setAction(action: Action)
 }
