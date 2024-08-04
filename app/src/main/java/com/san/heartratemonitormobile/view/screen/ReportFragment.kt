@@ -111,6 +111,7 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
             val intent = Intent(activity, ReportDetailActivity::class.java)
             intent.putExtra(Const.TAG_REPORT, items[position])
             intent.putExtra(Const.TAG_ID, id)
+            intent.putExtra(Const.TAG_ADMIN, account.admin)
 
             activity.startActivity(intent)
         }

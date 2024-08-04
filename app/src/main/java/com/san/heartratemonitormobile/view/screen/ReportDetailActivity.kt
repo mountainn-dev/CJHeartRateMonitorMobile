@@ -44,6 +44,7 @@ class ReportDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val reportModel = intent.getSerializableExtra(Const.TAG_REPORT) as ReportModel
+        val admin = intent.getBooleanExtra(Const.TAG_ADMIN, false)
         val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
         viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel)).get(
@@ -51,7 +52,7 @@ class ReportDetailActivity : AppCompatActivity() {
         )
 
         initObserver(this)
-        initListener()
+        initListener(admin)
         initHeartRateGraph(this)
         initReportLocationMap(savedInstanceState)
     }
@@ -132,9 +133,9 @@ class ReportDetailActivity : AppCompatActivity() {
         binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, max)
     }
 
-    private fun initListener() {
+    private fun initListener(admin: Boolean) {
         setBtnBackListener()
-        setBtnActionListener()
+        setBtnActionListener(admin)
     }
 
     private fun setBtnBackListener() {
@@ -143,7 +144,9 @@ class ReportDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setBtnActionListener() {
+    private fun setBtnActionListener(admin: Boolean) {
+        if (!admin) return
+
         binding.btnEmergency.setOnClickListener {
             viewModel.setAction(Action.EMERGENCY)
             toggleActionImage(Action.EMERGENCY)
