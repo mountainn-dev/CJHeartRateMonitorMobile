@@ -52,7 +52,8 @@ class ReportViewModelImpl(
 
         if (result is Success) {
             save = result.data
-            reports = save.filter { it.id.get().contains(idFilter) }
+            reports = save.filter { it.id.get().contains(idFilter) }.sortedWith(
+                compareByDescending<ReportModel> { it.reportDate }.thenByDescending { it.reportTime })
             viewModelState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)

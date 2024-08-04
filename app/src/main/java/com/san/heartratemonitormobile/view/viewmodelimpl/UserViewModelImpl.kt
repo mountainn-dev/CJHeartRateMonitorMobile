@@ -47,7 +47,7 @@ class UserViewModelImpl(
 
         if (result is Success) {
             save = result.data
-            users = save.filter { it.id.get().contains(idFilter) }
+            users = save.filter { it.id.get().contains(idFilter) }.sortedBy { it.name.get() }
             viewModelState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
