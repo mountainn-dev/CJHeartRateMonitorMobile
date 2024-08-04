@@ -127,8 +127,8 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
     private fun initListener() {
         setBtnRefreshListener()
-        setBtnFilterDateListener()
-        setBtnFilterIdListener()
+        setBtnDateFilterListener()
+        setBtnIdFilterListener()
     }
 
     private fun setBtnRefreshListener() {
@@ -137,7 +137,7 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
         binding.btnServiceErrorRequest.setOnClickListener { load() }
     }
 
-    private fun setBtnFilterDateListener() {
+    private fun setBtnDateFilterListener() {
         binding.btnStartDatePick.setOnClickListener {
             val date = LocalDate.parse(binding.btnStartDatePick.text)
             val dialog = DatePickerDialog(requireActivity(), startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
@@ -162,7 +162,7 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
             load()
         }
 
-    private fun setBtnFilterIdListener() {
+    private fun setBtnIdFilterListener() {
         binding.edtId.setOnEditorActionListener { textView, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.setIdFilter(binding.edtId.text.toString())

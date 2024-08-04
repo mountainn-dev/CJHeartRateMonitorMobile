@@ -31,6 +31,9 @@ class WorkerDetailViewModelImpl(
     private val heartRateState = MutableLiveData<UiState>(UiState.Loading)
     override lateinit var user: UserModel
     override lateinit var heartRateData: List<Int>
+    override val dateFilter: LiveData<LocalDate>
+        get() = heartRateDate
+    private val heartRateDate = MutableLiveData(LocalDate.now())
 
     init {
         merge(viewModelState, userState, heartRateState)
@@ -65,7 +68,7 @@ class WorkerDetailViewModelImpl(
     }
 
     private suspend fun loadHeartRate() {
-        val result = repository.getHeartRate(Id(userId), LocalDate.now())
+        val result = repository.getHeartRate(Id(userId), heartRateDate.value!!)
 
         if (result is Success) {
             heartRateData = result.data
@@ -77,6 +80,15 @@ class WorkerDetailViewModelImpl(
     }
 
     override fun setThreshold(threshold: Int) {}
+
+    override fun setDateFilter(date: LocalDate) {
+        viewModelScope.launch {
+            heartRateDate.value = date
+            withContext(Dispatchers.IO) {
+                loadHeartRate()
+            }
+        }
+    }
 
     private fun merge(
         parent: MediatorLiveData<UiState>,

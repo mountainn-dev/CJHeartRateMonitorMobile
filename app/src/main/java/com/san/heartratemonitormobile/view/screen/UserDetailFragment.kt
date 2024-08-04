@@ -1,6 +1,7 @@
 package com.san.heartratemonitormobile.view.screen
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -81,6 +82,10 @@ class UserDetailFragment(private val userId: String) : Fragment() {
             activity as LifecycleOwner,
             stateObserver(activity)
         )
+        viewModel.dateFilter.observe(
+            activity as LifecycleOwner,
+            dateFilterObserver()
+        )
     }
 
     private fun stateObserver(activity: Activity) = Observer<UiState> {
@@ -100,6 +105,10 @@ class UserDetailFragment(private val userId: String) : Fragment() {
                 toggleView(binding.llServiceError)
             }
         }
+    }
+
+    private fun dateFilterObserver() = Observer<LocalDate> {
+        binding.btnDateFilter.text = it.toString()
     }
 
     private fun loadSummary() {
@@ -142,8 +151,23 @@ class UserDetailFragment(private val userId: String) : Fragment() {
     }
 
     private fun initListener(activity: Activity) {
-
+        setBtnDateFilterListener(activity)
     }
+
+    private fun setBtnDateFilterListener(activity: Activity) {
+        binding.btnDateFilter.setOnClickListener {
+            val date = LocalDate.parse(binding.btnDateFilter.text)
+            val dialog = DatePickerDialog(activity, dateFilterListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            dialog.datePicker.maxDate = System.currentTimeMillis()
+            dialog.datePicker.setBackgroundColor(ContextCompat.getColor(activity, R.color.white))
+            dialog.show()
+        }
+    }
+
+    private fun dateFilterListener() =
+        DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            viewModel.setDateFilter(LocalDate.of(year, month+1, day))
+        }
 
     private fun initHeartRateGraph(activity: Activity) {
         setGraphStyle()

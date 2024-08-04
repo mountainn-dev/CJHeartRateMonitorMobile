@@ -257,11 +257,13 @@
                     android:background="@color/white">
 
                     <TextView
+                        android:id="@+id/btnDateFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_padding_small"
+                        android:layout_marginEnd="@dimen/margin_padding_small"
                         android:layout_marginBottom="@dimen/margin_padding_small"
-                        android:padding="@dimen/margin_padding_smallest"
+                        android:layout_gravity="end"
+                        android:padding="@dimen/margin_padding_extremely_small"
                         android:background="@color/light_grey"
                         tools:text="setHeartRateDate"
                         android:clickable="true"/>

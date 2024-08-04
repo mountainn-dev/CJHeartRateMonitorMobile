@@ -26,6 +26,9 @@ class UserDetailViewModelImpl(
     private val viewModelState = MutableLiveData<UiState>(UiState.Loading)
     override val user: UserModel = userModel
     override lateinit var heartRateData: List<Int>
+    override val dateFilter: LiveData<LocalDate>
+        get() = heartRateDate
+    private val heartRateDate = MutableLiveData(LocalDate.now())
 
     init {
         load()
@@ -40,7 +43,7 @@ class UserDetailViewModelImpl(
     }
 
     private suspend fun loadHeartRate() {
-        val result = repository.getHeartRate(userModel.id, LocalDate.now())
+        val result = repository.getHeartRate(userModel.id, heartRateDate.value!!)
 
         if (result is Success) {
             heartRateData = result.data
@@ -65,6 +68,15 @@ class UserDetailViewModelImpl(
         if (result is Error) {
             if (result.isTimeOut()) viewModelState.postValue(UiState.Timeout)
             else viewModelState.postValue(UiState.ServiceError)
+        }
+    }
+
+    override fun setDateFilter(date: LocalDate) {
+        viewModelScope.launch {
+            heartRateDate.value = date
+            withContext(Dispatchers.IO) {
+                loadHeartRate()
+            }
         }
     }
 }
