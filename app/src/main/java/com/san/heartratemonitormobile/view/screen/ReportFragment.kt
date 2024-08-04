@@ -4,11 +4,17 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -51,7 +57,7 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
         initAdminOrNot()
         initObserver(requireActivity())
-        initListener()
+        initListener(requireActivity())
 
         return binding.root
     }
@@ -125,9 +131,9 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
         binding.btnEndDatePick.text = it.toString()
     }
 
-    private fun initListener() {
+    private fun initListener(activity: Activity) {
         setBtnRefreshListener()
-        setBtnDateFilterListener()
+        setBtnDateFilterListener(activity)
         setBtnIdFilterListener()
     }
 
@@ -137,15 +143,19 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
         binding.btnServiceErrorRequest.setOnClickListener { load() }
     }
 
-    private fun setBtnDateFilterListener() {
+    private fun setBtnDateFilterListener(activity: Activity) {
         binding.btnStartDatePick.setOnClickListener {
             val date = LocalDate.parse(binding.btnStartDatePick.text)
-            val dialog = DatePickerDialog(requireActivity(), startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            val dialog = DatePickerDialog(activity, startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            dialog.datePicker.maxDate = System.currentTimeMillis()
+            dialog.datePicker.setBackgroundColor(Color.WHITE)
             dialog.show()
         }
         binding.btnEndDatePick.setOnClickListener {
             val date = LocalDate.parse(binding.btnEndDatePick.text)
-            val dialog = DatePickerDialog(requireActivity(), endDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            val dialog = DatePickerDialog(activity, endDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
+            dialog.datePicker.maxDate = System.currentTimeMillis()
+            dialog.datePicker.setBackgroundColor(Color.WHITE)
             dialog.show()
         }
     }
@@ -163,14 +173,8 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
         }
 
     private fun setBtnIdFilterListener() {
-        binding.edtId.setOnEditorActionListener { textView, i, keyEvent ->
-            if (i == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.setIdFilter(binding.edtId.text.toString())
-                load()
-                return@setOnEditorActionListener true
-            }
-
-            return@setOnEditorActionListener false
+        binding.edtId.doOnTextChanged { text, start, before, count ->
+            viewModel.setIdFilter(text.toString())
         }
     }
 

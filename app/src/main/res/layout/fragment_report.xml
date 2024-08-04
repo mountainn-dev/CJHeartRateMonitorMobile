@@ -137,8 +137,7 @@
                 android:background="@color/deep_blue"
                 android:textSize="@dimen/text_default"
                 android:textColor="@color/white"
-                android:inputType="text"
-                android:imeOptions="actionSearch"/>
+                android:inputType="text" />
 
         </LinearLayout>
 

@@ -52,13 +52,17 @@ class ReportViewModelImpl(
 
         if (result is Success) {
             save = result.data
-            reports = save.filter { it.id.get().contains(idFilter) }.sortedWith(
-                compareByDescending<ReportModel> { it.reportDate }.thenByDescending { it.reportTime })
+            filterReportsById()
             viewModelState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
             else viewModelState.postValue(UiState.ServiceError)
         }
+    }
+
+    private fun filterReportsById() {
+        reports = save.filter { it.id.get().contains(idFilter) }.sortedWith(
+            compareByDescending<ReportModel> { it.reportDate }.thenByDescending { it.reportTime })
     }
 
     override fun setStartDate(date: LocalDate) {
@@ -69,8 +73,18 @@ class ReportViewModelImpl(
         reportEndDate.value = date
     }
 
+    /**
+     * setIdFilter()
+     *
+     * id 필터링은 api 통신 없이 로컬에서 진행되기 때문에 load() 대신 곧바로 notify
+     */
     override fun setIdFilter(id: String) {
-        idFilter = id
+        if (viewModelState.value!! == UiState.Success) {
+            idFilter = id
+            filterReportsById()
+
+            viewModelState.postValue(UiState.Success)
+        }
     }
 
     companion object {

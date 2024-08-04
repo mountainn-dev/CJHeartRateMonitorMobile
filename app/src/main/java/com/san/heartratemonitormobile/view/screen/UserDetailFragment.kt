@@ -159,7 +159,7 @@ class UserDetailFragment(private val userId: String) : Fragment() {
             val date = LocalDate.parse(binding.btnDateFilter.text)
             val dialog = DatePickerDialog(activity, dateFilterListener(), date.year, date.monthValue-1, date.dayOfMonth)
             dialog.datePicker.maxDate = System.currentTimeMillis()
-            dialog.datePicker.setBackgroundColor(ContextCompat.getColor(activity, R.color.white))
+            dialog.datePicker.setBackgroundColor(Color.WHITE)
             dialog.show()
         }
     }

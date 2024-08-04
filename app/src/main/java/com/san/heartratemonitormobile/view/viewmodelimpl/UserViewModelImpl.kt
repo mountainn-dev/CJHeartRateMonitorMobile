@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.san.heartratemonitormobile.data.Error
 import com.san.heartratemonitormobile.data.Success
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
+import com.san.heartratemonitormobile.domain.model.ReportModel
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
 import com.san.heartratemonitormobile.domain.utils.Const
@@ -47,12 +48,16 @@ class UserViewModelImpl(
 
         if (result is Success) {
             save = result.data
-            users = save.filter { it.id.get().contains(idFilter) }.sortedBy { it.name.get() }
+            filterUsersById()
             viewModelState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
             else viewModelState.postValue(UiState.ServiceError)
         }
+    }
+
+    private fun filterUsersById() {
+        users = save.filter { it.id.get().contains(idFilter) }.sortedBy { it.name.get() }
     }
 
     override fun setStartDate(date: LocalDate) {
@@ -63,8 +68,18 @@ class UserViewModelImpl(
         workEndDate.value = date
     }
 
+    /**
+     * setIdFilter()
+     *
+     * id 필터링은 api 통신 없이 로컬에서 진행되기 때문에 load() 대신 곧바로 notify
+     */
     override fun setIdFilter(id: String) {
-        idFilter = id
+        if (viewModelState.value!! == UiState.Success) {
+            idFilter = id
+            filterUsersById()
+
+            viewModelState.postValue(UiState.Success)
+        }
     }
 
     companion object {
