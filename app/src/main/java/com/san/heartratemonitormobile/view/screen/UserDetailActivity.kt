@@ -21,6 +21,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateDataService
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityUserDetailBinding
@@ -46,8 +47,9 @@ class UserDetailActivity : AppCompatActivity() {
         val userModel = intent.getSerializableExtra(Const.TAG_USER) as UserModel
         val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(
-            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
-                HeartRateService::class.java))
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java),
+            Utils.getRetrofit2(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateDataService::class.java),
+        )
         viewModel = ViewModelProvider(this, UserDetailViewModelFactory(repo, userModel)).get(
             UserDetailViewModelImpl::class.java
         )

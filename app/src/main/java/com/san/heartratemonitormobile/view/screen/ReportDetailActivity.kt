@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateDataService
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityReportDetailBinding
@@ -46,7 +47,10 @@ class ReportDetailActivity : AppCompatActivity() {
         val reportModel = intent.getSerializableExtra(Const.TAG_REPORT) as ReportModel
         val admin = intent.getBooleanExtra(Const.TAG_ADMIN, false)
         val preference = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
-        val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
+        val repo = HeartRateServiceRepositoryImpl(
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java),
+            Utils.getRetrofit2(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateDataService::class.java),
+        )
         viewModel = ViewModelProvider(this, ReportDetailViewModelFactory(repo, reportModel)).get(
             ReportDetailViewModelImpl::class.java
         )

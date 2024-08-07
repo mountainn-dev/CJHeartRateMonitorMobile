@@ -17,7 +17,7 @@ interface HeartRateServiceRepository {
     suspend fun getSingleUserReports(id: Id, start: LocalDate, end: LocalDate): Result<List<ReportModel>>
     suspend fun getWorkingUsers(): Result<List<UserModel>>
     suspend fun getAllUsers(start: LocalDate, end: LocalDate): Result<List<UserModel>>
-    suspend fun getSingleUser(id: Id, start: LocalDate, end: LocalDate): Result<UserModel>
+    suspend fun getSingleUser(id: Id): Result<UserModel>
     suspend fun getHeartRate(id: Id, heartRateDate: LocalDate): Result<List<Int>>
     suspend fun setAction(id: Id, reportDate: LocalDate, reportTime: LocalTime, action: Action): Result<Boolean>
     suspend fun setThreshold(id: Id, threshold: Int): Result<Boolean>

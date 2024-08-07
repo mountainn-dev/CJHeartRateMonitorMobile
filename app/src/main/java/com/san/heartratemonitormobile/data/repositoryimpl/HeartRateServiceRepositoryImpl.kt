@@ -5,6 +5,7 @@ import com.san.heartratemonitormobile.data.Result
 import com.san.heartratemonitormobile.data.entity.ActionEntity
 import com.san.heartratemonitormobile.data.entity.ThresholdEntity
 import com.san.heartratemonitormobile.data.exception.ServiceException
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateDataService
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repository.HeartRateServiceRepository
 import com.san.heartratemonitormobile.data.vo.Birth
@@ -21,7 +22,10 @@ import com.san.heartratemonitormobile.domain.model.UserModel
 import java.time.LocalDate
 import java.time.LocalTime
 
-class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : HeartRateServiceRepository {
+class HeartRateServiceRepositoryImpl(
+    private val service: HeartRateService,
+    private val dataService: HeartRateDataService
+) : HeartRateServiceRepository {
     override suspend fun getAllUserActionNeededReports(
         start: LocalDate,
         end: LocalDate,
@@ -108,9 +112,9 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         }
     }
 
-    override suspend fun getSingleUser(id: Id, start: LocalDate, end: LocalDate): Result<UserModel> {
+    override suspend fun getSingleUser(id: Id): Result<UserModel> {
         try {
-            val response = service.getUser(id.get(), start.toString(), end.toString())
+            val response = service.getUser(id.get(), NO_PARAM, NO_PARAM)
             return Result.success(response.data[0].toUserModel())
         } catch (e: Exception) {
             Log.d("User", e.toString())
@@ -123,7 +127,7 @@ class HeartRateServiceRepositoryImpl(private val service: HeartRateService) : He
         heartRateDate: LocalDate,
     ): Result<List<Int>> {
         try {
-            val response = service.getHeartRate(id.get(), heartRateDate.toString())
+            val response = dataService.getHeartRate(id.get(), heartRateDate.toString())
             return Result.success(response.data)
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
