@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.BuildConfig
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateDataService
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentUserBinding
@@ -43,8 +44,9 @@ class UserFragment(
 
         val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(
-            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
-                HeartRateService::class.java))
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java),
+            Utils.getRetrofit2(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateDataService::class.java),
+        )
         viewModel = ViewModelProvider(requireActivity(), UserViewModelFactory(repo)).get(
             UserViewModelImpl::class.java)
     }

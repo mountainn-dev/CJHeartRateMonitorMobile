@@ -24,6 +24,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateDataService
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentUserDetailBinding
@@ -57,8 +58,9 @@ class UserDetailFragment(private val userId: String) : Fragment() {
 
         val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(
-            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
-                HeartRateService::class.java))
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java),
+            Utils.getRetrofit2(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateDataService::class.java),
+        )
         viewModel = ViewModelProvider(requireActivity(), WorkerDetailViewModelFactory(repo, userId)).get(
             WorkerDetailViewModelImpl::class.java
         )

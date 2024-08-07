@@ -52,11 +52,7 @@ class WorkerDetailViewModelImpl(
     }
 
     private suspend fun loadUser() {
-        val result = repository.getSingleUser(
-            Id(userId), LocalDate.parse(
-                String.format(Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)
-            ), LocalDate.now()
-        )
+        val result = repository.getSingleUser(Id(userId))
 
         if (result is Success) {
             user = result.data
@@ -72,10 +68,10 @@ class WorkerDetailViewModelImpl(
 
         if (result is Success) {
             heartRateData = result.data
-            viewModelState.postValue(UiState.Success)
+            heartRateState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
-            else viewModelState.postValue(UiState.ServiceError)
+            else heartRateState.postValue(UiState.ServiceError)
         }
     }
 

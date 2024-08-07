@@ -30,12 +30,6 @@ interface HeartRateService {
         @Query("endWorkDate") end: String
     ): ServiceResponse<List<UserEntity>>
 
-    @GET("/getHeartRate")
-    suspend fun getHeartRate(
-        @Query("userId") id: String,
-        @Query("heartRateDate") date: String
-    ): ServiceResponse<List<Int>>
-
     @POST("/Action")
     suspend fun setAction(
         @Body data: ActionEntity
