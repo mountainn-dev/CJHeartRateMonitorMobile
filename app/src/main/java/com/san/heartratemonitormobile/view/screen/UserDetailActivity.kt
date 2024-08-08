@@ -135,6 +135,7 @@ class UserDetailActivity : AppCompatActivity() {
 
     private fun initListener(activity: Activity) {
         setBtnBackListener()
+        setBtnRefreshListener()
         setBtnSetThresholdListener(activity)
         setBtnDateFilterListener(activity)
     }

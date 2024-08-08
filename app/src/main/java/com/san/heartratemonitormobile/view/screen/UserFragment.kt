@@ -142,14 +142,18 @@ class UserFragment(
 
     private fun setBtnDateFilterListener() {
         binding.btnStartDatePick.setOnClickListener {
-            val date = LocalDate.parse(binding.btnStartDatePick.text)
+            val dateText = binding.btnStartDatePick.text.toString()
+            val date = if (dateText == DATE_FILTER_PLACE_HOLDER_TEXT) LocalDate.now()
+                else LocalDate.parse(binding.btnStartDatePick.text)
             val dialog = DatePickerDialog(requireActivity(), startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
             dialog.datePicker.maxDate = System.currentTimeMillis()
             dialog.datePicker.setBackgroundColor(Color.WHITE)
             dialog.show()
         }
         binding.btnEndDatePick.setOnClickListener {
-            val date = LocalDate.parse(binding.btnEndDatePick.text)
+            val dateText = binding.btnEndDatePick.text.toString()
+            val date = if (dateText == DATE_FILTER_PLACE_HOLDER_TEXT) LocalDate.now()
+                else LocalDate.parse(binding.btnEndDatePick.text)
             val dialog = DatePickerDialog(requireActivity(), endDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
             dialog.datePicker.maxDate = System.currentTimeMillis()
             dialog.datePicker.setBackgroundColor(Color.WHITE)
@@ -191,4 +195,7 @@ class UserFragment(
         viewModel.load()
     }
 
+    companion object {
+        private const val DATE_FILTER_PLACE_HOLDER_TEXT = "전체 기간"
+    }
 }

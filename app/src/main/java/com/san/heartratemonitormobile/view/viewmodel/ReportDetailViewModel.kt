@@ -13,5 +13,6 @@ interface ReportDetailViewModel {
     val heartRateAverage: Int
     val heartRateMax: Int
 
+    fun load()
     fun setAction(action: Action)
 }
