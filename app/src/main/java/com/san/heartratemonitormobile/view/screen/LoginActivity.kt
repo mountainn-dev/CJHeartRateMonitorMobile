@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.wearable.PutDataMapRequest
+import com.google.android.gms.wearable.Wearable
 import com.san.heartratemonitormobile.data.remote.retrofit.LoginService
 import com.san.heartratemonitormobile.data.repositoryimpl.LoginRepositoryImpl
 import com.san.heartratemonitormobile.databinding.ActivityLoginBinding

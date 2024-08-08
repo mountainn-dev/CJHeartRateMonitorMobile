@@ -88,6 +88,9 @@ class WorkerDetailViewModelImpl(
         if (zeroRemovedHeartRate.isNotEmpty()) {
             average = zeroRemovedHeartRate.average().toInt()
             max = zeroRemovedHeartRate.max()
+        } else {
+            average = Const.ZERO
+            max = Const.ZERO
         }
     }
 
