@@ -107,9 +107,13 @@ class HeartRateServiceRepositoryImpl(
         }
     }
 
-    override suspend fun getAllUsers(start: LocalDate, end: LocalDate): Result<List<UserModel>> {
+    override suspend fun getAllUsers(start: LocalDate?, end: LocalDate?): Result<List<UserModel>> {
         try {
-            val response = service.getUser(NO_PARAM, start.toString(), end.toString())
+            val response = service.getUser(
+                NO_PARAM,
+                start?.toString() ?: NO_PARAM,
+                end?.toString() ?: NO_PARAM,
+            )
             return Result.success(response.data.map { it.toUserModel() })
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
