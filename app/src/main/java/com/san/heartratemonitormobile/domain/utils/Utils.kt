@@ -21,6 +21,12 @@ object Utils {
         .client(getClientWithOrWithoutIdToken(null))
         .build()
 
+    fun getRetrofit2(token: String) = Retrofit.Builder()
+        .baseUrl("http://49.247.47.116:8082")
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(getClientWithOrWithoutIdToken(token))
+        .build()
+
     private fun getClientWithOrWithoutIdToken(token: String?): OkHttpClient {
         val builder = OkHttpClient().newBuilder()
             .addInterceptor(ErrorInterceptor())

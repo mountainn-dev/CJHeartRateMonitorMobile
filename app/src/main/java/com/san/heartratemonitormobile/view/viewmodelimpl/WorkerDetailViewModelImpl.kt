@@ -34,13 +34,19 @@ class WorkerDetailViewModelImpl(
     override val dateFilter: LiveData<LocalDate>
         get() = heartRateDate
     private val heartRateDate = MutableLiveData(LocalDate.now())
+    override val heartRateAverage: Int
+        get() = average
+    private var average = 0
+    override val heartRateMax: Int
+        get() = max
+    private var max = 0
 
     init {
         merge(viewModelState, userState, heartRateState)
         load()
     }
 
-    private fun load() {
+    override fun load() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 awaitAll(
@@ -52,11 +58,7 @@ class WorkerDetailViewModelImpl(
     }
 
     private suspend fun loadUser() {
-        val result = repository.getSingleUser(
-            Id(userId), LocalDate.parse(
-                String.format(Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)
-            ), LocalDate.now()
-        )
+        val result = repository.getSingleUser(Id(userId))
 
         if (result is Success) {
             user = result.data
@@ -72,10 +74,20 @@ class WorkerDetailViewModelImpl(
 
         if (result is Success) {
             heartRateData = result.data
-            viewModelState.postValue(UiState.Success)
+            calculateAvgMax()
+            heartRateState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
-            else viewModelState.postValue(UiState.ServiceError)
+            else heartRateState.postValue(UiState.ServiceError)
+        }
+    }
+
+    private fun calculateAvgMax() {
+        val zeroRemovedHeartRate = heartRateData.filter { it != 0 }
+
+        if (zeroRemovedHeartRate.isNotEmpty()) {
+            average = zeroRemovedHeartRate.average().toInt()
+            max = zeroRemovedHeartRate.max()
         }
     }
 

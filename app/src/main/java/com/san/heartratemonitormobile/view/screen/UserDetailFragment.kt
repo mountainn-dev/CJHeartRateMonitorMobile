@@ -24,6 +24,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.san.heartratemonitormobile.BuildConfig
 import com.san.heartratemonitormobile.R
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateDataService
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentUserDetailBinding
@@ -57,8 +58,9 @@ class UserDetailFragment(private val userId: String) : Fragment() {
 
         val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
         val repo = HeartRateServiceRepositoryImpl(
-            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(
-                HeartRateService::class.java))
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java),
+            Utils.getRetrofit2(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateDataService::class.java),
+        )
         viewModel = ViewModelProvider(requireActivity(), WorkerDetailViewModelFactory(repo, userId)).get(
             WorkerDetailViewModelImpl::class.java
         )
@@ -135,7 +137,9 @@ class UserDetailFragment(private val userId: String) : Fragment() {
     private fun loadGraph(activity: Activity) {
         val values = arrayListOf<Entry>()
         for (i in viewModel.heartRateData.indices) {
-            values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            if (viewModel.heartRateData[i] != 0) {
+                values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            }
         }
         val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
         set.color = ContextCompat.getColor(activity, R.color.orange)
@@ -144,14 +148,13 @@ class UserDetailFragment(private val userId: String) : Fragment() {
         val dataset = arrayListOf<ILineDataSet>(set)
         val data = LineData(dataset)
         binding.chartDayHeartRate.data = data
-        val average = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.average().toInt()
-        val max = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.max().toInt()
-        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, average)
-        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, max)
+        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateAverage)
+        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateMax)
     }
 
     private fun initListener(activity: Activity) {
         setBtnDateFilterListener(activity)
+        setBtnRefreshListener()
     }
 
     private fun setBtnDateFilterListener(activity: Activity) {
@@ -168,6 +171,15 @@ class UserDetailFragment(private val userId: String) : Fragment() {
         DatePickerDialog.OnDateSetListener { _, year, month, day ->
             viewModel.setDateFilter(LocalDate.of(year, month+1, day))
         }
+
+    private fun setBtnRefreshListener() {
+        binding.btnTimeoutRequest.setOnClickListener {
+            viewModel.load()
+        }
+        binding.btnServiceErrorRequest.setOnClickListener {
+            viewModel.load()
+        }
+    }
 
     private fun initHeartRateGraph(activity: Activity) {
         setGraphStyle()

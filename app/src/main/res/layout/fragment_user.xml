@@ -88,7 +88,8 @@
                     android:clickable="true"
                     android:paddingVertical="@dimen/margin_padding_small"
                     android:textColor="@color/white"
-                    tools:text="startDate" />
+                    android:text="@string/date_filter_place_holder_text"
+                    tools:text="전체 기간" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,7 +106,8 @@
                     android:clickable="true"
                     android:paddingVertical="@dimen/margin_padding_small"
                     android:textColor="@color/white"
-                    tools:text="endDate" />
+                    android:text="@string/date_filter_place_holder_text"
+                    tools:text="전체 기간" />
 
             </LinearLayout>
 

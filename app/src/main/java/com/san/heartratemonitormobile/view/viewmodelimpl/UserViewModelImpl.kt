@@ -28,11 +28,10 @@ class UserViewModelImpl(
     private lateinit var save: List<UserModel>
     override val startDate: LiveData<LocalDate>
         get() = workStartDate
-    private val workStartDate = MutableLiveData(
-        LocalDate.parse(String.format(Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)))
+    private val workStartDate = MutableLiveData<LocalDate>()
     override val endDate: LiveData<LocalDate>
         get() = workEndDate
-    private val workEndDate = MutableLiveData(LocalDate.now())
+    private val workEndDate = MutableLiveData<LocalDate>()
     private var idFilter = BLANK
 
     override fun load() {
@@ -44,7 +43,9 @@ class UserViewModelImpl(
     }
 
     private suspend fun loadUserContent() {
-        val result = repository.getAllUsers(workStartDate.value!!, workEndDate.value!!)
+        val workStartDate = if (workStartDate.isInitialized) workStartDate.value!! else null
+        val workEndDate = if (workEndDate.isInitialized) workEndDate.value!! else null
+        val result = repository.getAllUsers(workStartDate, workEndDate)
 
         if (result is Success) {
             save = result.data

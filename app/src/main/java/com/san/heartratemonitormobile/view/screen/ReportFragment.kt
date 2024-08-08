@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.san.heartratemonitormobile.BuildConfig
+import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateDataService
 import com.san.heartratemonitormobile.data.remote.retrofit.HeartRateService
 import com.san.heartratemonitormobile.data.repositoryimpl.HeartRateServiceRepositoryImpl
 import com.san.heartratemonitormobile.databinding.FragmentReportBinding
@@ -44,7 +46,10 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
         super.onCreate(savedInstanceState)
 
         val preference = requireActivity().getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
-        val repo = HeartRateServiceRepositoryImpl(Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java))
+        val repo = HeartRateServiceRepositoryImpl(
+            Utils.getRetrofit(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateService::class.java),
+            Utils.getRetrofit2(preference.getString(Const.TAG_ID_TOKEN, "")!!).create(HeartRateDataService::class.java),
+        )
         viewModel = ViewModelProvider(requireActivity(), ReportViewModelFactory(repo, account, id)).get(
             ReportViewModelImpl::class.java)
     }
@@ -145,14 +150,18 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
     private fun setBtnDateFilterListener(activity: Activity) {
         binding.btnStartDatePick.setOnClickListener {
-            val date = LocalDate.parse(binding.btnStartDatePick.text)
+            val dateText = binding.btnStartDatePick.text.toString()
+            val date = if (dateText == DATE_FILTER_PLACE_HOLDER_TEXT) LocalDate.now()
+                else LocalDate.parse(binding.btnStartDatePick.text)
             val dialog = DatePickerDialog(activity, startDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
             dialog.datePicker.maxDate = System.currentTimeMillis()
             dialog.datePicker.setBackgroundColor(Color.WHITE)
             dialog.show()
         }
         binding.btnEndDatePick.setOnClickListener {
-            val date = LocalDate.parse(binding.btnEndDatePick.text)
+            val dateText = binding.btnEndDatePick.text.toString()
+            val date = if (dateText == DATE_FILTER_PLACE_HOLDER_TEXT) LocalDate.now()
+            else LocalDate.parse(binding.btnEndDatePick.text)
             val dialog = DatePickerDialog(activity, endDateSetListener(), date.year, date.monthValue-1, date.dayOfMonth)
             dialog.datePicker.maxDate = System.currentTimeMillis()
             dialog.datePicker.setBackgroundColor(Color.WHITE)
@@ -192,5 +201,9 @@ class ReportFragment(private val account: AccountModel, private val id: String) 
 
     private fun load() {
         viewModel.load()
+    }
+
+    companion object {
+        private const val DATE_FILTER_PLACE_HOLDER_TEXT = "전체 기간"
     }
 }
