@@ -39,7 +39,7 @@ class ReportDetailViewModelImpl(
          load()
     }
 
-    private fun load() {
+    override fun load() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 loadHeartRate()

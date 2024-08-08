@@ -139,12 +139,22 @@ class ReportDetailActivity : AppCompatActivity() {
 
     private fun initListener(admin: Boolean) {
         setBtnBackListener()
+        setBtnRefreshListener()
         setBtnActionListener(admin)
     }
 
     private fun setBtnBackListener() {
         binding.btnBack.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun setBtnRefreshListener() {
+        binding.btnTimeoutRequest.setOnClickListener {
+            viewModel.load()
+        }
+        binding.btnServiceErrorRequest.setOnClickListener {
+            viewModel.load()
         }
     }
 
