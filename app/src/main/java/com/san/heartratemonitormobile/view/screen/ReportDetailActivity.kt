@@ -259,8 +259,8 @@ class ReportDetailActivity : AppCompatActivity() {
 
     private fun initReportLocationMap(savedInstanceState: Bundle?) {
         binding.mapReportLocation.onCreate(savedInstanceState)
-        val location = LatLng(viewModel.report.locationLatitude.toDouble(),
-            viewModel.report.locationLongitude.toDouble())
+        val location = LatLng(viewModel.report.locationLongitude.toDouble(),
+            viewModel.report.locationLatitude.toDouble())
 
         binding.mapReportLocation.getMapAsync {
             it.addMarker(MarkerOptions().position(location).title(REPORT_POSITION))
