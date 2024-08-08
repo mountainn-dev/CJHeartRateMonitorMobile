@@ -49,6 +49,7 @@
             android:id="@+id/llUrgent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:weightSum="1"
             android:orientation="vertical">
 
             <LinearLayout
@@ -83,7 +84,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvReport"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0dp"
+                android:layout_weight="0.45"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,7 +117,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWorking"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0dp"
+                android:layout_weight="0.45"/>
 
         </LinearLayout>
 
