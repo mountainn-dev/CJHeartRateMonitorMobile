@@ -10,7 +10,10 @@ interface UserDetailViewModel {
     val user: UserModel
     val heartRateData: List<Int>
     val dateFilter: LiveData<LocalDate>
+    val heartRateAverage: Int
+    val heartRateMax: Int
 
+    fun load()
     fun setThreshold(threshold: Int)
     fun setDateFilter(date: LocalDate)
 }

@@ -34,13 +34,19 @@ class WorkerDetailViewModelImpl(
     override val dateFilter: LiveData<LocalDate>
         get() = heartRateDate
     private val heartRateDate = MutableLiveData(LocalDate.now())
+    override val heartRateAverage: Int
+        get() = average
+    private var average = 0
+    override val heartRateMax: Int
+        get() = max
+    private var max = 0
 
     init {
         merge(viewModelState, userState, heartRateState)
         load()
     }
 
-    private fun load() {
+    override fun load() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 awaitAll(
@@ -68,10 +74,20 @@ class WorkerDetailViewModelImpl(
 
         if (result is Success) {
             heartRateData = result.data
+            calculateAvgMax()
             heartRateState.postValue(UiState.Success)
         } else {
             if ((result as Error).isTimeOut()) viewModelState.postValue(UiState.Timeout)
             else heartRateState.postValue(UiState.ServiceError)
+        }
+    }
+
+    private fun calculateAvgMax() {
+        val zeroRemovedHeartRate = heartRateData.filter { it != 0 }
+
+        if (zeroRemovedHeartRate.isNotEmpty()) {
+            average = zeroRemovedHeartRate.average().toInt()
+            max = zeroRemovedHeartRate.max()
         }
     }
 

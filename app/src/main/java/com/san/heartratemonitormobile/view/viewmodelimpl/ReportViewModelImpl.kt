@@ -31,11 +31,10 @@ class ReportViewModelImpl(
     private lateinit var save: List<ReportModel>   // Id 필터 적용을 위한 전체 신고 이력 세이브용 변수
     override val startDate: LiveData<LocalDate>
         get() = reportStartDate
-    private val reportStartDate = MutableLiveData(LocalDate.parse(String.format(
-        Const.DATE_FILTER_DEFAULT_START_DATE, LocalDate.now().year)))
+    private val reportStartDate = MutableLiveData<LocalDate>()
     override val endDate: LiveData<LocalDate>
         get() = reportEndDate
-    private val reportEndDate = MutableLiveData(LocalDate.now())
+    private val reportEndDate = MutableLiveData<LocalDate>()
     private var idFilter = BLANK
 
     override fun load() {
@@ -47,8 +46,10 @@ class ReportViewModelImpl(
     }
 
     private suspend fun loadReportContent() {
-        val result = if (account.admin) repository.getAllUserReports(reportStartDate.value!!, reportEndDate.value!!)
-        else repository.getSingleUserReports(Id(id), reportStartDate.value!!, reportEndDate.value!!)
+        val startDate = if (reportStartDate.isInitialized) reportStartDate.value!! else null
+        val endDate = if (reportEndDate.isInitialized) reportEndDate.value!! else null
+        val result = if (account.admin) repository.getAllUserReports(startDate, endDate)
+        else repository.getSingleUserReports(Id(id), startDate, endDate)
 
         if (result is Success) {
             save = result.data

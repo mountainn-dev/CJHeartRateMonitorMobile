@@ -118,7 +118,9 @@ class UserDetailActivity : AppCompatActivity() {
     private fun loadGraph(activity: Activity) {
         val values = arrayListOf<Entry>()
         for (i in viewModel.heartRateData.indices) {
-            values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            if (viewModel.heartRateData[i] != 0) {
+                values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
+            }
         }
         val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
         set.color = ContextCompat.getColor(activity, R.color.orange)
@@ -127,10 +129,8 @@ class UserDetailActivity : AppCompatActivity() {
         val dataset = arrayListOf<ILineDataSet>(set)
         val data = LineData(dataset)
         binding.chartDayHeartRate.data = data
-        val average = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.average().toInt()
-        val max = if (viewModel.heartRateData.isEmpty()) EMPTY_HEART_RATE else  viewModel.heartRateData.max().toInt()
-        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, average)
-        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, max)
+        binding.txtAvgHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateAverage)
+        binding.txtMaxHeartRate.text = String.format(HEART_RATE_MESSAGE, viewModel.heartRateMax)
     }
 
     private fun initListener(activity: Activity) {
@@ -142,6 +142,15 @@ class UserDetailActivity : AppCompatActivity() {
     private fun setBtnBackListener() {
         binding.btnBack.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun setBtnRefreshListener() {
+        binding.btnTimeoutRequest.setOnClickListener {
+            viewModel.load()
+        }
+        binding.btnServiceErrorRequest.setOnClickListener {
+            viewModel.load()
         }
     }
 
