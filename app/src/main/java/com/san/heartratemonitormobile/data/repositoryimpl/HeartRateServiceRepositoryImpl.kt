@@ -42,11 +42,14 @@ class HeartRateServiceRepositoryImpl(
     }
 
     override suspend fun getAllUserReports(
-        start: LocalDate,
-        end: LocalDate,
+        start: LocalDate?,
+        end: LocalDate?,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory(NO_PARAM, start.toString(), end.toString(), NO_PARAM)
+            val response = service.getReportHistory(NO_PARAM,
+                start?.toString() ?: NO_PARAM,
+                end?.toString() ?: NO_PARAM,
+                NO_PARAM)
             return Result.success(response.data.map { it.toReportModel() })
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
@@ -74,11 +77,15 @@ class HeartRateServiceRepositoryImpl(
 
     override suspend fun getSingleUserReports(
         id: Id,
-        start: LocalDate,
-        end: LocalDate,
+        start: LocalDate?,
+        end: LocalDate?,
     ): Result<List<ReportModel>> {
         try {
-            val response = service.getReportHistory(id.get(), start.toString(), end.toString(), NO_PARAM)
+            val response = service.getReportHistory(
+                id.get(),
+                start?.toString() ?: NO_PARAM,
+                end?.toString() ?: NO_PARAM,
+                NO_PARAM)
             return Result.success(response.data.map { it.toReportModel() })
         } catch (e: ServiceException.NoResultException) {
             return Result.success(emptyList())
