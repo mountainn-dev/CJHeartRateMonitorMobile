@@ -116,11 +116,11 @@ class UserDetailActivity : AppCompatActivity() {
     }
 
     private fun loadGraph(activity: Activity) {
+        binding.chartDayHeartRate.clear()
+
         val values = arrayListOf<Entry>()
         for (i in viewModel.heartRateData.indices) {
-            if (viewModel.heartRateData[i] != 0) {
-                values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
-            }
+            values.add(Entry(i.toFloat(), viewModel.heartRateData[i].toFloat()))
         }
         val set = LineDataSet(values, HEART_RATE_GRAPH_LEGEND)
         set.color = ContextCompat.getColor(activity, R.color.orange)

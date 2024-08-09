@@ -11,6 +11,7 @@ import com.san.heartratemonitormobile.data.vo.Id
 import com.san.heartratemonitormobile.domain.model.AccountModel
 import com.san.heartratemonitormobile.domain.model.UserModel
 import com.san.heartratemonitormobile.domain.state.UiState
+import com.san.heartratemonitormobile.domain.utils.Const
 import com.san.heartratemonitormobile.view.viewmodel.UserDetailViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -67,6 +68,9 @@ class UserDetailViewModelImpl(
         if (zeroRemovedHeartRate.isNotEmpty()) {
             average = zeroRemovedHeartRate.average().toInt()
             max = zeroRemovedHeartRate.max()
+        } else {
+            average = Const.ZERO
+            max = Const.ZERO
         }
     }
 
