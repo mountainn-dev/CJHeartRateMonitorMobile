@@ -21,9 +21,9 @@ class ReportAdapter(
 
         private fun loadContent(position: Int) {
             binding.txtThreshold.text = items[position].threshold.toString()
-            binding.txtThresholdOver.text = String.format(
-                THRESHOLD_OVER_MESSAGE,
-                items[position].reportHeartRate - items[position].threshold)
+            val thresholdDiff = items[position].reportHeartRate - items[position].threshold
+            binding.txtThresholdOver.text = if (items[position].reportHeartRate >= items[position].threshold) String.format(
+                THRESHOLD_OVER_MESSAGE, thresholdDiff) else String.format(THRESHOLD_UNDER_MESSAGE, thresholdDiff)
             binding.txtName.text = items[position].name.get()
             binding.txtTodayReportCount.text = String.format(TODAY_REPORT_COUNT_MESSAGE, items[position].reportCountToday)
             binding.txtReportDate.text = items[position].reportDate.toString()
@@ -56,6 +56,7 @@ class ReportAdapter(
 
     companion object {
         private const val THRESHOLD_OVER_MESSAGE = "+%d"
+        private const val THRESHOLD_UNDER_MESSAGE = "%d"
         private const val TODAY_REPORT_COUNT_MESSAGE = "(오늘 신고 %d건)"
     }
 }
